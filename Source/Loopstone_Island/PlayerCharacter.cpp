@@ -24,7 +24,7 @@ APlayerCharacter::APlayerCharacter()
 	GetCharacterMovement()->MaxStepHeight = 60.f;
 	GetCharacterMovement()->MaxWalkSpeed = 600;
 	GetCharacterMovement()->JumpZVelocity = 600;
-	GetCharacterMovement()->AirControl = 0.05f;
+	GetCharacterMovement()->AirControl = 1.0f;
 	
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
