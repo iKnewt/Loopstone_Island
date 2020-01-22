@@ -13,5 +13,8 @@ UCLASS()
 class LOOPSTONE_ISLAND_API ALoopstone_IslandGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+	ALoopstone_IslandGameModeBase();
 	
 };
