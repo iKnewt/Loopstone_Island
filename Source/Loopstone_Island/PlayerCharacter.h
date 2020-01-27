@@ -49,6 +49,11 @@ protected:
 	 */
 	void LookUpAtRate(float Rate);
 
+	/**
+	 * Called when the player presses the Interact button.
+	 */
+	void InteractWithObject();
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
