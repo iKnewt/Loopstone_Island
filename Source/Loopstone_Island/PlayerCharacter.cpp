@@ -6,6 +6,9 @@
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "InteractableObjectBase.h"
+#include "DrawDebugHelpers.h"
+#include "Engine/Engine.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -75,6 +78,57 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FHitResult Hit(ForceInit);
+	FVector start = FirstPersonCameraComponent->GetComponentLocation();
+	FVector end = start + FirstPersonCameraComponent->GetForwardVector() * 400.f;
+	FCollisionQueryParams collisionParam;
+
+	GetWorld()->LineTraceSingleByChannel(
+		Hit, start, end, ECC_WorldDynamic, collisionParam
+	);
+	if(Hit.bBlockingHit)
+	{
+		if(Hit.Actor->ActorHasTag("Interact"))
+		{
+			//Visual representation of the object. Probably a shine of some type.
+		}
+	}
+	
+
+}
+
+void APlayerCharacter::InteractWithObject()
+{
+	UE_LOG(LogTemp, Warning, TEXT("HELLO"));
+	FHitResult Hit(ForceInit);
+	FVector start = FirstPersonCameraComponent->GetComponentLocation() + FirstPersonCameraComponent->GetForwardVector() * 50;
+	FVector end = start + FirstPersonCameraComponent->GetForwardVector() * 400.f;
+	FCollisionQueryParams collisionParam;
+
+	GetWorld()->LineTraceSingleByChannel(
+		Hit, start, end, ECC_WorldDynamic, collisionParam);
+	//DrawDebugLine(GetWorld(), start, end, FColor::Red,true,100);
+	
+	if(Hit.bBlockingHit)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("GOT A HIT"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Hit.Actor->GetName());
+
+		AInteractableObjectBase* Object = Cast<AInteractableObjectBase>(Hit.Actor);
+		if(Object)
+		{
+			Object->Interact();
+			
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("NOT A INTERACTABLE OBJECT"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NAH"));
+	}
 }
 
 // Called to bind functionality to input
@@ -89,9 +143,13 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
+	//Bind Interact event
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::InteractWithObject);
+
 	// Bind movement events
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
+
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
