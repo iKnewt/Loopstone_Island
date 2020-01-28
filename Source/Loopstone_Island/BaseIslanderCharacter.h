@@ -5,6 +5,18 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "BaseIslanderCharacter.generated.h"
+
+UENUM(BlueprintType)
+enum class EIslanderType : uint8
+{
+	Sboi,
+	Child,
+	Mother,
+	Farmer,
+	Innkeeper,
+	Doctor
+};
+
 UENUM(BlueprintType)
 enum class EMouthExpression : uint8
 {
@@ -29,6 +41,7 @@ enum class EMouthExpression : uint8
 	Mouth_Expression_18,
 	Mouth_Expression_19
 };
+
 UENUM(BlueprintType)
 enum class EEyeExpression : uint8
 {
@@ -60,7 +73,6 @@ class LOOPSTONE_ISLAND_API ABaseIslanderCharacter : public ACharacter
 	GENERATED_BODY()
 
 
-
 public:
 	// Sets default values for this character's properties
 	ABaseIslanderCharacter();
@@ -69,33 +81,33 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EIslanderType IslanderType;
+
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-		UStaticMeshComponent* EyePlate = nullptr;
+	UStaticMeshComponent* EyePlate = nullptr;
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-		UStaticMeshComponent* MouthPlate = nullptr;
+	UStaticMeshComponent* MouthPlate = nullptr;
 
-	
-	UPROPERTY(VisibleAnywhere)
-		UMaterialInstanceDynamic* EyePlateMaterial = nullptr;
 
 	UPROPERTY(VisibleAnywhere)
-		UMaterialInstanceDynamic* MouthPlateMaterial = nullptr;
-	
-	UFUNCTION(BlueprintCallable)
-		void ChangeMouthExpression(EMouthExpression MouthExpression);
+	UMaterialInstanceDynamic* EyePlateMaterial = nullptr;
+
+	UPROPERTY(VisibleAnywhere)
+	UMaterialInstanceDynamic* MouthPlateMaterial = nullptr;
 
 	UFUNCTION(BlueprintCallable)
-		void ChangeEyeExpression(EEyeExpression EyeExpression);
+	void ChangeMouthExpression(EMouthExpression MouthExpression);
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeEyeExpression(EEyeExpression EyeExpression);
 
 	void CreateDynamicFaceMaterials();
-
-
-
 };
