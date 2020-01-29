@@ -14,7 +14,7 @@
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Set size for collision capsule
@@ -27,9 +27,9 @@ APlayerCharacter::APlayerCharacter()
 	// setup default settings for movement
 	GetCharacterMovement()->MaxStepHeight = 60.f;
 	GetCharacterMovement()->MaxWalkSpeed = 600;
-	GetCharacterMovement()->JumpZVelocity = 600;
-	GetCharacterMovement()->AirControl = 1.0f;
-	
+	GetCharacterMovement()->JumpZVelocity = 300;
+	GetCharacterMovement()->AirControl = 0.4f;
+
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
@@ -41,7 +41,6 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void APlayerCharacter::MoveForward(float Val)
@@ -68,6 +67,16 @@ void APlayerCharacter::TurnAtRate(float Rate)
 	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
+void APlayerCharacter::Run()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 1200;
+}
+
+void APlayerCharacter::StopRunning()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 600;
+}
+
 void APlayerCharacter::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
@@ -82,9 +91,9 @@ void APlayerCharacter::Tick(float DeltaTime)
 	//TODO This should be done better. bit too many checks rn
 
 	FHitResult Hit = RayTrace(400);
-	if(Hit.bBlockingHit)
+	if (Hit.bBlockingHit)
 	{
-		if(Hit.Actor->ActorHasTag("Interact"))
+		if (Hit.Actor->ActorHasTag("Interact"))
 		{
 			AInteractableObjectBase* Object = Cast<AInteractableObjectBase>(Hit.Actor);
 			if (Object)
@@ -94,28 +103,28 @@ void APlayerCharacter::Tick(float DeltaTime)
 					if (Object->GetUniqueID() != HighlightedObject->GetUniqueID())
 					{
 						UE_LOG(LogTemp, Warning, TEXT("INTERACT = FALSE"))
-							HighlightedObject->VisualizeInteraction(false);
+						HighlightedObject->VisualizeInteraction(false);
 					}
 				}
-				if(!Object->bVisualizingInteraction)
+				if (!Object->bVisualizingInteraction)
 				{
 					Object->VisualizeInteraction(true);
 					HighlightedObject = Object;
 				}
 			}
-			
 		}
 		else if (HighlightedObject != nullptr)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("DIDNT HIT ANYTHING"))
-				HighlightedObject->VisualizeInteraction(false);
+			HighlightedObject->VisualizeInteraction(false);
 			HighlightedObject = nullptr;
 		}
-		
 	}
-
-	
-
+	else if (HighlightedObject != nullptr)
+	{
+		HighlightedObject->VisualizeInteraction(false);
+		HighlightedObject = nullptr;
+	}
 }
 
 void APlayerCharacter::InteractWithObject()
@@ -124,17 +133,16 @@ void APlayerCharacter::InteractWithObject()
 
 
 	FHitResult Hit = RayTrace(400);
-	
-	if(Hit.bBlockingHit)
+
+	if (Hit.bBlockingHit)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("GOT A HIT"));
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Hit.Actor->GetName());
 
 		AInteractableObjectBase* Object = Cast<AInteractableObjectBase>(Hit.Actor);
-		if(Object)
+		if (Object)
 		{
 			Object->Interact();
-			
 		}
 		else
 		{
@@ -178,6 +186,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	//Bind Interact event
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::InteractWithObject);
 
+	// Bind Run events
+	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &APlayerCharacter::Run);
+	PlayerInputComponent->BindAction("Run", IE_Released, this, &APlayerCharacter::StopRunning);
+
+
 	// Bind movement events
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
@@ -190,6 +203,4 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis("TurnRate", this, &APlayerCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &APlayerCharacter::LookUpAtRate);
-	
 }
-
