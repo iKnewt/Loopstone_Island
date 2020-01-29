@@ -3,6 +3,7 @@
 
 #include "InteractableDoor.h"
 #include "Components/StaticMeshComponent.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 // Sets default values
 AInteractableDoor::AInteractableDoor()
@@ -50,9 +51,25 @@ void AInteractableDoor::UpdateAnimation(float Value)
 
 }
 
+void AInteractableDoor::CreateDynamicMaterial()
+{
+	Material = UMaterialInstanceDynamic::Create(DoorMesh->GetMaterial(0), this);
+	DoorMesh->SetMaterial(0,Material);
+}
+
 void AInteractableDoor::Interact()
 {
 	PlayAnimation();
+}
+
+void AInteractableDoor::VisualizeInteraction(bool bActivate)
+{
+	if(!IsValid(Material))
+	{
+		CreateDynamicMaterial();
+	}
+	Material->SetScalarParameterValue("Glow", int(bActivate));
+	bVisualizingInteraction = bActivate;
 }
 
 // Called when the game starts or when spawned

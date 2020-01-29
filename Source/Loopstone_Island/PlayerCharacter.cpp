@@ -9,6 +9,7 @@
 #include "InteractableObjectBase.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/Engine.h"
+#include "CookStats.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -78,21 +79,41 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FHitResult Hit(ForceInit);
-	FVector start = FirstPersonCameraComponent->GetComponentLocation();
-	FVector end = start + FirstPersonCameraComponent->GetForwardVector() * 400.f;
-	FCollisionQueryParams collisionParam;
+	//TODO This should be done better. bit too many checks rn
 
-	GetWorld()->LineTraceSingleByChannel(
-		Hit, start, end, ECC_WorldDynamic, collisionParam
-	);
+	FHitResult Hit = RayTrace(400);
 	if(Hit.bBlockingHit)
 	{
 		if(Hit.Actor->ActorHasTag("Interact"))
 		{
-			//Visual representation of the object. Probably a shine of some type.
+			AInteractableObjectBase* Object = Cast<AInteractableObjectBase>(Hit.Actor);
+			if (Object)
+			{
+				if (HighlightedObject)
+				{
+					if (Object->GetUniqueID() != HighlightedObject->GetUniqueID())
+					{
+						UE_LOG(LogTemp, Warning, TEXT("INTERACT = FALSE"))
+							HighlightedObject->VisualizeInteraction(false);
+					}
+				}
+				if(!Object->bVisualizingInteraction)
+				{
+					Object->VisualizeInteraction(true);
+					HighlightedObject = Object;
+				}
+			}
+			
 		}
+		else if (HighlightedObject != nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("DIDNT HIT ANYTHING"))
+				HighlightedObject->VisualizeInteraction(false);
+			HighlightedObject = nullptr;
+		}
+		
 	}
+
 	
 
 }
@@ -100,14 +121,9 @@ void APlayerCharacter::Tick(float DeltaTime)
 void APlayerCharacter::InteractWithObject()
 {
 	UE_LOG(LogTemp, Warning, TEXT("HELLO"));
-	FHitResult Hit(ForceInit);
-	FVector start = FirstPersonCameraComponent->GetComponentLocation() + FirstPersonCameraComponent->GetForwardVector() * 50;
-	FVector end = start + FirstPersonCameraComponent->GetForwardVector() * 400.f;
-	FCollisionQueryParams collisionParam;
 
-	GetWorld()->LineTraceSingleByChannel(
-		Hit, start, end, ECC_WorldDynamic, collisionParam);
-	//DrawDebugLine(GetWorld(), start, end, FColor::Red,true,100);
+
+	FHitResult Hit = RayTrace(400);
 	
 	if(Hit.bBlockingHit)
 	{
@@ -129,6 +145,22 @@ void APlayerCharacter::InteractWithObject()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NAH"));
 	}
+}
+
+FHitResult APlayerCharacter::RayTrace(float TraceLength, bool bVisualized)
+{
+	FHitResult Hit(ForceInit);
+	FVector Start = FirstPersonCameraComponent->GetComponentLocation() +
+		FirstPersonCameraComponent->GetForwardVector() * 50;
+	FVector End = Start + FirstPersonCameraComponent->GetForwardVector() * 400.f;
+	FCollisionQueryParams collisionParam;
+	GetWorld()->LineTraceSingleByChannel(
+		Hit, Start, End, ECC_WorldDynamic, collisionParam);
+	if (bVisualized)
+	{
+		DrawDebugLine(GetWorld(), Start, End, FColor::Red);
+	}
+	return Hit;
 }
 
 // Called to bind functionality to input

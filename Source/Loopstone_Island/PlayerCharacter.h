@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
+class AInteractableObjectBase;
 UCLASS()
 class LOOPSTONE_ISLAND_API APlayerCharacter : public ACharacter
 {
@@ -53,6 +54,14 @@ protected:
 	 * Called when the player presses the Interact button.
 	 */
 	void InteractWithObject();
+
+	//Holds the reference on the object currently highlighted.
+	AInteractableObjectBase* HighlightedObject = nullptr;
+
+	/**
+	 * Does a lineTrace and returns the hit-result.
+	 */
+	FHitResult RayTrace(float TraceLength, bool bVisualized = false);
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
