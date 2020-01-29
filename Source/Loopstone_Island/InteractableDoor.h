@@ -26,6 +26,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Interact() override;
 
+	UFUNCTION(BlueprintCallable)
+	void VisualizeInteraction(bool bActivate) override;
+
 
 
 	
@@ -50,6 +53,12 @@ protected:
 		void PlayAnimation();
 	UFUNCTION()
 		void UpdateAnimation(float Value);
+
+	void CreateDynamicMaterial();
+
+	UMaterialInstanceDynamic* Material = nullptr;
+
+	bool bGlowing = false;
 
 
 

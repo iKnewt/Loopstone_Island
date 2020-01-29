@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "InteractableObjectBase.generated.h"
 
+
+
 UCLASS()
 class LOOPSTONE_ISLAND_API AInteractableObjectBase : public AActor
 {
@@ -16,7 +18,8 @@ public:
 	AInteractableObjectBase();
 
 	virtual void Interact(){}
-
+	virtual void VisualizeInteraction(bool bActivate){}
+	bool bVisualizingInteraction = false;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
