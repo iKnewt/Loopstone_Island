@@ -27,6 +27,7 @@ public:
 	 * The function that starts it all.
 	 * Send in dialogue and options for the specific dialogue option, and this will set it up 
 	 */
+	UFUNCTION(BlueprintCallable)
 	void SetDialogueWithOptions(float TextSpeed, FString InDialogue);
 
 	/**

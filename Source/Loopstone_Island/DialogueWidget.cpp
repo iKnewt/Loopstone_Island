@@ -10,14 +10,15 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 	FullDialogueInChars = FullDialogue.GetCharArray();
 	DialogueCharIndex = 0;
 	this->Dialogue = "";
-	GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::AddLetterToDialogue, TextSpeed);
+	UE_LOG(LogTemp, Warning, TEXT("SETTING DIALOGUE"))
+	GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::AppendDialogueString, TextSpeed,true);
 }
 
 void UDialogueWidget::AppendDialogueString()
 {
 	UE_LOG(LogTemp, Warning, TEXT("APPENDING"))
 	Dialogue.AppendChar(FullDialogueInChars[DialogueCharIndex]);
-	if (FullDialogueInChars.Num() > DialogueCharIndex)
+	if (FullDialogueInChars.Num() == DialogueCharIndex +1)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(DialogueTimerHandle);
 		UE_LOG(LogTemp, Warning, TEXT("DONE"))
