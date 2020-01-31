@@ -17,10 +17,24 @@ class LOOPSTONE_ISLAND_API UDialogueWidget : public UUserWidget
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		FString DialogueTest = "helo";
+		FString Dialogue = "helo";
+	TArray<wchar_t> FullDialogueInChars;
+	FString FullDialogue = "helo fren";
 
-	void SetDialogue(FString Dialogue);
+	int32 DialogueCharIndex = 0;
 
+	/**
+	 * The function that starts it all.
+	 * Send in dialogue and options for the specific dialogue option, and this will set it up 
+	 */
+	void SetDialogueWithOptions(float TextSpeed, FString InDialogue);
+
+	/**
+	 * adds a character onto the Dialogue string that's written. Used to create the writing text animation.
+	 */
+	void AppendDialogueString();
+
+	
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void SetCurrentDialogueText();
 
@@ -28,7 +42,9 @@ public:
 		void RevealOptions();
 
 private:
-	void AddLetterToDialogue();
+	void AddLetterToDialogue(){}
+
+	FTimerHandle DialogueTimerHandle;
 
 
 
