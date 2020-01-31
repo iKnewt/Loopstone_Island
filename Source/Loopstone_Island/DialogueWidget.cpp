@@ -4,8 +4,9 @@
 #include "DialogueWidget.h"
 #include "TimerManager.h"
 
-void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue)
+void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue, UFont* Font)
 {
+	//font still not set
 	FullDialogue = InDialogue;
 	FullDialogueInChars = FullDialogue.GetCharArray();
 	DialogueCharIndex = 0;

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
+#include "Engine/Font.h"
 #include "DialogueWidget.generated.h"
 
 /**
@@ -23,12 +24,14 @@ public:
 
 	int32 DialogueCharIndex = 0;
 
+	UFont* DialogueFont = nullptr;
+
 	/**
 	 * The function that starts it all.
 	 * Send in dialogue and options for the specific dialogue option, and this will set it up 
 	 */
 	UFUNCTION(BlueprintCallable)
-	void SetDialogueWithOptions(float TextSpeed, FString InDialogue);
+		void SetDialogueWithOptions(float TextSpeed, FString InDialogue, UFont* Font = nullptr);
 
 	/**
 	 * adds a character onto the Dialogue string that's written. Used to create the writing text animation.
