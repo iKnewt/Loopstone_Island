@@ -24,6 +24,12 @@ public:
 
 	int32 DialogueCharIndex = 0;
 
+	UPROPERTY(BlueprintReadOnly,EditAnywhere)
+	int32 NumberOfResponses = 0;
+
+	UPROPERTY(BlueprintReadOnly)
+		int32 MaxResponses = 5;
+
 	UFont* DialogueFont = nullptr;
 
 	/**
@@ -31,7 +37,7 @@ public:
 	 * Send in dialogue and options for the specific dialogue option, and this will set it up 
 	 */
 	UFUNCTION(BlueprintCallable)
-		void SetDialogueWithOptions(float TextSpeed, FString InDialogue, UFont* Font = nullptr);
+		void SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> Responses, UFont* Font = nullptr);
 
 	/**
 	 * adds a character onto the Dialogue string that's written. Used to create the writing text animation.

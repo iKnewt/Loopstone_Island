@@ -4,13 +4,14 @@
 #include "DialogueWidget.h"
 #include "TimerManager.h"
 
-void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue, UFont* Font)
+void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> Responses, UFont* Font)
 {
 	//font still not set
 	FullDialogue = InDialogue;
 	FullDialogueInChars = FullDialogue.GetCharArray();
 	DialogueCharIndex = 0;
 	this->Dialogue = "";
+	NumberOfResponses = FMath::Clamp(Responses.Num(), 0, 5);
 	UE_LOG(LogTemp, Warning, TEXT("SETTING DIALOGUE"))
 	GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::AppendDialogueString, TextSpeed,true);
 }
@@ -23,6 +24,7 @@ void UDialogueWidget::AppendDialogueString()
 	{
 		GetWorld()->GetTimerManager().ClearTimer(DialogueTimerHandle);
 		UE_LOG(LogTemp, Warning, TEXT("DONE"))
+			RevealOptions();
 	}
 	else
 	{
