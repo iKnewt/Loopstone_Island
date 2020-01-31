@@ -12,7 +12,12 @@
 				"Engine",
 				"GenericGraphEditor"
 			]
-		}
+		},
+		{
+            "Name": "Loopstone_IslandEditor",
+            "Type": "Editor",
+            "LoadingPhase":  "Default"
+        }
 	],
 	"Plugins": [
 		{

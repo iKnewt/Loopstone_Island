@@ -10,8 +10,10 @@ public class Loopstone_Island : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
-        // Generic Graph Plugin
-        PrivateDependencyModuleNames.AddRange(new string[] { "GenericGraphRuntime" });
+        //PublicIncludePaths.AddRange(new string[] { "Loopstone_Island" });
+
+        PrivateDependencyModuleNames.AddRange(new string[] { "UnrealEd", "GenericGraphRuntime"});
+        //PrivateDependencyModuleNames.AddRange(new string[] { "GenericGraphRuntime"});
 
         // Uncomment if you are using Slate UI
         // PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
