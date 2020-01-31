@@ -313,12 +313,12 @@ const FPinConnectionResponse UAssetGraphSchema_GenericGraph::CanCreateConnection
 		return FPinConnectionResponse(CONNECT_RESPONSE_DISALLOW, LOCTEXT("PinErrorOutput", "Can't connect output node to output node"));
 	}
 
-	// check for cycles
-	FNodeVisitorCycleChecker CycleChecker;
-	if (!CycleChecker.CheckForLoop(A->GetOwningNode(), B->GetOwningNode()))
-	{
-		return FPinConnectionResponse(CONNECT_RESPONSE_DISALLOW, LOCTEXT("PinErrorCycle", "Can't create a graph cycle"));
-	}
+	// // check for cycles
+	// FNodeVisitorCycleChecker CycleChecker;
+	// if (!CycleChecker.CheckForLoop(A->GetOwningNode(), B->GetOwningNode()))
+	// {
+	// 	return FPinConnectionResponse(CONNECT_RESPONSE_DISALLOW, LOCTEXT("PinErrorCycle", "Can't create a graph cycle"));
+	// }
 
 	UEdNode_GenericGraphNode* EdNode_A = Cast<UEdNode_GenericGraphNode>(A->GetOwningNode());
 	UEdNode_GenericGraphNode* EdNode_B = Cast<UEdNode_GenericGraphNode>(B->GetOwningNode());

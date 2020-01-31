@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Dialogue.h"
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "Loopstone_IslandGameModeBase.generated.h"
@@ -16,5 +17,8 @@ class LOOPSTONE_ISLAND_API ALoopstone_IslandGameModeBase : public AGameModeBase
 
 public:
 	ALoopstone_IslandGameModeBase();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UDialogue* GameDialogue;
 	
 };
