@@ -58,7 +58,7 @@ struct FDialogueNode
 	FText Text;
 
 	// All conditions must be true for this dialogue to show
-	UPROPERTY(EditAnywhere, Category = "DialogueSystem")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueSystem")
 	TArray<bool> Conditions;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueSystem")
@@ -69,13 +69,13 @@ struct FDialogueNode
 	//
 	// UPROPERTY(EditAnywhere, Category = "DialogueSystem")
 	// 	FDialogueNode NextDialogueNode;
-
+	//
+	// 	
 
 	FDialogueNode()
 	{
 	}
 };
-
 
 /**
  * 
@@ -110,6 +110,12 @@ public:
 	void AddNodeToThing(FDialogueNode DigNodIn)
 	{
 	}
+
+	UFUNCTION(BlueprintCallable)
+	void Dialogue(FDialogueNode DigNodIn)
+	{
+	}
+
 
 	// UFUNCTION(BlueprintCallable)
 	// FDialogueNode* AddNubbers(FDialogueNode duggityindo)
