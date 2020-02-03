@@ -20,6 +20,13 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 		Options.Add(Option_2);
 		Options.Add(Option_3);
 		Options.Add(Option_4);
+		
+		
+	}
+	for (auto& Button : Buttons)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SETTING BUTTON VISIBILITY"))
+			Button->SetVisibility(ESlateVisibility::Hidden);
 	}
 	//font still not set
 	FullDialogue = InDialogue;
@@ -28,7 +35,24 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 	this->Dialogue = "";
 	Responses = InResponses;
 	UE_LOG(LogTemp, Warning, TEXT("SETTING DIALOGUE"))
-	GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::AppendDialogueString, TextSpeed,true);
+		float TextSpeedChecker = TextSpeed;
+	if(TextSpeedChecker < 0.00001f)
+	{
+		TextSpeedChecker = 0.03f;
+	}
+	GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::AppendDialogueString, TextSpeedChecker,true);
+}
+
+bool UDialogueWidget::Initialize()
+{
+	bool init = Super::Initialize();
+	Button_Option0->OnClicked.AddDynamic(this, &UDialogueWidget::onOption0Pressed);
+	Button_Option1->OnClicked.AddDynamic(this, &UDialogueWidget::onOption1Pressed);
+	Button_Option2->OnClicked.AddDynamic(this, &UDialogueWidget::onOption2Pressed);
+	Button_Option3->OnClicked.AddDynamic(this, &UDialogueWidget::onOption3Pressed);
+	Button_Option4->OnClicked.AddDynamic(this, &UDialogueWidget::onOption4Pressed);
+
+	return init;
 }
 
 void UDialogueWidget::AppendDialogueString()
@@ -50,16 +74,11 @@ void UDialogueWidget::AppendDialogueString()
 
 void UDialogueWidget::RevealOptions()
 {
-	for (auto& Button : Buttons)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("SETTING BUTTON VISIBILITY"))
-		Button->SetVisibility(ESlateVisibility::Visible);
-	}
+
 	for (int i = 0; i < Responses.Num(); i++)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("SETTING stuff"))
 		Options[i]->SetText(FText::FromString(Responses[i]));
 		Buttons[i]->SetVisibility(ESlateVisibility::Visible);
 	}
-	Button_Option0->SetVisibility(ESlateVisibility::Visible);
 }

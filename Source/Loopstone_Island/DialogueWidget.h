@@ -19,26 +19,33 @@ class LOOPSTONE_ISLAND_API UDialogueWidget : public UUserWidget
 
 public:
 
-
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		FString Dialogue = "helo";
-	TArray<wchar_t> FullDialogueInChars;
-	FString FullDialogue = "helo fren";
-
-	int32 DialogueCharIndex = 0;
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		TArray<FString> Responses;
-
-	UFont* DialogueFont = nullptr;
-
 	/**
 	 * The function that starts it all.
 	 * Send in dialogue and options for the specific dialogue option, and this will set it up 
 	 */
 	UFUNCTION(BlueprintCallable)
 		void SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> InResponses, UFont* Font = nullptr);
+	UFUNCTION()
+	void onOption0Pressed(){ UE_LOG(LogTemp, Warning, TEXT("SIGNAL 1")) }
+	UFUNCTION()
+	void onOption1Pressed(){ UE_LOG(LogTemp, Warning, TEXT("SIGNAL 2")) }
+	UFUNCTION()
+	void onOption2Pressed(){ UE_LOG(LogTemp, Warning, TEXT("SIGNAL 3")) }
+	UFUNCTION()
+	void onOption3Pressed(){ UE_LOG(LogTemp, Warning, TEXT("SIGNAL 4")) }
+	UFUNCTION()
+	void onOption4Pressed(){ UE_LOG(LogTemp, Warning, TEXT("SIGNAL 5")) }
+protected:
+	
+	bool Initialize() override;
+private:
+	void AddLetterToDialogue(){}
+	FString Dialogue = "helo";
+	TArray<wchar_t> FullDialogueInChars;
+	FString FullDialogue = "helo fren";
+	int32 DialogueCharIndex = 0;
+	TArray<FString> Responses;
+	UFont* DialogueFont = nullptr;
 
 	/**
 	 * adds a character onto the Dialogue string that's written. Used to create the writing text animation.
@@ -76,14 +83,10 @@ public:
 	UPROPERTY(meta = (BindWidget))
 		UTextBlock* Dialogue_Text;
 
-	TArray<UButton*> Buttons;
-	TArray<UTextBlock*> Options;
-
-protected:
-	
-
-private:
-	void AddLetterToDialogue(){}
+	UPROPERTY()
+		TArray<UButton*> Buttons;
+	UPROPERTY()
+		TArray<UTextBlock*> Options;
 
 	FTimerHandle DialogueTimerHandle;
 
