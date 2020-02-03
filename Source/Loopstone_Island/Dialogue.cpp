@@ -20,12 +20,12 @@ UDialogue::UDialogue()
 
 void UDialogue::PrintAllDialogue()
 {
-	// for (UGenericGraphNode* RootNode : RootNodes)
-	// {
-	// 	auto dialogueNode = static_cast<UDialogueNode*>(RootNode);
-	//
-	// 	UE_LOG(LogTemp, Warning, TEXT("Root: %s "), *dialogueNode->DialogueText.ToString());
-	// }
+	for (UGenericGraphNode* RootNode : RootNodes)
+	{
+		auto dialogueNode = static_cast<UDialogueNode*>(RootNode);
+	
+		UE_LOG(LogTemp, Warning, TEXT("Root: %s "), *dialogueNode->DialogueText.ToString());
+	}
 	//
 	// for (UGenericGraphNode* Node : AllNodes)
 	// {
