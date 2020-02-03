@@ -4,19 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/Button.h"
 #include "Engine/Font.h"
+#include "TextBlock.h"
 #include "DialogueWidget.generated.h"
 
 /**
  * 
  */
+class UButton;
 UCLASS()
 class LOOPSTONE_ISLAND_API UDialogueWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
 public:
+
+
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		FString Dialogue = "helo";
 	TArray<wchar_t> FullDialogueInChars;
@@ -24,11 +28,8 @@ public:
 
 	int32 DialogueCharIndex = 0;
 
-	UPROPERTY(BlueprintReadOnly,EditAnywhere)
-	int32 NumberOfResponses = 0;
-
-	UPROPERTY(BlueprintReadOnly)
-		int32 MaxResponses = 5;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		TArray<FString> Responses;
 
 	UFont* DialogueFont = nullptr;
 
@@ -37,19 +38,49 @@ public:
 	 * Send in dialogue and options for the specific dialogue option, and this will set it up 
 	 */
 	UFUNCTION(BlueprintCallable)
-		void SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> Responses, UFont* Font = nullptr);
+		void SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> InResponses, UFont* Font = nullptr);
 
 	/**
 	 * adds a character onto the Dialogue string that's written. Used to create the writing text animation.
 	 */
 	void AppendDialogueString();
 
-	
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-		void SetCurrentDialogueText();
+	void RevealOptions();
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-		void RevealOptions();
+	//Buttons
+	UPROPERTY(meta = (BindWidget))
+		UButton* Button_Option0;
+	UPROPERTY(meta = (BindWidget))
+		UButton* Button_Option1;
+	UPROPERTY(meta = (BindWidget))
+		UButton* Button_Option2;
+	UPROPERTY(meta = (BindWidget))
+		UButton* Button_Option3;
+	UPROPERTY(meta = (BindWidget))
+		UButton* Button_Option4;
+
+	//Text for Buttons
+
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* Option_0;
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* Option_1;
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* Option_2;
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* Option_3;
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* Option_4;
+
+	//Dialogue Text
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* Dialogue_Text;
+
+	TArray<UButton*> Buttons;
+	TArray<UTextBlock*> Options;
+
+protected:
+	
 
 private:
 	void AddLetterToDialogue(){}
