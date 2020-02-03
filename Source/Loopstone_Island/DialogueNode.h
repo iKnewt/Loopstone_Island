@@ -31,6 +31,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
 	EDialoguerPosition DialoguerPosition;
 
+	UFUNCTION()
+		void PrintSelfAndChildren();
+	
+
 #if WITH_EDITOR
 	virtual FText GetNodeTitle() const override;
 

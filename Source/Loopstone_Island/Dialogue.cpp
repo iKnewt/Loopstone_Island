@@ -18,4 +18,27 @@ UDialogue::UDialogue()
 	Name = "Dialogue";
 }
 
+void UDialogue::PrintAllDialogue()
+{
+	// for (UGenericGraphNode* RootNode : RootNodes)
+	// {
+	// 	auto dialogueNode = static_cast<UDialogueNode*>(RootNode);
+	//
+	// 	UE_LOG(LogTemp, Warning, TEXT("Root: %s "), *dialogueNode->DialogueText.ToString());
+	// }
+	//
+	// for (UGenericGraphNode* Node : AllNodes)
+	// {
+	// 	auto dialogueNode = static_cast<UDialogueNode*>(Node);
+	//
+	// 	UE_LOG(LogTemp, Warning, TEXT("AllNodes: %s "), *dialogueNode->DialogueText.ToString());
+	// }
+
+	UDialogueNode* root = dynamic_cast<UDialogueNode*>(AllNodes[0]);
+	root->PrintSelfAndChildren();
+	
+
+	
+}
+
 #undef LOCTEXT_NAMESPACE

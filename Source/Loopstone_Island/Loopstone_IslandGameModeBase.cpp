@@ -14,4 +14,8 @@ ALoopstone_IslandGameModeBase::ALoopstone_IslandGameModeBase()
 
 	// use our custom HUD class
 	// HUDClass = AFirstPersonBaseHUD::StaticClass();
+	//
+	//
+
+	//GameDialogue->PrintAllDialogue();
 }

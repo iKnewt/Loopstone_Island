@@ -3,6 +3,7 @@
 
 #include "DialogueNode.h"
 #include "Dialogue.h"
+#include "DialogueEdge.h"
 
 #define LOCTEXT_NAMESPACE "DialogueNode"
 
@@ -16,6 +17,18 @@ UDialogueNode::UDialogueNode()
 }
 
 #if WITH_EDITOR
+
+void UDialogueNode::PrintSelfAndChildren()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Node: %s "), *DialogueText.ToString());
+	for (auto Element : Edges)
+	{
+		UDialogueEdge* temp = dynamic_cast<UDialogueEdge*>(Element.Value);
+		UE_LOG(LogTemp, Warning, TEXT("Edge: %s "), *temp->Selection.ToString());
+		UDialogueNode* temp2 = dynamic_cast<UDialogueNode*>(Element.Key);
+		temp2->PrintSelfAndChildren();
+	}
+}
 
 FText UDialogueNode::GetNodeTitle() const
 {

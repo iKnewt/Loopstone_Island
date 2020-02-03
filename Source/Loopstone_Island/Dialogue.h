@@ -21,4 +21,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 		FLinearColor RightDialogueBgColor;
+
+	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+		void PrintAllDialogue();
+	
 };
