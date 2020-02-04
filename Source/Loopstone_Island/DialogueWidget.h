@@ -18,7 +18,7 @@ class LOOPSTONE_ISLAND_API UDialogueWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-
+	
 	/**
 	 * The function that starts it all.
 	 * Send in dialogue and options for the specific dialogue option, and this will set it up 
