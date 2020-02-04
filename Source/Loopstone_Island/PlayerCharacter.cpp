@@ -48,13 +48,20 @@ void APlayerCharacter::UpdateDialogueBasedOnResponse(int ResponseID)
 
 	FString DialogueText = DialogueGraph->CurrentDialogueNode->DialogueText.ToString();
 
-	TArray<FString> Options;
-	for (auto Option : DialogueGraph->CurrentAvailableOptions)
+	if (DialogueText == "EXIT")
 	{
-		Options.Add(Option->OptionText);
+		CloseDialogue();
 	}
+	else
+	{
+		TArray<FString> Options;
+		for (auto Option : DialogueGraph->CurrentAvailableOptions)
+		{
+			Options.Add(Option->OptionText);
+		}
 
-	DialogueWidget->SetDialogueWithOptions(0.05f, DialogueText, Options);
+		DialogueWidget->SetDialogueWithOptions(0.03f, DialogueText, Options);
+	}
 }
 
 // Called when the game starts or when spawned
@@ -190,13 +197,24 @@ void APlayerCharacter::OpenDialogue()
 	{
 		DialogueWidget->AddToViewport();
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-		// GetWorld()->GetFirstPlayerController()->DisableInput();
-
 		DisableInput(GetWorld()->GetFirstPlayerController());
-
 		DialogueGraph->CurrentDialogueNode = nullptr;
 		UpdateDialogueBasedOnResponse(0);
-		
+	}
+}
+
+void APlayerCharacter::CloseDialogue()
+{
+	if (DialogueWidget)
+	{
+		// TArray<FString> temp;
+		// temp.Add("");
+		DialogueGraph->CurrentDialogueNode = nullptr;
+		// DialogueWidget->SetDialogueWithOptions(0.05f, "", temp);
+		// DialogueWidget->RemoveFromViewport();
+		DialogueWidget->RemoveFromParent();
+		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
+		EnableInput(GetWorld()->GetFirstPlayerController());
 	}
 }
 

@@ -83,6 +83,8 @@ protected:
 	 */
 	void OpenDialogue();
 
+	void CloseDialogue();
+
 
 	//Holds the reference on the object currently highlighted.
 	AInteractableObjectBase* HighlightedObject = nullptr;
