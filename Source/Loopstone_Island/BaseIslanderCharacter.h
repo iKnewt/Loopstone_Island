@@ -93,9 +93,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	UStaticMeshComponent* EyePlate = nullptr;
+
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	UStaticMeshComponent* MouthPlate = nullptr;
-
 
 	UPROPERTY(VisibleAnywhere)
 	UMaterialInstanceDynamic* EyePlateMaterial = nullptr;
