@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
+
+
 class AInteractableObjectBase;
 UCLASS()
 class LOOPSTONE_ISLAND_API APlayerCharacter : public ACharacter
@@ -27,6 +29,16 @@ public:
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseLookUpRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
+	TSubclassOf<class UDialogueWidget> BP_DialogueWidget;
+
+	UDialogueWidget* DialogueWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
+	class UDialogue* DialogueGraph;
+
+	void UpdateDialogueBasedOnResponse(int ResponseID);
 
 protected:
 	// Called when the game starts or when spawned
@@ -65,6 +77,12 @@ protected:
 	 * Called when the player presses the Interact button.
 	 */
 	void InteractWithObject();
+
+	/**
+	 * Opens Dialogue
+	 */
+	void OpenDialogue();
+
 
 	//Holds the reference on the object currently highlighted.
 	AInteractableObjectBase* HighlightedObject = nullptr;

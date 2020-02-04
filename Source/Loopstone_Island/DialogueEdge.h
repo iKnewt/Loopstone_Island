@@ -17,5 +17,5 @@ class LOOPSTONE_ISLAND_API UDialogueEdge : public UGenericGraphEdge
 public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
-	FText Selection;
+	FString OptionText = "Next...";
 };

@@ -10,6 +10,11 @@
 #include "DrawDebugHelpers.h"
 #include "Engine/Engine.h"
 #include "CookStats.h"
+#include "DialogueWidget.h"
+#include "Dialogue.h"
+#include "BaseIslanderCharacter.h"
+#include "DialogueNode.h"
+#include "DialogueEdge.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -37,10 +42,30 @@ APlayerCharacter::APlayerCharacter()
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 }
 
+void APlayerCharacter::UpdateDialogueBasedOnResponse(int ResponseID)
+{
+	DialogueGraph->UpdateCurrentNode(ResponseID);
+
+	FString DialogueText = DialogueGraph->CurrentDialogueNode->DialogueText.ToString();
+
+	TArray<FString> Options;
+	for (auto Option : DialogueGraph->CurrentAvailableOptions)
+	{
+		Options.Add(Option->OptionText);
+	}
+
+	DialogueWidget->SetDialogueWithOptions(0.05f, DialogueText, Options);
+}
+
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (BP_DialogueWidget)
+	{
+		DialogueWidget = CreateWidget<UDialogueWidget>(GetWorld()->GetFirstPlayerController(), BP_DialogueWidget);
+	}
 }
 
 void APlayerCharacter::MoveForward(float Val)
@@ -129,29 +154,49 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 void APlayerCharacter::InteractWithObject()
 {
-	UE_LOG(LogTemp, Warning, TEXT("HELLO"));
-
-
 	FHitResult Hit = RayTrace(400);
 
 	if (Hit.bBlockingHit)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("GOT A HIT"));
+		UE_LOG(LogTemp, Warning, TEXT("Interact Hit: %s"), *GetDebugName(Hit.GetActor()));
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Hit.Actor->GetName());
 
-		AInteractableObjectBase* Object = Cast<AInteractableObjectBase>(Hit.Actor);
-		if (Object)
+		AInteractableObjectBase* InteractiveObject = Cast<AInteractableObjectBase>(Hit.Actor);
+		if (InteractiveObject)
 		{
-			Object->Interact();
+			InteractiveObject->Interact();
+			return;
 		}
-		else
+
+		ABaseIslanderCharacter* Islander = Cast<ABaseIslanderCharacter>(Hit.Actor);
+		if (Islander)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("NOT A INTERACTABLE OBJECT"));
+			OpenDialogue();
+			return;
 		}
+
+		// if all casts fail
+		UE_LOG(LogTemp, Warning, TEXT("NOT A INTERACTABLE OBJECT"));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NAH"));
+		UE_LOG(LogTemp, Warning, TEXT("Interact Hit: Nothing"));
+	}
+}
+
+void APlayerCharacter::OpenDialogue()
+{
+	if (DialogueWidget)
+	{
+		DialogueWidget->AddToViewport();
+		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+		// GetWorld()->GetFirstPlayerController()->DisableInput();
+
+		DisableInput(GetWorld()->GetFirstPlayerController());
+
+		DialogueGraph->CurrentDialogueNode = nullptr;
+		UpdateDialogueBasedOnResponse(0);
+		
 	}
 }
 

@@ -36,9 +36,43 @@ void UDialogue::PrintAllDialogue()
 
 	UDialogueNode* root = dynamic_cast<UDialogueNode*>(AllNodes[0]);
 	root->PrintSelfAndChildren();
+
+	if (root->ChildrenNodes.Num() == 0)
+	{
+		
+	}
 	
 
 	
+}
+
+void UDialogue::GetDialogueText()
+{
+	
+}
+
+void UDialogue::UpdateCurrentNode(int ResponseID)
+{
+	if(!CurrentDialogueNode)
+	{
+		CurrentDialogueNode = dynamic_cast<UDialogueNode*>(AllNodes[0]);
+	}
+	else
+	{
+		// update current node
+		CurrentDialogueNode = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
+	}
+
+	// update current options
+	CurrentAvailableOptions.Empty();
+	for (auto Element : CurrentDialogueNode->Edges)
+	{
+		// check for conditions  conditions
+		UDialogueEdge* temp = dynamic_cast<UDialogueEdge*>(Element.Value);
+
+		// if temp is acceptable
+		CurrentAvailableOptions.Add(temp);
+	}
 }
 
 #undef LOCTEXT_NAMESPACE

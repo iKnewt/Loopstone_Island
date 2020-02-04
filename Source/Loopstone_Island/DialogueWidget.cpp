@@ -20,8 +20,6 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 		Options.Add(Option_2);
 		Options.Add(Option_3);
 		Options.Add(Option_4);
-		
-		
 	}
 	for (auto& Button : Buttons)
 	{
@@ -57,7 +55,6 @@ bool UDialogueWidget::Initialize()
 
 void UDialogueWidget::AppendDialogueString()
 {
-	UE_LOG(LogTemp, Warning, TEXT("APPENDING"))
 	Dialogue.AppendChar(FullDialogueInChars[DialogueCharIndex]);
 	Dialogue_Text->SetText(FText::FromString(Dialogue));
 	if (FullDialogueInChars.Num() == DialogueCharIndex +1)

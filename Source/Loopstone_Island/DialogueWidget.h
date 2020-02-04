@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Engine/Font.h"
 #include "TextBlock.h"
+#include "PlayerCharacter.h"
 #include "DialogueWidget.generated.h"
 
 /**
@@ -26,15 +27,39 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> InResponses, UFont* Font = nullptr);
 	UFUNCTION()
-	void onOption0Pressed(){ UE_LOG(LogTemp, Warning, TEXT("SIGNAL 1")) }
+	void onOption0Pressed()
+	{
+		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
+		Player->UpdateDialogueBasedOnResponse(0);		
+	}
+
 	UFUNCTION()
-	void onOption1Pressed(){ UE_LOG(LogTemp, Warning, TEXT("SIGNAL 2")) }
+	void onOption1Pressed()
+	{
+		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
+		Player->UpdateDialogueBasedOnResponse(1);
+	}
 	UFUNCTION()
-	void onOption2Pressed(){ UE_LOG(LogTemp, Warning, TEXT("SIGNAL 3")) }
+	void onOption2Pressed()
+	{
+		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
+		Player->UpdateDialogueBasedOnResponse(2);
+	}
 	UFUNCTION()
-	void onOption3Pressed(){ UE_LOG(LogTemp, Warning, TEXT("SIGNAL 4")) }
+	void onOption3Pressed()
+	{
+		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
+		Player->UpdateDialogueBasedOnResponse(3);
+	}
 	UFUNCTION()
-	void onOption4Pressed(){ UE_LOG(LogTemp, Warning, TEXT("SIGNAL 5")) }
+	void onOption4Pressed()
+	{
+		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
+		Player->UpdateDialogueBasedOnResponse(4);
+	}
+
+
+	
 protected:
 	
 	bool Initialize() override;

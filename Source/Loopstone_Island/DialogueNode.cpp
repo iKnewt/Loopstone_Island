@@ -24,7 +24,7 @@ void UDialogueNode::PrintSelfAndChildren()
 	for (auto Element : Edges)
 	{
 		UDialogueEdge* temp = dynamic_cast<UDialogueEdge*>(Element.Value);
-		UE_LOG(LogTemp, Warning, TEXT("Edge: %s "), *temp->Selection.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("Edge: %s "), *temp->OptionText);
 		UDialogueNode* temp2 = dynamic_cast<UDialogueNode*>(Element.Key);
 		temp2->PrintSelfAndChildren();
 	}
