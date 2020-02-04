@@ -4,6 +4,7 @@
 #include "BaseIslanderCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "PaperFlipbook.h"
 #include "Materials/MaterialInstanceDynamic.h"
 
 // Sets default values
@@ -13,61 +14,77 @@ ABaseIslanderCharacter::ABaseIslanderCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	
-	MouthPlate = CreateDefaultSubobject<UStaticMeshComponent>(FName("MouthPlate"));
-	EyePlate = CreateDefaultSubobject<UStaticMeshComponent>(FName("EyePlate"));
-	MouthPlate->SetupAttachment(GetMesh(),FName("HeadSocket"));
-	EyePlate->SetupAttachment(GetMesh(),FName("HeadSocket"));
+	RightEye = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("RightEye"));
+	LeftEye = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("LeftEye"));
+	Mouth = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("MouthPlate"));
+	RightEye->SetupAttachment(GetMesh(),FName("HeadSocket"));
+	LeftEye->SetupAttachment(GetMesh(),FName("HeadSocket"));
+	Mouth->SetupAttachment(GetMesh(), FName("HeadSocket"));
 }
 
 // Called when the game starts or when spawned
 void ABaseIslanderCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	RightEye->Stop();
+	LeftEye->Stop();
+	Mouth->Stop();
 }
 
 // Called every frame
 void ABaseIslanderCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
 void ABaseIslanderCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void ABaseIslanderCharacter::ChangeMouthExpression(const EMouthExpression MouthExpression)
 {
-	if(!IsValid(MouthPlateMaterial))
+	switch(MouthExpression)
 	{
-		//Only needs to be done once.
-		CreateDynamicFaceMaterials();
+	case EMouthExpression::Mouth_Talk:
+		Mouth->SetFlipbook(Mouth_Talk);
+		break;
+	case EMouthExpression::Mouth_Smile:
+		Mouth->SetFlipbook(Mouth_Smile);
+		break;
+	default: ;
 	}
-	MouthPlateMaterial->SetScalarParameterValue("MouthExpression", int(MouthExpression));
+	Mouth->PlayFromStart();
 }
 
-void ABaseIslanderCharacter::ChangeEyeExpression(const EEyeExpression EyeExpression)
+void ABaseIslanderCharacter::ChangeEyeExpression(EEyeExpression RightEyeExpression, EEyeExpression LeftEyeExpression)
 {
-	if(!IsValid(EyePlateMaterial))
+	UE_LOG(LogTemp, Warning, TEXT("CHANGING EYE"))
+	switch (RightEyeExpression)
 	{
-		//Only Needs to be done once.
-		CreateDynamicFaceMaterials();
+	case EEyeExpression::Eye_Open:
+		RightEye->SetFlipbook(OpenEye);
+		UE_LOG(LogTemp, Warning, TEXT("EYE OPEN"))
+		break;
+	case EEyeExpression::Eye_Blinking:
+		UE_LOG(LogTemp, Warning, TEXT("EYE BLINKING"))
+		RightEye->SetFlipbook(Blinking);
+		break;
+	default: ;
 	}
-	EyePlateMaterial->SetScalarParameterValue("EyeExpression", int(EyeExpression));
-
+	switch(LeftEyeExpression)
+	{
+	case EEyeExpression::Eye_Open:
+		LeftEye->SetFlipbook(OpenEye);
+		break;
+	case EEyeExpression::Eye_Blinking:
+		LeftEye->SetFlipbook(Blinking);
+		break;
+	default: ;
+	}
+	RightEye->PlayFromStart();
+	LeftEye->PlayFromStart();
 }
-
-void ABaseIslanderCharacter::CreateDynamicFaceMaterials()
-{
-	EyePlateMaterial = UMaterialInstanceDynamic::Create(EyePlate->GetMaterial(0),this);
-	MouthPlateMaterial = UMaterialInstanceDynamic::Create(MouthPlate->GetMaterial(0), this);
-	EyePlate->SetMaterial(0, EyePlateMaterial);
-	MouthPlate->SetMaterial(0, MouthPlateMaterial);
-}
-
 
 
