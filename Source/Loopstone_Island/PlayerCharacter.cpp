@@ -45,12 +45,24 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::UpdateDialogueBasedOnResponse(int ResponseID)
 {
 	DialogueGraph->UpdateCurrentNode(ResponseID);
+	DialogueGraph->UpdateEventLibaryBasedOnCurrentNode();
 
+	
+	
 	FString DialogueText = DialogueGraph->CurrentDialogueNode->DialogueText.ToString();
 
+	// Do the check about CONDITION
+	
 	if (DialogueText == "EXIT")
 	{
 		CloseDialogue();
+	}
+	else if (DialogueText == "CONDITION")
+	{
+		for (int i = 0; i < DialogueGraph->CurrentAvailableOptions.Num(); i++)
+		{
+			UpdateDialogueBasedOnResponse(i);
+		}
 	}
 	else
 	{

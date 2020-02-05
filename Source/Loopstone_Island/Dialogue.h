@@ -4,7 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GenericGraph.h"
+#include "EventLibrary.h"
 #include "Dialogue.generated.h"
+
+UENUM(BlueprintType)
+enum class EEventType : uint8
+{
+	HasTape,
+	None
+};
 
 UENUM(BlueprintType)
 enum class ETimeOfDay : uint8
@@ -22,23 +30,6 @@ enum class EStory : uint8
 	AssistantChef,
 	None
 };
-
-USTRUCT(BlueprintType)
-// USTRUCT()
-struct FCondition
-{
-	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY()
-	int32 SampleInt32;
-
-	// bool bCondition;
-
-	FCondition()
-	{
-	}
-};
-
 
 /**
  * 
@@ -60,14 +51,22 @@ public:
 	class UDialogueNode* CurrentDialogueNode = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
-		TArray<class UDialogueEdge*> CurrentAvailableOptions;
+	TArray<class UDialogueEdge*> CurrentAvailableOptions;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
-		class ABaseIslanderCharacter* CurrentIslander = nullptr;
+	class ABaseIslanderCharacter* CurrentIslander = nullptr;
 
-	
 
-	
+	// UPROPERTY(BlueprintReadOnly, Category = "Event Library")
+	// UEventLibrary* EventLibrary;
+
+	UPROPERTY()
+		TArray<bool> bEventHasBeenTriggered;
+
+	UFUNCTION()
+		bool TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction = false);
+
+
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	FLinearColor LeftDialogueBgColor;
 
@@ -87,5 +86,8 @@ public:
 	void GetDialogueText();
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
-	void UpdateCurrentNode(int ResponseID);
+	bool UpdateCurrentNode(int ResponseID);
+
+	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+		void UpdateEventLibaryBasedOnCurrentNode();
 };

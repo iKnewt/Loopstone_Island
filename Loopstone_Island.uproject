@@ -12,14 +12,15 @@
 				"Engine",
 				"UMG",
 				"GenericGraphEditor",
-				"Paper2D"
+				"Paper2D",
+				"CoreUObject"
 			]
 		},
 		{
-            "Name": "Loopstone_IslandEditor",
-            "Type": "Editor",
-            "LoadingPhase":  "Default"
-        }
+			"Name": "Loopstone_IslandEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
 	],
 	"Plugins": [
 		{
