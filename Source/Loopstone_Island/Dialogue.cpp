@@ -42,12 +42,19 @@ bool UDialogue::TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFu
 
 void UDialogue::PrintAllDialogue()
 {
-	for (UGenericGraphNode* RootNode : RootNodes)
+	for(int i = 0; i < AllNodes.Num(); i++)
+	{
+		auto dialogueNode = static_cast<UDialogueNode*>(AllNodes[i]);
+
+		UE_LOG(LogTemp, Warning, TEXT("%i Node: %s "), i, *dialogueNode->DialogueText.ToString());
+	}
+	
+	/*for (UGenericGraphNode* RootNode : RootNodes)
 	{
 		auto dialogueNode = static_cast<UDialogueNode*>(RootNode);
 
 		UE_LOG(LogTemp, Warning, TEXT("Root: %s "), *dialogueNode->DialogueText.ToString());
-	}
+	}*/
 	//
 	// for (UGenericGraphNode* Node : AllNodes)
 	// {
@@ -56,12 +63,12 @@ void UDialogue::PrintAllDialogue()
 	// 	UE_LOG(LogTemp, Warning, TEXT("AllNodes: %s "), *dialogueNode->DialogueText.ToString());
 	// }
 
-	UDialogueNode* root = dynamic_cast<UDialogueNode*>(AllNodes[0]);
+	/*UDialogueNode* root = dynamic_cast<UDialogueNode*>(AllNodes[0]);
 	root->PrintSelfAndChildren();
 
 	if (root->ChildrenNodes.Num() == 0)
 	{
-	}
+	}*/
 }
 
 void UDialogue::GetDialogueText()
@@ -84,7 +91,7 @@ bool UDialogue::UpdateCurrentNode(int ResponseID)
 			for (auto Element : CurrentDialogueNodeToCheck->EventBoolsConditions)
 			{
 				// if any element doesn't match the library it shouldn't display
-				if (Element.Value == bEventHasBeenTriggered[static_cast<int>(Element.Key)])
+				if (Element.Value != bEventHasBeenTriggered[static_cast<int>(Element.Key)])
 				{
 					return false;
 				}
@@ -95,7 +102,7 @@ bool UDialogue::UpdateCurrentNode(int ResponseID)
 		}
 	}
 
-	// todo remove from this class
+	// todo remove from this class or at least do a check
 	if (CurrentIslander)
 	{
 		CurrentIslander->ChangeEyeExpression(CurrentDialogueNode->RightEyeExpression,

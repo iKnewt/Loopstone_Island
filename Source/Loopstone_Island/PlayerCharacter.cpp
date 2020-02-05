@@ -42,26 +42,32 @@ APlayerCharacter::APlayerCharacter()
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 }
 
-void APlayerCharacter::UpdateDialogueBasedOnResponse(int ResponseID)
+bool APlayerCharacter::UpdateDialogueBasedOnResponse(int ResponseID)
 {
-	DialogueGraph->UpdateCurrentNode(ResponseID);
+	if (!DialogueGraph->UpdateCurrentNode(ResponseID))
+	{
+		return false;
+	}
 	DialogueGraph->UpdateEventLibaryBasedOnCurrentNode();
 
-	
-	
+
 	FString DialogueText = DialogueGraph->CurrentDialogueNode->DialogueText.ToString();
 
 	// Do the check about CONDITION
-	
+
 	if (DialogueText == "EXIT")
 	{
 		CloseDialogue();
+		return false;
 	}
 	else if (DialogueText == "CONDITION")
 	{
 		for (int i = 0; i < DialogueGraph->CurrentAvailableOptions.Num(); i++)
 		{
-			UpdateDialogueBasedOnResponse(i);
+			if (UpdateDialogueBasedOnResponse(i))
+			{
+				break;
+			}
 		}
 	}
 	else
@@ -74,6 +80,8 @@ void APlayerCharacter::UpdateDialogueBasedOnResponse(int ResponseID)
 
 		DialogueWidget->SetDialogueWithOptions(0.03f, DialogueText, Options);
 	}
+
+	return true;
 }
 
 // Called when the game starts or when spawned
@@ -81,6 +89,7 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	DialogueGraph->PrintAllDialogue();
 }
 
 void APlayerCharacter::MoveForward(float Val)
@@ -202,14 +211,14 @@ void APlayerCharacter::InteractWithObject()
 
 void APlayerCharacter::OpenDialogue()
 {
-	if(!DialogueWidget)
+	if (!DialogueWidget)
 	{
 		if (BP_DialogueWidget)
 		{
 			DialogueWidget = CreateWidget<UDialogueWidget>(GetWorld()->GetFirstPlayerController(), BP_DialogueWidget);
 		}
 	}
-	
+
 	if (DialogueWidget)
 	{
 		DialogueWidget->AddToViewport();

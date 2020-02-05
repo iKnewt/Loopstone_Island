@@ -38,7 +38,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
 	class UDialogue* DialogueGraph;
 
-	void UpdateDialogueBasedOnResponse(int ResponseID);
+	bool UpdateDialogueBasedOnResponse(int ResponseID);
 
 protected:
 	// Called when the game starts or when spawned
