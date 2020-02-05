@@ -26,9 +26,9 @@ ABaseIslanderCharacter::ABaseIslanderCharacter()
 void ABaseIslanderCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	RightEye->Stop();
-	LeftEye->Stop();
-	Mouth->Stop();
+	RightEye->PlayFromStart();
+	LeftEye->PlayFromStart();
+	Mouth->PlayFromStart();
 }
 
 // Called every frame
