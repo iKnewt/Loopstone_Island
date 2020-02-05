@@ -63,6 +63,14 @@ void UDialogue::UpdateCurrentNode(int ResponseID)
 		CurrentDialogueNode = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
 	}
 
+	// todo remove from this class
+	if(CurrentIslander)
+	{
+		CurrentIslander->ChangeEyeExpression(CurrentDialogueNode->RightEyeExpression, CurrentDialogueNode->LeftEyeExpression);
+		CurrentIslander->ChangeMouthExpression(CurrentDialogueNode->MouthExpression);
+	}
+	
+
 	// update current options
 	CurrentAvailableOptions.Empty();
 	for (auto Element : CurrentDialogueNode->Edges)

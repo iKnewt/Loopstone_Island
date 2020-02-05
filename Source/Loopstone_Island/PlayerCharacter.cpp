@@ -69,10 +69,6 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (BP_DialogueWidget)
-	{
-		DialogueWidget = CreateWidget<UDialogueWidget>(GetWorld()->GetFirstPlayerController(), BP_DialogueWidget);
-	}
 }
 
 void APlayerCharacter::MoveForward(float Val)
@@ -178,6 +174,7 @@ void APlayerCharacter::InteractWithObject()
 		ABaseIslanderCharacter* Islander = Cast<ABaseIslanderCharacter>(Hit.Actor);
 		if (Islander)
 		{
+			DialogueGraph->CurrentIslander = Islander;
 			OpenDialogue();
 			return;
 		}
@@ -193,6 +190,14 @@ void APlayerCharacter::InteractWithObject()
 
 void APlayerCharacter::OpenDialogue()
 {
+	if(!DialogueWidget)
+	{
+		if (BP_DialogueWidget)
+		{
+			DialogueWidget = CreateWidget<UDialogueWidget>(GetWorld()->GetFirstPlayerController(), BP_DialogueWidget);
+		}
+	}
+	
 	if (DialogueWidget)
 	{
 		DialogueWidget->AddToViewport();

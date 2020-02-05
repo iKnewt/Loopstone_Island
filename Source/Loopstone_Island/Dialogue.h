@@ -61,6 +61,10 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 		TArray<class UDialogueEdge*> CurrentAvailableOptions;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
+		class ABaseIslanderCharacter* CurrentIslander = nullptr;
+
 	
 
 	

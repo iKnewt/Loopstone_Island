@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GenericGraphNode.h"
+#include "BaseIslanderCharacter.h"
 #include "Dialogue.h"
 #include "DialogueNode.generated.h"
 
@@ -37,6 +38,13 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
 	ETimeOfDay NewTimeOfDay;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Expression")
+		EEyeExpression RightEyeExpression = EEyeExpression::Eye_Blinking;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Expression")
+		EEyeExpression LeftEyeExpression = EEyeExpression::Eye_Blinking;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Expression")
+		EMouthExpression MouthExpression = EMouthExpression::Mouth_Smile;
 
 	UFUNCTION()
 	void PrintSelfAndChildren();
