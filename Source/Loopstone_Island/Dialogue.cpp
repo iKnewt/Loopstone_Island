@@ -4,6 +4,8 @@
 #include "Dialogue.h"
 #include "DialogueNode.h"
 #include "DialogueEdge.h"
+#include "UObject/Class.h"
+#include "Loopstone_IslandGameModeBase.h"
 
 #define LOCTEXT_NAMESPACE "Dialogue"
 
@@ -12,71 +14,31 @@ UDialogue::UDialogue()
 	NodeType = UDialogueNode::StaticClass();
 	EdgeType = UDialogueEdge::StaticClass();
 
-	LeftDialogueBgColor = FLinearColor::Red;
-	RightDialogueBgColor = FLinearColor::Blue;
-
-	// EventLibrary = NewObject<UEventLibrary>();
-	bEventHasBeenTriggered.SetNum(static_cast<int>(EEventType::None) + 1);
+	Color1 = FLinearColor::Red;
+	Color2 = FLinearColor::Blue;
 
 	Name = "Dialogue";
 }
 
-bool UDialogue::TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction)
-{
-	bEventHasBeenTriggered[static_cast<int>(EventType)] = NewBoolValue;
-
-	UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(EventType), (NewBoolValue ? TEXT("true") : TEXT("false")));
-
-	if (RunFunction)
-	{
-		switch (EventType)
-		{
-		case EEventType::HasTape:
-			break;
-		default:
-			break;
-		}
-	}
-	return true;
-}
-
 void UDialogue::PrintAllDialogue()
 {
-	for(int i = 0; i < AllNodes.Num(); i++)
+	for (int i = 0; i < AllNodes.Num(); i++)
 	{
 		auto dialogueNode = static_cast<UDialogueNode*>(AllNodes[i]);
 
 		UE_LOG(LogTemp, Warning, TEXT("%i Node: %s "), i, *dialogueNode->DialogueText.ToString());
 	}
-	
-	/*for (UGenericGraphNode* RootNode : RootNodes)
-	{
-		auto dialogueNode = static_cast<UDialogueNode*>(RootNode);
-
-		UE_LOG(LogTemp, Warning, TEXT("Root: %s "), *dialogueNode->DialogueText.ToString());
-	}*/
-	//
-	// for (UGenericGraphNode* Node : AllNodes)
-	// {
-	// 	auto dialogueNode = static_cast<UDialogueNode*>(Node);
-	//
-	// 	UE_LOG(LogTemp, Warning, TEXT("AllNodes: %s "), *dialogueNode->DialogueText.ToString());
-	// }
-
-	/*UDialogueNode* root = dynamic_cast<UDialogueNode*>(AllNodes[0]);
-	root->PrintSelfAndChildren();
-
-	if (root->ChildrenNodes.Num() == 0)
-	{
-	}*/
-}
-
-void UDialogue::GetDialogueText()
-{
 }
 
 bool UDialogue::UpdateCurrentNode(int ResponseID)
 {
+	GameMode = dynamic_cast<ALoopstone_IslandGameModeBase*>(GetWorld()->GetAuthGameMode());
+	if (!GameMode)
+	{
+		UE_LOG(LogTemp, Error, TEXT("CORRECT GAME MODE NOT FOUND"));
+		return false;
+	}
+	
 	if (!CurrentDialogueNode)
 	{
 		// set current to root if none
@@ -90,15 +52,16 @@ bool UDialogue::UpdateCurrentNode(int ResponseID)
 		{
 			for (auto Element : CurrentDialogueNodeToCheck->EventBoolsConditions)
 			{
+				// should check if gamemode is valid
 				// if any element doesn't match the library it shouldn't display
-				if (Element.Value != bEventHasBeenTriggered[static_cast<int>(Element.Key)])
+				if (Element.Value != GameMode->bEventHasBeenTriggered[static_cast<int>(Element.Key)])
 				{
 					return false;
 				}
 			}
-		// only happens if dialogue passes all conditions
-		// CurrentDialogueNode = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
-		CurrentDialogueNode = CurrentDialogueNodeToCheck;
+			// only happens if dialogue passes all conditions
+			// CurrentDialogueNode = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
+			CurrentDialogueNode = CurrentDialogueNodeToCheck;
 		}
 	}
 
@@ -130,8 +93,9 @@ void UDialogue::UpdateEventLibaryBasedOnCurrentNode()
 	{
 		for (auto Element : CurrentDialogueNode->EventBoolsToChange)
 		{
-			if (TriggerEvent(Element.Key, Element.Value))
-			{ }
+			if (GameMode->TriggerEvent(Element.Key, Element.Value))
+			{
+			}
 			// EventLibrary->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
 		}
 	}

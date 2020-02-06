@@ -4,8 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GenericGraphNode.h"
-#include "BaseIslanderCharacter.h"
-#include "Dialogue.h"
+#include "Loopstone_IslandGameModeBase.h"
 #include "DialogueNode.generated.h"
 
 

@@ -10,11 +10,8 @@
 #include "DrawDebugHelpers.h"
 #include "Engine/Engine.h"
 #include "CookStats.h"
-#include "DialogueWidget.h"
-#include "Dialogue.h"
+#include "Loopstone_IslandGameModeBase.h"
 #include "BaseIslanderCharacter.h"
-#include "DialogueNode.h"
-#include "DialogueEdge.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -42,54 +39,10 @@ APlayerCharacter::APlayerCharacter()
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 }
 
-bool APlayerCharacter::UpdateDialogueBasedOnResponse(int ResponseID)
-{
-	if (!DialogueGraph->UpdateCurrentNode(ResponseID))
-	{
-		return false;
-	}
-	DialogueGraph->UpdateEventLibaryBasedOnCurrentNode();
-
-
-	FString DialogueText = DialogueGraph->CurrentDialogueNode->DialogueText.ToString();
-
-	// Do the check about CONDITION
-
-	if (DialogueText == "EXIT")
-	{
-		CloseDialogue();
-		return false;
-	}
-	else if (DialogueText == "CONDITION")
-	{
-		for (int i = 0; i < DialogueGraph->CurrentAvailableOptions.Num(); i++)
-		{
-			if (UpdateDialogueBasedOnResponse(i))
-			{
-				break;
-			}
-		}
-	}
-	else
-	{
-		TArray<FString> Options;
-		for (auto Option : DialogueGraph->CurrentAvailableOptions)
-		{
-			Options.Add(Option->OptionText);
-		}
-
-		DialogueWidget->SetDialogueWithOptions(0.03f, DialogueText, Options);
-	}
-
-	return true;
-}
-
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	DialogueGraph->PrintAllDialogue();
 }
 
 void APlayerCharacter::MoveForward(float Val)
@@ -151,7 +104,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 				{
 					if (Object->GetUniqueID() != HighlightedObject->GetUniqueID())
 					{
-						UE_LOG(LogTemp, Warning, TEXT("INTERACT = FALSE"))
 						HighlightedObject->VisualizeInteraction(false);
 					}
 				}
@@ -164,7 +116,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 		}
 		else if (HighlightedObject != nullptr)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("DIDNT HIT ANYTHING"))
 			HighlightedObject->VisualizeInteraction(false);
 			HighlightedObject = nullptr;
 		}
@@ -176,71 +127,42 @@ void APlayerCharacter::Tick(float DeltaTime)
 	}
 }
 
-void APlayerCharacter::InteractWithObject()
+bool APlayerCharacter::InteractWithIslander(FHitResult Hit)
+{
+	ABaseIslanderCharacter* Islander = Cast<ABaseIslanderCharacter>(Hit.Actor);
+	if (Islander)
+	{
+		GameMode->StartDialogue(Islander);
+		return true;
+	}
+	return false;
+}
+
+bool APlayerCharacter::InteractWithObject(FHitResult Hit)
+{
+	AInteractableObjectBase* InteractiveObject = Cast<AInteractableObjectBase>(Hit.Actor);
+	if (InteractiveObject)
+	{
+		InteractiveObject->Interact();
+		return true;
+	}
+	return false;
+}
+
+void APlayerCharacter::Interact()
 {
 	FHitResult Hit = RayTrace(400);
 
 	if (Hit.bBlockingHit)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Interact Hit: %s"), *GetDebugName(Hit.GetActor()));
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Hit.Actor->GetName());
-
-		AInteractableObjectBase* InteractiveObject = Cast<AInteractableObjectBase>(Hit.Actor);
-		if (InteractiveObject)
-		{
-			InteractiveObject->Interact();
-			return;
-		}
-
-		ABaseIslanderCharacter* Islander = Cast<ABaseIslanderCharacter>(Hit.Actor);
-		if (Islander)
-		{
-			DialogueGraph->CurrentIslander = Islander;
-			OpenDialogue();
-			return;
-		}
-
-		// if all casts fail
-		UE_LOG(LogTemp, Warning, TEXT("NOT A INTERACTABLE OBJECT"));
+		if (InteractWithObject(Hit)) return;
+		if (InteractWithIslander(Hit)) return;
+		UE_LOG(LogTemp, Error, TEXT("Interact Hit: Object not interactable"));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Interact Hit: Nothing"));
-	}
-}
-
-void APlayerCharacter::OpenDialogue()
-{
-	if (!DialogueWidget)
-	{
-		if (BP_DialogueWidget)
-		{
-			DialogueWidget = CreateWidget<UDialogueWidget>(GetWorld()->GetFirstPlayerController(), BP_DialogueWidget);
-		}
-	}
-
-	if (DialogueWidget)
-	{
-		DialogueWidget->AddToViewport();
-		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-		DisableInput(GetWorld()->GetFirstPlayerController());
-		DialogueGraph->CurrentDialogueNode = nullptr;
-		UpdateDialogueBasedOnResponse(0);
-	}
-}
-
-void APlayerCharacter::CloseDialogue()
-{
-	if (DialogueWidget)
-	{
-		// TArray<FString> temp;
-		// temp.Add("");
-		DialogueGraph->CurrentDialogueNode = nullptr;
-		// DialogueWidget->SetDialogueWithOptions(0.05f, "", temp);
-		// DialogueWidget->RemoveFromViewport();
-		DialogueWidget->RemoveFromParent();
-		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
-		EnableInput(GetWorld()->GetFirstPlayerController());
+		UE_LOG(LogTemp, Warning, TEXT("Interact Hit: Hit Nothing"));
 	}
 }
 
@@ -273,7 +195,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	//Bind Interact event
-	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::InteractWithObject);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::Interact);
 
 	// Bind Run events
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &APlayerCharacter::Run);

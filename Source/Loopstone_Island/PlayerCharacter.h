@@ -7,9 +7,7 @@
 #include "PlayerCharacter.generated.h"
 
 
-
-class AInteractableObjectBase;
-UCLASS()
+UCLASS(Blueprintable)
 class LOOPSTONE_ISLAND_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
@@ -30,15 +28,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseLookUpRate;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
-	TSubclassOf<class UDialogueWidget> BP_DialogueWidget;
-
-	UDialogueWidget* DialogueWidget;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
-	class UDialogue* DialogueGraph;
-
-	bool UpdateDialogueBasedOnResponse(int ResponseID);
+	UPROPERTY()
+	class ALoopstone_IslandGameModeBase* GameMode;
 
 protected:
 	// Called when the game starts or when spawned
@@ -76,18 +67,14 @@ protected:
 	/**
 	 * Called when the player presses the Interact button.
 	 */
-	void InteractWithObject();
+	void Interact();
 
-	/**
-	 * Opens Dialogue
-	 */
-	void OpenDialogue();
+	bool InteractWithIslander(FHitResult Hit);
 
-	void CloseDialogue();
-
+	bool InteractWithObject(FHitResult Hit);
 
 	//Holds the reference on the object currently highlighted.
-	AInteractableObjectBase* HighlightedObject = nullptr;
+	class AInteractableObjectBase* HighlightedObject = nullptr;
 
 	/**
 	 * Does a lineTrace and returns the hit-result.

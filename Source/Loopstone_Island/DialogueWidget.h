@@ -30,32 +30,32 @@ public:
 	void onOption0Pressed()
 	{
 		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
-		Player->UpdateDialogueBasedOnResponse(0);		
+		// Player->UpdateDialogueBasedOnResponse(0);		
 	}
 
 	UFUNCTION()
 	void onOption1Pressed()
 	{
 		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
-		Player->UpdateDialogueBasedOnResponse(1);
+		// Player->UpdateDialogueBasedOnResponse(1);
 	}
 	UFUNCTION()
 	void onOption2Pressed()
 	{
 		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
-		Player->UpdateDialogueBasedOnResponse(2);
+		// Player->UpdateDialogueBasedOnResponse(2);
 	}
 	UFUNCTION()
 	void onOption3Pressed()
 	{
 		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
-		Player->UpdateDialogueBasedOnResponse(3);
+		// Player->UpdateDialogueBasedOnResponse(3);
 	}
 	UFUNCTION()
 	void onOption4Pressed()
 	{
 		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
-		Player->UpdateDialogueBasedOnResponse(4);
+		// Player->UpdateDialogueBasedOnResponse(4);
 	}
 
 
