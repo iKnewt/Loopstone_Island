@@ -25,8 +25,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class ABaseIslanderCharacter* CurrentIslander = nullptr;
 
-	UPROPERTY()
-	class ALoopstone_IslandGameModeBase* GameMode = nullptr;
+	// UPROPERTY()
+	// class ALoopstone_IslandGameState* GameState = nullptr;
 	
 
 	UPROPERTY(EditDefaultsOnly, Category = "Color")
@@ -47,7 +47,7 @@ public:
 	void PrintAllDialogue();
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
-	bool UpdateCurrentNode(int ResponseID);
+	bool UpdateCurrentNode(int ResponseID, class ALoopstone_IslandGameState* GameState);
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
 		void UpdateEventLibaryBasedOnCurrentNode();

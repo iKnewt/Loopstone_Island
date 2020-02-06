@@ -29,7 +29,7 @@ public:
 	float BaseLookUpRate;
 
 	UPROPERTY()
-	class ALoopstone_IslandGameModeBase* GameMode;
+	class ALoopstone_IslandGameState* GameState = nullptr;
 
 protected:
 	// Called when the game starts or when spawned

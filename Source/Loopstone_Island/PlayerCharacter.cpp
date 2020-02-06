@@ -12,6 +12,7 @@
 #include "CookStats.h"
 #include "Loopstone_IslandGameModeBase.h"
 #include "BaseIslanderCharacter.h"
+#include "Loopstone_IslandGameState.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -43,6 +44,12 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GameState = dynamic_cast<ALoopstone_IslandGameState*>(GetWorld()->GetGameState());
+	if(!GameState)
+	{
+			UE_LOG(LogTemp, Error, TEXT("CORRECT GAME STATE NOT FOUND"));
+	}
 }
 
 void APlayerCharacter::MoveForward(float Val)
@@ -72,6 +79,7 @@ void APlayerCharacter::TurnAtRate(float Rate)
 void APlayerCharacter::Run()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 1200;
+	
 }
 
 void APlayerCharacter::StopRunning()
@@ -132,7 +140,7 @@ bool APlayerCharacter::InteractWithIslander(FHitResult Hit)
 	ABaseIslanderCharacter* Islander = Cast<ABaseIslanderCharacter>(Hit.Actor);
 	if (Islander)
 	{
-		GameMode->StartDialogue(Islander);
+		GameState->StartDialogue(Islander);
 		return true;
 	}
 	return false;

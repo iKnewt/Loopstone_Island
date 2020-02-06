@@ -5,7 +5,7 @@
 #include "DialogueNode.h"
 #include "DialogueEdge.h"
 #include "UObject/Class.h"
-#include "Loopstone_IslandGameModeBase.h"
+#include "Loopstone_IslandGameState.h"
 
 #define LOCTEXT_NAMESPACE "Dialogue"
 
@@ -30,14 +30,16 @@ void UDialogue::PrintAllDialogue()
 	}
 }
 
-bool UDialogue::UpdateCurrentNode(int ResponseID)
+bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* GameState)
 {
-	GameMode = dynamic_cast<ALoopstone_IslandGameModeBase*>(GetWorld()->GetAuthGameMode());
-	if (!GameMode)
-	{
-		UE_LOG(LogTemp, Error, TEXT("CORRECT GAME MODE NOT FOUND"));
-		return false;
-	}
+	// GameState = dynamic_cast<ALoopstone_IslandGameState*>(GetWorld()->GetGameState());
+	
+	// GameState = GetWorld()->GetAuthGameMode()->GetGameState<ALoopstone_IslandGameState*>();
+	// if (!GameState)
+	// {
+	// 	UE_LOG(LogTemp, Error, TEXT("CORRECT GAME MODE NOT FOUND"));
+	// 	return false;
+	// }
 	
 	if (!CurrentDialogueNode)
 	{
@@ -46,6 +48,7 @@ bool UDialogue::UpdateCurrentNode(int ResponseID)
 	}
 	else
 	{
+			UE_LOG(LogTemp, Error, TEXT("CORRECT GAME MODE NOT FOUND"));
 		// update current node if available
 		auto CurrentDialogueNodeToCheck = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
 		if (CurrentDialogueNodeToCheck)
@@ -54,10 +57,10 @@ bool UDialogue::UpdateCurrentNode(int ResponseID)
 			{
 				// should check if gamemode is valid
 				// if any element doesn't match the library it shouldn't display
-				if (Element.Value != GameMode->bEventHasBeenTriggered[static_cast<int>(Element.Key)])
-				{
-					return false;
-				}
+				// if (Element.Value != GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)])
+				// {
+				// 	return false;
+				// }
 			}
 			// only happens if dialogue passes all conditions
 			// CurrentDialogueNode = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
@@ -66,12 +69,12 @@ bool UDialogue::UpdateCurrentNode(int ResponseID)
 	}
 
 	// todo remove from this class or at least do a check
-	if (CurrentIslander)
-	{
-		CurrentIslander->ChangeEyeExpression(CurrentDialogueNode->RightEyeExpression,
-		                                     CurrentDialogueNode->LeftEyeExpression);
-		CurrentIslander->ChangeMouthExpression(CurrentDialogueNode->MouthExpression);
-	}
+	// if (CurrentIslander)
+	// {
+	// 	CurrentIslander->ChangeEyeExpression(CurrentDialogueNode->RightEyeExpression,
+	// 	                                     CurrentDialogueNode->LeftEyeExpression);
+	// 	CurrentIslander->ChangeMouthExpression(CurrentDialogueNode->MouthExpression);
+	// }
 
 	// update current options
 	CurrentAvailableOptions.Empty();
@@ -93,9 +96,9 @@ void UDialogue::UpdateEventLibaryBasedOnCurrentNode()
 	{
 		for (auto Element : CurrentDialogueNode->EventBoolsToChange)
 		{
-			if (GameMode->TriggerEvent(Element.Key, Element.Value))
-			{
-			}
+			// if (GameState->TriggerEvent(Element.Key, Element.Value))
+			// {
+			// }
 			// EventLibrary->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
 		}
 	}
