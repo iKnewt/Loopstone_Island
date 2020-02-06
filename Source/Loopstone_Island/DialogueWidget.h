@@ -72,6 +72,8 @@ private:
 	TArray<FString> Responses;
 	UFont* DialogueFont = nullptr;
 
+	bool bCurrentlyWriting = false;
+
 	/**
 	 * adds a character onto the Dialogue string that's written. Used to create the writing text animation.
 	 */
