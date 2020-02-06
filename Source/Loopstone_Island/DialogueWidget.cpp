@@ -38,6 +38,7 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 	{
 		TextSpeedChecker = 0.03f;
 	}
+	bCurrentlyWriting = true;
 	GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::AppendDialogueString, TextSpeedChecker,true);
 }
 
@@ -62,6 +63,7 @@ void UDialogueWidget::AppendDialogueString()
 		GetWorld()->GetTimerManager().ClearTimer(DialogueTimerHandle);
 		UE_LOG(LogTemp, Warning, TEXT("DONE"))
 			RevealOptions();
+		bCurrentlyWriting = false;
 	}
 	else
 	{
