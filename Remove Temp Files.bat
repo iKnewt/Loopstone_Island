@@ -6,3 +6,5 @@ del "Loopstone_Island.sln" /s /q
 rmdir "Saved/Crashes" /s /q
 rmdir "Saved/Logs" /s /q
 rmdir "Saved/Backup" /s /q
+rmdir "Plugins/Binaries" /s /q
+del "Source/Loopstone_IslandEditor/Loopstone_IslandEditor.Build.cs" /s /q
