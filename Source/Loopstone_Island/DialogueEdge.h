@@ -21,8 +21,8 @@ public:
 	FString OptionText = "Next...";
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
-		TMap<EEventType, bool> EventBoolsConditions;
+	TMap<EEventType, bool> EventBoolsConditions;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
-		TMap<ETopic, bool> TopicBoolsConditions;
+	TMap<ETopic, bool> TopicBoolsConditions;
 };

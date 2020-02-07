@@ -15,7 +15,7 @@ class LOOPSTONE_ISLAND_API UDialogue : public UGenericGraph
 	GENERATED_BODY()
 public:
 	UDialogue();
-	
+
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class UDialogueNode* CurrentDialogueNode = nullptr;
 
@@ -27,7 +27,7 @@ public:
 
 	// UPROPERTY()
 	// class ALoopstone_IslandGameState* GameState = nullptr;
-	
+
 
 	UPROPERTY(EditDefaultsOnly, Category = "Color")
 	FLinearColor Color2;
@@ -35,8 +35,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Color")
 	FLinearColor Color1;
 
-	
-	
+
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	TArray<bool> Conditions;
 
@@ -50,5 +49,5 @@ public:
 	bool UpdateCurrentNode(int ResponseID, class ALoopstone_IslandGameState* GameState);
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
-		void UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* GameState);
+	void UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* GameState);
 };

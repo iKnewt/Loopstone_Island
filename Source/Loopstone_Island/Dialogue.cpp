@@ -65,6 +65,14 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 					return false;
 				}
 			}
+			for (auto Element : DialogueNode->TopicBoolsConditions)
+			{
+				// if any element doesn't match the library it shouldn't display
+				if (Element.Value != GameState->bTopicHasBeenRevealed[static_cast<int>(Element.Key)])
+				{
+					return false;
+				}
+			}
 			// only happens if dialogue passes all conditions
 			CurrentDialogueNode = DialogueNode;
 		}
@@ -80,19 +88,27 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 
 	// update current options
 	CurrentAvailableOptions.Empty();
-	for (auto Element : CurrentDialogueNode->Edges)
+	for (auto EdgeToCheck : CurrentDialogueNode->Edges)
 	{
-		UDialogueEdge* DialogueEdge = dynamic_cast<UDialogueEdge*>(Element.Value);
+		UDialogueEdge* DialogueEdge = dynamic_cast<UDialogueEdge*>(EdgeToCheck.Value);
 		bool Visible = true;
 		// check for conditions  conditions
-		// for (auto Element2 : DialogueEdge->EventBoolsConditions)
-		// {
-		// 	// if any element doesn't match the library it should be skipped
-		// 	if (Element2.Value != GameState->bEventHasBeenTriggered[static_cast<int>(Element2.Key)])
-		// 	{
-		// 		Visible = false;
-		// 	}
-		// }
+		for (auto EventCondition : DialogueEdge->EventBoolsConditions)
+		{
+			// if any element doesn't match the library it should be skipped
+			if (EventCondition.Value != GameState->bEventHasBeenTriggered[static_cast<int>(EventCondition.Key)])
+			{
+				Visible = false;
+			}
+		}
+		for (auto TopicCondition : DialogueEdge->TopicBoolsConditions)
+		{
+			// if any element doesn't match the library it should be skipped
+			if (TopicCondition.Value != GameState->bTopicHasBeenRevealed[static_cast<int>(TopicCondition.Key)])
+			{
+				Visible = false;
+			}
+		}
 		if (Visible)
 		{
 			CurrentAvailableOptions.Add(DialogueEdge);
@@ -134,9 +150,15 @@ void UDialogue::UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* 
 	{
 		for (auto Element : CurrentDialogueNode->EventBoolsToChange)
 		{
-			if (GameState->TriggerEvent(Element.Key, Element.Value))
-			{
-			}
+			// if (GameState->TriggerEvent(Element.Key, Element.Value))
+			// {
+			// }
+			GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
+		}
+		for (auto Element2 : CurrentDialogueNode->TopicBoolsToChange)
+		{
+
+			GameState->bTopicHasBeenRevealed[static_cast<int>(Element2.Key)] = Element2.Value;
 			// GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
 		}
 	}

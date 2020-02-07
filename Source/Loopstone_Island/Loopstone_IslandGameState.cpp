@@ -14,6 +14,9 @@ void ALoopstone_IslandGameState::BeginPlay()
 	bEventHasBeenTriggered.SetNum(static_cast<int>(EEventType::None) + 1);
 	UE_LOG(LogTemp, Warning, TEXT("bEventHasBeenTriggered contains:  %i"), bEventHasBeenTriggered.Num());
 
+	bTopicHasBeenRevealed.SetNum(static_cast<int>(ETopic::None) + 1);
+	UE_LOG(LogTemp, Warning, TEXT("bTopicHasBeenRevealed contains:  %i"), bTopicHasBeenRevealed.Num());
+	
 	if (BP_DialogueWidget)
 	{
 		// DialogueWidget = CreateWidget(GetWorld()->GetFirstPlayerController(), BP_DialogueWidget);
@@ -77,11 +80,12 @@ void ALoopstone_IslandGameState::CloseDialogue()
 {
 	if (DialogueWidget)
 	{
-		// TArray<FString> temp;
-		// temp.Add("");
+		TArray<FString> temp;
+		// temp.Add(" ");
 		CurrentDialogue->CurrentDialogueNode = nullptr;
-		// DialogueWidget->SetDialogueWithOptions(0.05f, "", temp);
+		DialogueWidget->SetDialogueWithOptions(0.05f, " ", temp);
 		// DialogueWidget->RemoveFromViewport();
+			// DialogueWidget->SetDialogueWithOptions(0.01f, DialogueText, Options);
 		DialogueWidget->RemoveFromParent();
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 		EnableInput(GetWorld()->GetFirstPlayerController());
@@ -109,7 +113,7 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 		Options.Add(Option->OptionText);
 	}
 
-	DialogueWidget->SetDialogueWithOptions(0.03f, DialogueText, Options);
+	DialogueWidget->SetDialogueWithOptions(0.01f, DialogueText, Options);
 
 	return true;
 }

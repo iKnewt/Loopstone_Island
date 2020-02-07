@@ -21,6 +21,7 @@ class LOOPSTONE_ISLAND_API ALoopstone_IslandGameState : public AGameStateBase
 public:
 	UPROPERTY()
 	TArray<bool> bEventHasBeenTriggered;
+	TArray<bool> bTopicHasBeenRevealed;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Current Conditions")
 	ETimeOfDay CurrentTimeOfDay = ETimeOfDay::Morning;
