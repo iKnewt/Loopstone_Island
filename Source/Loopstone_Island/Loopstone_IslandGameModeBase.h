@@ -7,10 +7,11 @@
 #include "GameFramework/GameModeBase.h"
 #include "Loopstone_IslandGameModeBase.generated.h"
 
+
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class LOOPSTONE_ISLAND_API ALoopstone_IslandGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
@@ -18,7 +19,4 @@ class LOOPSTONE_ISLAND_API ALoopstone_IslandGameModeBase : public AGameModeBase
 public:
 	ALoopstone_IslandGameModeBase();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		UDialogue* GameDialogue;
-	
 };

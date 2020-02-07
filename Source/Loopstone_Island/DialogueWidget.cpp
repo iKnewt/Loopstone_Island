@@ -23,7 +23,7 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 	}
 	for (auto& Button : Buttons)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("SETTING BUTTON VISIBILITY"))
+		// UE_LOG(LogTemp, Warning, TEXT("SETTING BUTTON VISIBILITY"))
 			Button->SetVisibility(ESlateVisibility::Hidden);
 	}
 	//font still not set
@@ -32,7 +32,7 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 	DialogueCharIndex = 0;
 	this->Dialogue = "";
 	Responses = InResponses;
-	UE_LOG(LogTemp, Warning, TEXT("SETTING DIALOGUE"))
+	// UE_LOG(LogTemp, Warning, TEXT("SETTING DIALOGUE"))
 		float TextSpeedChecker = TextSpeed;
 	if(TextSpeedChecker < 0.00001f)
 	{
@@ -51,6 +51,12 @@ bool UDialogueWidget::Initialize()
 	Button_Option3->OnClicked.AddDynamic(this, &UDialogueWidget::onOption3Pressed);
 	Button_Option4->OnClicked.AddDynamic(this, &UDialogueWidget::onOption4Pressed);
 
+	GameState = reinterpret_cast<ALoopstone_IslandGameState*>(GetWorld()->GetGameState());
+	if (!GameState)
+	{
+		UE_LOG(LogTemp, Error, TEXT("DIALOGUE WIDGET: CORRECT GAME MODE NOT FOUND"));
+	}
+
 	return init;
 }
 
@@ -61,7 +67,7 @@ void UDialogueWidget::AppendDialogueString()
 	if (FullDialogueInChars.Num() == DialogueCharIndex +1)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(DialogueTimerHandle);
-		UE_LOG(LogTemp, Warning, TEXT("DONE"))
+		// UE_LOG(LogTemp, Warning, TEXT("DONE"))
 			RevealOptions();
 		bCurrentlyWriting = false;
 	}
@@ -73,10 +79,9 @@ void UDialogueWidget::AppendDialogueString()
 
 void UDialogueWidget::RevealOptions()
 {
-
 	for (int i = 0; i < Responses.Num(); i++)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("SETTING stuff"))
+		// UE_LOG(LogTemp, Warning, TEXT("SETTING stuff"))
 		Options[i]->SetText(FText::FromString(Responses[i]));
 		Buttons[i]->SetVisibility(ESlateVisibility::Visible);
 	}

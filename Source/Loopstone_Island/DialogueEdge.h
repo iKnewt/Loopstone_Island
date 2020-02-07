@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GenericGraphEdge.h"
+#include "Loopstone_IslandGameState.h"
 #include "DialogueEdge.generated.h"
 
 /**
@@ -18,4 +19,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
 	FString OptionText = "Next...";
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
+		TMap<EEventType, bool> EventBoolsConditions;
 };

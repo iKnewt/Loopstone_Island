@@ -32,7 +32,7 @@ enum class EEyeExpression : uint8
 	Eye_Blinking
 };
 
-UCLASS()
+UCLASS(Blueprintable)
 class LOOPSTONE_ISLAND_API ABaseIslanderCharacter : public ACharacter
 {
 	GENERATED_BODY()
@@ -47,6 +47,16 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	FString Name = "Islander";
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	UFont* Font;
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	class UDialogue* Dialogue = nullptr;
+	// Other things that are specific to an islander??
+
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -75,9 +85,9 @@ public:
 	UPaperFlipbook* OpenEye = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		UPaperFlipbook* Mouth_Talk = nullptr;
+	UPaperFlipbook* Mouth_Talk = nullptr;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		UPaperFlipbook* Mouth_Smile = nullptr;
+	UPaperFlipbook* Mouth_Smile = nullptr;
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeEyeExpression(EEyeExpression RightEyeExpression, EEyeExpression LeftEyeExpression);

@@ -4,8 +4,6 @@
 #include "BaseIslanderCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "PaperFlipbook.h"
-#include "Materials/MaterialInstanceDynamic.h"
 
 // Sets default values
 ABaseIslanderCharacter::ABaseIslanderCharacter()

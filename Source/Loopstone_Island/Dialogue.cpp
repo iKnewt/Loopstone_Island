@@ -4,6 +4,8 @@
 #include "Dialogue.h"
 #include "DialogueNode.h"
 #include "DialogueEdge.h"
+#include "UObject/Class.h"
+#include "Loopstone_IslandGameState.h"
 
 #define LOCTEXT_NAMESPACE "Dialogue"
 
@@ -12,127 +14,130 @@ UDialogue::UDialogue()
 	NodeType = UDialogueNode::StaticClass();
 	EdgeType = UDialogueEdge::StaticClass();
 
-	LeftDialogueBgColor = FLinearColor::Red;
-	RightDialogueBgColor = FLinearColor::Blue;
-
-	// EventLibrary = NewObject<UEventLibrary>();
-	bEventHasBeenTriggered.SetNum(static_cast<int>(EEventType::None) + 1);
+	Color1 = FLinearColor::Red;
+	Color2 = FLinearColor::Blue;
 
 	Name = "Dialogue";
 }
 
-bool UDialogue::TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction)
-{
-	bEventHasBeenTriggered[static_cast<int>(EventType)] = NewBoolValue;
-
-	UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(EventType), (NewBoolValue ? TEXT("true") : TEXT("false")));
-
-	if (RunFunction)
-	{
-		switch (EventType)
-		{
-		case EEventType::HasTape:
-			break;
-		default:
-			break;
-		}
-	}
-	return true;
-}
-
 void UDialogue::PrintAllDialogue()
 {
-	for(int i = 0; i < AllNodes.Num(); i++)
+	for (int i = 0; i < AllNodes.Num(); i++)
 	{
 		auto dialogueNode = static_cast<UDialogueNode*>(AllNodes[i]);
 
 		UE_LOG(LogTemp, Warning, TEXT("%i Node: %s "), i, *dialogueNode->DialogueText.ToString());
 	}
-	
-	/*for (UGenericGraphNode* RootNode : RootNodes)
-	{
-		auto dialogueNode = static_cast<UDialogueNode*>(RootNode);
-
-		UE_LOG(LogTemp, Warning, TEXT("Root: %s "), *dialogueNode->DialogueText.ToString());
-	}*/
-	//
-	// for (UGenericGraphNode* Node : AllNodes)
-	// {
-	// 	auto dialogueNode = static_cast<UDialogueNode*>(Node);
-	//
-	// 	UE_LOG(LogTemp, Warning, TEXT("AllNodes: %s "), *dialogueNode->DialogueText.ToString());
-	// }
-
-	/*UDialogueNode* root = dynamic_cast<UDialogueNode*>(AllNodes[0]);
-	root->PrintSelfAndChildren();
-
-	if (root->ChildrenNodes.Num() == 0)
-	{
-	}*/
 }
 
-void UDialogue::GetDialogueText()
+bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* GameState)
 {
-}
+	if (!GameState)
+	{
+		UE_LOG(LogTemp, Error, TEXT("DIALOGUE: CORRECT GAME MODE NOT FOUND"));
+		return false;
+	}
 
-bool UDialogue::UpdateCurrentNode(int ResponseID)
-{
+
+	// actually finding a new current node
 	if (!CurrentDialogueNode)
 	{
-		// set current to root if none
+		// set current to root if none, meaning this is a new conversation
 		CurrentDialogueNode = dynamic_cast<UDialogueNode*>(AllNodes[0]);
 	}
 	else
 	{
-		// update current node if available
-		auto CurrentDialogueNodeToCheck = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
-		if (CurrentDialogueNodeToCheck)
+		// check if the node has that many children, otherwise exit convo
+		if (CurrentAvailableOptions.Num() <= ResponseID)
 		{
-			for (auto Element : CurrentDialogueNodeToCheck->EventBoolsConditions)
+			return false;
+		}
+
+		// update current node if available
+		auto DialogueNode = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
+		if (DialogueNode)
+		{
+			for (auto Element : DialogueNode->EventBoolsConditions)
 			{
 				// if any element doesn't match the library it shouldn't display
-				if (Element.Value != bEventHasBeenTriggered[static_cast<int>(Element.Key)])
+				if (Element.Value != GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)])
 				{
 					return false;
 				}
 			}
-		// only happens if dialogue passes all conditions
-		// CurrentDialogueNode = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
-		CurrentDialogueNode = CurrentDialogueNodeToCheck;
+			// only happens if dialogue passes all conditions
+			CurrentDialogueNode = DialogueNode;
 		}
 	}
 
 	// todo remove from this class or at least do a check
-	if (CurrentIslander)
-	{
-		CurrentIslander->ChangeEyeExpression(CurrentDialogueNode->RightEyeExpression,
-		                                     CurrentDialogueNode->LeftEyeExpression);
-		CurrentIslander->ChangeMouthExpression(CurrentDialogueNode->MouthExpression);
-	}
+	// if (CurrentIslander)
+	// {
+	// 	CurrentIslander->ChangeEyeExpression(CurrentDialogueNode->RightEyeExpression,
+	// 	                                     CurrentDialogueNode->LeftEyeExpression);
+	// 	CurrentIslander->ChangeMouthExpression(CurrentDialogueNode->MouthExpression);
+	// }
 
 	// update current options
 	CurrentAvailableOptions.Empty();
 	for (auto Element : CurrentDialogueNode->Edges)
 	{
+		UDialogueEdge* DialogueEdge = dynamic_cast<UDialogueEdge*>(Element.Value);
+		bool Visible = true;
 		// check for conditions  conditions
-		UDialogueEdge* temp = dynamic_cast<UDialogueEdge*>(Element.Value);
+		// for (auto Element2 : DialogueEdge->EventBoolsConditions)
+		// {
+		// 	// if any element doesn't match the library it should be skipped
+		// 	if (Element2.Value != GameState->bEventHasBeenTriggered[static_cast<int>(Element2.Key)])
+		// 	{
+		// 		Visible = false;
+		// 	}
+		// }
+		if (Visible)
+		{
+			CurrentAvailableOptions.Add(DialogueEdge);
+		}
+	}
 
-		// if temp is acceptable
-		CurrentAvailableOptions.Add(temp);
+	FString DialogueText = CurrentDialogueNode->DialogueText.ToString();
+
+	// see if it should do recusive checking	
+
+	if (DialogueText == "EXIT")
+	{
+		return false;
+	}
+	else if (DialogueText == "CONDITION")
+	{
+		// runs until an acceptable child is found
+		for (int i = 0; i < CurrentAvailableOptions.Num(); i++)
+		{
+			if (UpdateCurrentNode(i, GameState))
+			{
+				break;
+			}
+		}
 	}
 
 	return true;
 }
 
-void UDialogue::UpdateEventLibaryBasedOnCurrentNode()
+void UDialogue::UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* GameState)
 {
+	if (!GameState)
+	{
+		UE_LOG(LogTemp, Error, TEXT("DIALOGUE: CORRECT GAME MODE NOT FOUND"));
+		return;
+	}
+
 	if (CurrentDialogueNode)
 	{
 		for (auto Element : CurrentDialogueNode->EventBoolsToChange)
 		{
-			if (TriggerEvent(Element.Key, Element.Value))
-			{ }
-			// EventLibrary->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
+			if (GameState->TriggerEvent(Element.Key, Element.Value))
+			{
+			}
+			// GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
 		}
 	}
 }
