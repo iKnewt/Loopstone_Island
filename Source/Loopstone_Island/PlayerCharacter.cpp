@@ -138,7 +138,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 bool APlayerCharacter::InteractWithIslander(FHitResult Hit)
 {
 	ABaseIslanderCharacter* Islander = Cast<ABaseIslanderCharacter>(Hit.Actor);
-	if (Islander)
+	if (Islander && GameState)
 	{
 		GameState->StartDialogue(Islander);
 		return true;

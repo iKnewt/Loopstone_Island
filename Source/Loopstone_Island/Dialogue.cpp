@@ -32,39 +32,41 @@ void UDialogue::PrintAllDialogue()
 
 bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* GameState)
 {
-	// GameState = dynamic_cast<ALoopstone_IslandGameState*>(GetWorld()->GetGameState());
-	
-	// GameState = GetWorld()->GetAuthGameMode()->GetGameState<ALoopstone_IslandGameState*>();
-	// if (!GameState)
-	// {
-	// 	UE_LOG(LogTemp, Error, TEXT("CORRECT GAME MODE NOT FOUND"));
-	// 	return false;
-	// }
-	
+	if (!GameState)
+	{
+		UE_LOG(LogTemp, Error, TEXT("DIALOGUE: CORRECT GAME MODE NOT FOUND"));
+		return false;
+	}
+
+
+	// actually finding a new current node
 	if (!CurrentDialogueNode)
 	{
-		// set current to root if none
+		// set current to root if none, meaning this is a new conversation
 		CurrentDialogueNode = dynamic_cast<UDialogueNode*>(AllNodes[0]);
 	}
 	else
 	{
-			UE_LOG(LogTemp, Error, TEXT("CORRECT GAME MODE NOT FOUND"));
-		// update current node if available
-		auto CurrentDialogueNodeToCheck = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
-		if (CurrentDialogueNodeToCheck)
+		// check if the node has that many children, otherwise exit convo
+		if (CurrentAvailableOptions.Num() <= ResponseID)
 		{
-			for (auto Element : CurrentDialogueNodeToCheck->EventBoolsConditions)
+			return false;
+		}
+
+		// update current node if available
+		auto DialogueNode = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
+		if (DialogueNode)
+		{
+			for (auto Element : DialogueNode->EventBoolsConditions)
 			{
-				// should check if gamemode is valid
 				// if any element doesn't match the library it shouldn't display
-				// if (Element.Value != GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)])
-				// {
-				// 	return false;
-				// }
+				if (Element.Value != GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)])
+				{
+					return false;
+				}
 			}
 			// only happens if dialogue passes all conditions
-			// CurrentDialogueNode = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
-			CurrentDialogueNode = CurrentDialogueNodeToCheck;
+			CurrentDialogueNode = DialogueNode;
 		}
 	}
 
@@ -80,26 +82,62 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 	CurrentAvailableOptions.Empty();
 	for (auto Element : CurrentDialogueNode->Edges)
 	{
+		UDialogueEdge* DialogueEdge = dynamic_cast<UDialogueEdge*>(Element.Value);
+		bool Visible = true;
 		// check for conditions  conditions
-		UDialogueEdge* temp = dynamic_cast<UDialogueEdge*>(Element.Value);
+		// for (auto Element2 : DialogueEdge->EventBoolsConditions)
+		// {
+		// 	// if any element doesn't match the library it should be skipped
+		// 	if (Element2.Value != GameState->bEventHasBeenTriggered[static_cast<int>(Element2.Key)])
+		// 	{
+		// 		Visible = false;
+		// 	}
+		// }
+		if (Visible)
+		{
+			CurrentAvailableOptions.Add(DialogueEdge);
+		}
+	}
 
-		// if temp is acceptable
-		CurrentAvailableOptions.Add(temp);
+	FString DialogueText = CurrentDialogueNode->DialogueText.ToString();
+
+	// see if it should do recusive checking	
+
+	if (DialogueText == "EXIT")
+	{
+		return false;
+	}
+	else if (DialogueText == "CONDITION")
+	{
+		// runs until an acceptable child is found
+		for (int i = 0; i < CurrentAvailableOptions.Num(); i++)
+		{
+			if (UpdateCurrentNode(i, GameState))
+			{
+				break;
+			}
+		}
 	}
 
 	return true;
 }
 
-void UDialogue::UpdateEventLibaryBasedOnCurrentNode()
+void UDialogue::UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* GameState)
 {
+	if (!GameState)
+	{
+		UE_LOG(LogTemp, Error, TEXT("DIALOGUE: CORRECT GAME MODE NOT FOUND"));
+		return;
+	}
+
 	if (CurrentDialogueNode)
 	{
 		for (auto Element : CurrentDialogueNode->EventBoolsToChange)
 		{
-			// if (GameState->TriggerEvent(Element.Key, Element.Value))
-			// {
-			// }
-			// EventLibrary->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
+			if (GameState->TriggerEvent(Element.Key, Element.Value))
+			{
+			}
+			// GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
 		}
 	}
 }

@@ -61,12 +61,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Current Conditions")
 	EStory CurrentStory = EStory::None;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Current Conditions")
-	int TEST = 0;
+	UPROPERTY()
+	ABaseIslanderCharacter* CurrentIslander = nullptr;
 
-	ABaseIslanderCharacter* CurrentIslander;
-
-	class UDialogue* CurrentDialogueGraph;
+	UPROPERTY()
+	class UDialogue* CurrentDialogue = nullptr;
 
 	UFUNCTION()
 	bool TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction = false);
@@ -74,7 +73,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
 	TSubclassOf<class UDialogueWidget> BP_DialogueWidget;
 	
-	class UDialogueWidget* DialogueWidget;
+	class UDialogueWidget* DialogueWidget = nullptr;
 
 	/**
 * Opens Dialogue

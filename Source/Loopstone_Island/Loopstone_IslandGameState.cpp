@@ -11,9 +11,6 @@ void ALoopstone_IslandGameState::BeginPlay()
 {
 	Super::BeginPlay();
 
-
-	// TEST = 2;
-
 	bEventHasBeenTriggered.SetNum(static_cast<int>(EEventType::None) + 1);
 	UE_LOG(LogTemp, Warning, TEXT("bEventHasBeenTriggered contains:  %i"), bEventHasBeenTriggered.Num());
 
@@ -31,6 +28,7 @@ void ALoopstone_IslandGameState::BeginPlay()
 
 bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction)
 {
+	
 	bEventHasBeenTriggered[static_cast<int>(EventType)] = NewBoolValue;
 
 	UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(EventType),
@@ -51,30 +49,23 @@ bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 
 void ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 {
+	if(!Islander || !DialogueWidget)
+	{
+		return;
+	}
+
 	if (Islander->Dialogue)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Dialogue started with %s"), *Islander->Name);
 
 		CurrentIslander = Islander;
-		CurrentDialogueGraph = Islander->Dialogue;
-		//
-		// if (!DialogueWidget)
-		// {
-		// 	if (BP_DialogueWidget)
-		// 	{
-		// 		DialogueWidget = CreateWidget<UDialogueWidget>(GetWorld()->GetFirstPlayerController(),
-		// 		                                               BP_DialogueWidget);
-		// 	}
-		// }
-		//
-		// if (DialogueWidget)
-		// {
+		CurrentDialogue = Islander->Dialogue;
+
 		DialogueWidget->AddToViewport();
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 		DisableInput(GetWorld()->GetFirstPlayerController());
-		CurrentDialogueGraph->CurrentDialogueNode = nullptr;
+		CurrentDialogue->CurrentDialogueNode = nullptr;
 		UpdateDialogueBasedOnResponse(0);
-		// }
 	}
 	else
 	{
@@ -84,65 +75,41 @@ void ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 
 void ALoopstone_IslandGameState::CloseDialogue()
 {
-	// if (DialogueWidget)
-	// {
-	// 	// TArray<FString> temp;
-	// 	// temp.Add("");
-	// 	CurrentDialogueGraph->CurrentDialogueNode = nullptr;
-	// 	// DialogueWidget->SetDialogueWithOptions(0.05f, "", temp);
-	// 	// DialogueWidget->RemoveFromViewport();
-	// 	DialogueWidget->RemoveFromParent();
-	// 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
-	// 	EnableInput(GetWorld()->GetFirstPlayerController());
-	// }
+	if (DialogueWidget)
+	{
+		// TArray<FString> temp;
+		// temp.Add("");
+		CurrentDialogue->CurrentDialogueNode = nullptr;
+		// DialogueWidget->SetDialogueWithOptions(0.05f, "", temp);
+		// DialogueWidget->RemoveFromViewport();
+		DialogueWidget->RemoveFromParent();
+		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
+		EnableInput(GetWorld()->GetFirstPlayerController());
+	}
 }
 
 bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 {
-	if (!CurrentDialogueGraph->UpdateCurrentNode(ResponseID, this))
+	if (!CurrentDialogue->UpdateCurrentNode(ResponseID, this))
 	{
+		CloseDialogue();
 		return false;
 	}
-	// // CurrentDialogueGraph->UpdateEventLibaryBasedOnCurrentNode();
-	//
-	//
+
+	CurrentDialogue->UpdateEventLibaryBasedOnCurrentNode(this);
+
 	FString DialogueText = "Oh hello....";
-	DialogueText = CurrentDialogueGraph->CurrentDialogueNode->DialogueText.ToString();
 
-	// DialogueText = dynamic_cast<UDialogueNode*>(CurrentDialogueGraph->AllNodes[0])->DialogueText.ToString();
+	// update the dialogue widget
+	DialogueText = CurrentDialogue->CurrentDialogueNode->DialogueText.ToString();
 
-	//
-	// // Do the check about CONDITION
-	//
-	// if (DialogueText == "EXIT")
-	// {
-	// 	CloseDialogue();
-	// 	return false;
-	// }
-	// else if (DialogueText == "CONDITION")
-	// {
-	// 	for (int i = 0; i < CurrentDialogueGraph->CurrentAvailableOptions.Num(); i++)
-	// 	{
-	// 		if (UpdateDialogueBasedOnResponse(i))
-	// 		{
-	// 			break;
-	// 		}
-	// 	}
-	// }
-	// else
-	// {
-		TArray<FString> Options;
-		for (auto Option : CurrentDialogueGraph->CurrentAvailableOptions)
-		{
-			Options.Add(Option->OptionText);
-		}
-			//
-			// TArray<FString> Options;
-			// Options.Add("one");
-			// Options.Add("two");
-	
-		DialogueWidget->SetDialogueWithOptions(0.03f, DialogueText, Options);
-	// }
+	TArray<FString> Options;
+	for (auto Option : CurrentDialogue->CurrentAvailableOptions)
+	{
+		Options.Add(Option->OptionText);
+	}
+
+	DialogueWidget->SetDialogueWithOptions(0.03f, DialogueText, Options);
 
 	return true;
 }

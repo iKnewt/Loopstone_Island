@@ -7,6 +7,7 @@
 #include "Engine/Font.h"
 #include "TextBlock.h"
 #include "PlayerCharacter.h"
+#include "Loopstone_IslandGameState.h"
 #include "DialogueWidget.generated.h"
 
 /**
@@ -19,6 +20,9 @@ class LOOPSTONE_ISLAND_API UDialogueWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY()
+	ALoopstone_IslandGameState* GameState = nullptr;
 	
 	/**
 	 * The function that starts it all.
@@ -29,33 +33,28 @@ public:
 	UFUNCTION()
 	void onOption0Pressed()
 	{
-		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
-		// Player->UpdateDialogueBasedOnResponse(0);		
+		GameState->UpdateDialogueBasedOnResponse(0);
 	}
 
 	UFUNCTION()
 	void onOption1Pressed()
 	{
-		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
-		// Player->UpdateDialogueBasedOnResponse(1);
+		GameState->UpdateDialogueBasedOnResponse(1);
 	}
 	UFUNCTION()
 	void onOption2Pressed()
 	{
-		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
-		// Player->UpdateDialogueBasedOnResponse(2);
+		GameState->UpdateDialogueBasedOnResponse(2);
 	}
 	UFUNCTION()
 	void onOption3Pressed()
 	{
-		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
-		// Player->UpdateDialogueBasedOnResponse(3);
+		GameState->UpdateDialogueBasedOnResponse(3);
 	}
 	UFUNCTION()
 	void onOption4Pressed()
 	{
-		auto Player = Cast<APlayerCharacter>(GetOwningPlayerPawn());
-		// Player->UpdateDialogueBasedOnResponse(4);
+		GameState->UpdateDialogueBasedOnResponse(4);
 	}
 
 

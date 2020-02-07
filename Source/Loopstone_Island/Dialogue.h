@@ -15,7 +15,7 @@ class LOOPSTONE_ISLAND_API UDialogue : public UGenericGraph
 	GENERATED_BODY()
 public:
 	UDialogue();
-
+	
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class UDialogueNode* CurrentDialogueNode = nullptr;
 
@@ -50,5 +50,5 @@ public:
 	bool UpdateCurrentNode(int ResponseID, class ALoopstone_IslandGameState* GameState);
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
-		void UpdateEventLibaryBasedOnCurrentNode();
+		void UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* GameState);
 };
