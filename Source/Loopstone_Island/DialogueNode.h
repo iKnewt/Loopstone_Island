@@ -37,13 +37,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
 	TMap<EEventType, bool> EventBoolsConditions;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
-	TMap<int, bool> VisitedNodesCondition;
+		TMap<ETopic, bool> TopicBoolsConditions;
 
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
 	bool bChangesTimeOfDay = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
 	ETimeOfDay NewTimeOfDay;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
+	TMap<ETopic, bool> TopicBoolsToChange;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
 	TMap<EEventType, bool> EventBoolsToChange;
 

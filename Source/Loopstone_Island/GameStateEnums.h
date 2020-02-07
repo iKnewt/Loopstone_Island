@@ -34,7 +34,7 @@ enum class ETopic : uint8
 {
 	Tape,
 	Rope,
-	Party,
+	PartyPlanner,
 	None
 };
 

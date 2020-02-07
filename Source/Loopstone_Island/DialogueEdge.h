@@ -22,4 +22,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
 		TMap<EEventType, bool> EventBoolsConditions;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
+		TMap<ETopic, bool> TopicBoolsConditions;
 };
