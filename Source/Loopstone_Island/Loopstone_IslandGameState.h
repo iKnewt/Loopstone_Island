@@ -5,41 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
 #include "BaseIslanderCharacter.h"
+#include "GameStateEnums.h"
 #include "Loopstone_IslandGameState.generated.h"
-
-UENUM(BlueprintType)
-enum class ETimeOfDay : uint8
-{
-	Morning,
-	Afternoon,
-	Evening,
-	Night,
-	None
-};
-
-UENUM(BlueprintType)
-enum class EStory : uint8
-{
-	PartyPlanner,
-	AssistantChef,
-	None
-};
-
-UENUM(BlueprintType)
-enum class EEventType : uint8
-{
-	HasRope,
-	None
-};
-
-UENUM(BlueprintType)
-enum class ETopic : uint8
-{
-	Tape,
-	Rope,
-	Party,
-	None
-};
 
 /**
  * 
