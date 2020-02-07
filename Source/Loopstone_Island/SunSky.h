@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Loopstone_IslandGameState.h"
 #include "SunSky.generated.h"
 
 UCLASS()
@@ -23,6 +24,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-		void ChangeTimeOfDay();
+		void ChangeTimeOfDay(ETimeOfDay TimeOfDay);
 
 };
