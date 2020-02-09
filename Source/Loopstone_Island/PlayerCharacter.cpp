@@ -50,6 +50,10 @@ void APlayerCharacter::BeginPlay()
 	{
 			UE_LOG(LogTemp, Error, TEXT("CORRECT GAME STATE NOT FOUND"));
 	}
+	else
+	{
+		GameState->Player = this;
+	}
 }
 
 void APlayerCharacter::MoveForward(float Val)
@@ -164,8 +168,14 @@ void APlayerCharacter::Interact()
 	if (Hit.bBlockingHit)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Interact Hit: %s"), *GetDebugName(Hit.GetActor()));
-		if (InteractWithObject(Hit)) return;
-		if (InteractWithIslander(Hit)) return;
+		if (InteractWithObject(Hit))
+		{
+			return;
+		}
+		if (InteractWithIslander(Hit))
+		{
+			return;
+		}
 		UE_LOG(LogTemp, Error, TEXT("Interact Hit: Object not interactable"));
 	}
 	else

@@ -6,6 +6,7 @@
 #include "Dialogue.h"
 #include "DialogueEdge.h"
 #include "DialogueNode.h"
+#include "SunSky.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
@@ -16,12 +17,14 @@ void ALoopstone_IslandGameState::BeginPlay()
 
 	bTopicHasBeenRevealed.SetNum(static_cast<int>(ETopic::None) + 1);
 	UE_LOG(LogTemp, Warning, TEXT("bTopicHasBeenRevealed contains:  %i"), bTopicHasBeenRevealed.Num());
-	
+
 	if (BP_DialogueWidget)
 	{
 		// DialogueWidget = CreateWidget(GetWorld()->GetFirstPlayerController(), BP_DialogueWidget);
 
 		DialogueWidget = CreateWidget<UDialogueWidget>(GetWorld()->GetFirstPlayerController(), BP_DialogueWidget);
+		DialogueWidget->AddToViewport();
+		DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 	if (!DialogueWidget)
 	{
@@ -31,30 +34,18 @@ void ALoopstone_IslandGameState::BeginPlay()
 
 bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction)
 {
-	
 	bEventHasBeenTriggered[static_cast<int>(EventType)] = NewBoolValue;
 
 	UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(EventType),
 	       (NewBoolValue ? TEXT("true") : TEXT("false")));
-	//
-	// if (RunFunction)
-	// {
-	// 	switch (EventType)
-	// 	{
-	// 	case EEventType::HasRope:
-	// 		break;
-	// 	default:
-	// 		break;
-	// 	}
-	// }
 	return true;
 }
 
-void ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
+bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 {
-	if(!Islander || !DialogueWidget)
+	if (!Islander || !DialogueWidget)
 	{
-		return;
+		return false;
 	}
 
 	if (Islander->Dialogue)
@@ -64,31 +55,34 @@ void ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		CurrentIslander = Islander;
 		CurrentDialogue = Islander->Dialogue;
 
-		DialogueWidget->AddToViewport();
+		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-		DisableInput(GetWorld()->GetFirstPlayerController());
+		Player->DisableInput(GetWorld()->GetFirstPlayerController());
 		CurrentDialogue->CurrentDialogueNode = nullptr;
+
 		UpdateDialogueBasedOnResponse(0);
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no dialogue"), *Islander->Name);
 	}
+	return true;
 }
 
 void ALoopstone_IslandGameState::CloseDialogue()
 {
 	if (DialogueWidget)
 	{
-		TArray<FString> temp;
-		// temp.Add(" ");
+		CurrentIslander = nullptr;
 		CurrentDialogue->CurrentDialogueNode = nullptr;
+		CurrentDialogue = nullptr;
+
+		TArray<FString> temp;
 		DialogueWidget->SetDialogueWithOptions(0.05f, " ", temp);
-		// DialogueWidget->RemoveFromViewport();
-			// DialogueWidget->SetDialogueWithOptions(0.01f, DialogueText, Options);
-		DialogueWidget->RemoveFromParent();
+
+		DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
-		EnableInput(GetWorld()->GetFirstPlayerController());
+		Player->EnableInput(GetWorld()->GetFirstPlayerController());
 	}
 }
 
@@ -100,6 +94,7 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 		return false;
 	}
 
+	UE_LOG(LogTemp, Warning, TEXT("trying to update event library"));
 	CurrentDialogue->UpdateEventLibaryBasedOnCurrentNode(this);
 
 	FString DialogueText = "Oh hello....";
@@ -116,4 +111,20 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	DialogueWidget->SetDialogueWithOptions(0.01f, DialogueText, Options);
 
 	return true;
+}
+
+void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
+{
+	CurrentTimeOfDay = NewTimeOfDay;
+	if (SunSky)
+	{
+		SunSky->ChangeTimeOfDay(NewTimeOfDay);
+	}
+}
+
+void ALoopstone_IslandGameState::ChangeStory(EStory NewStory)
+{
+	CurrentStory = NewStory;
+
+	// Do functionality if any.
 }

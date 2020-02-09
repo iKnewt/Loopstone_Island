@@ -49,12 +49,20 @@ FLinearColor UDialogueNode::GetBackgroundColor() const
 		return Super::GetBackgroundColor();
 	}
 
-	switch (DialoguerPosition)
+	switch (NodeColor)
 	{
-	case EDialoguerPosition::Left:
+	case EBackgroundColor::Color1:
 		return Graph->Color1;
-	case EDialoguerPosition::Right:
+	case EBackgroundColor::Color2:
 		return Graph->Color2;
+	case EBackgroundColor::Color3:
+		return Graph->Color3;
+	case EBackgroundColor::Color4:
+		return Graph->Color4;
+	case EBackgroundColor::Color5:
+		return Graph->Color5;
+	case EBackgroundColor::Color6:
+		return Graph->Color6;
 	default:
 		return FLinearColor::Black;
 	}

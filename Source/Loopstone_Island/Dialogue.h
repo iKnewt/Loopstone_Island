@@ -30,11 +30,17 @@ public:
 
 
 	UPROPERTY(EditDefaultsOnly, Category = "Color")
-	FLinearColor Color2;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Color")
 	FLinearColor Color1;
-
+	UPROPERTY(EditDefaultsOnly, Category = "Color")
+	FLinearColor Color2;
+	UPROPERTY(EditDefaultsOnly, Category = "Color")
+	FLinearColor Color3;
+	UPROPERTY(EditDefaultsOnly, Category = "Color")
+	FLinearColor Color4;
+	UPROPERTY(EditDefaultsOnly, Category = "Color")
+	FLinearColor Color5;
+	UPROPERTY(EditDefaultsOnly, Category = "Color")
+	FLinearColor Color6;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	TArray<bool> Conditions;

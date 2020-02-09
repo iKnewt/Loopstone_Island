@@ -16,6 +16,10 @@ UDialogue::UDialogue()
 
 	Color1 = FLinearColor::Red;
 	Color2 = FLinearColor::Blue;
+	Color3 = FLinearColor::Green;
+	Color4 = FLinearColor(0.0f, 1.0f, 1.0f);
+	Color5 = FLinearColor(1.0f, 1.0f, 0.0f);
+	Color6 = FLinearColor(1.0f, 0.0f, 1.0f);
 
 	Name = "Dialogue";
 }
@@ -57,6 +61,9 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 		auto DialogueNode = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
 		if (DialogueNode)
 		{
+			// todo make conditions a separate function
+			// CHECK CONDITIONS
+
 			for (auto Element : DialogueNode->EventBoolsConditions)
 			{
 				// if any element doesn't match the library it shouldn't display
@@ -73,6 +80,18 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 					return false;
 				}
 			}
+
+			if (DialogueNode->TimeOfDayCondition != ETimeOfDay::None &&
+				DialogueNode->TimeOfDayCondition != GameState->CurrentTimeOfDay)
+			{
+				return false;
+			}
+			if (DialogueNode->ActiveStoryCondition != EStory::None &&
+				DialogueNode->ActiveStoryCondition != GameState->CurrentStory)
+			{
+				return false;
+			}
+
 			// only happens if dialogue passes all conditions
 			CurrentDialogueNode = DialogueNode;
 		}
@@ -92,7 +111,9 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 	{
 		UDialogueEdge* DialogueEdge = dynamic_cast<UDialogueEdge*>(EdgeToCheck.Value);
 		bool Visible = true;
-		// check for conditions  conditions
+
+		// todo make conditions a separate function
+		// CHECK CONDITIONS
 		for (auto EventCondition : DialogueEdge->EventBoolsConditions)
 		{
 			// if any element doesn't match the library it should be skipped
@@ -109,6 +130,18 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 				Visible = false;
 			}
 		}
+
+		if (DialogueEdge->TimeOfDayCondition != ETimeOfDay::None &&
+			DialogueEdge->TimeOfDayCondition != GameState->CurrentTimeOfDay)
+		{
+			Visible = false;
+		}
+		if (DialogueEdge->ActiveStoryCondition != EStory::None &&
+			DialogueEdge->ActiveStoryCondition != GameState->CurrentStory)
+		{
+			Visible = false;
+		}
+		
 		if (Visible)
 		{
 			CurrentAvailableOptions.Add(DialogueEdge);
@@ -125,6 +158,11 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 	}
 	else if (DialogueText == "CONDITION")
 	{
+		// if end node
+		if(CurrentAvailableOptions.Num() == 0)
+		{
+			return false;
+		}
 		// runs until an acceptable child is found
 		for (int i = 0; i < CurrentAvailableOptions.Num(); i++)
 		{
@@ -146,6 +184,8 @@ void UDialogue::UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* 
 		return;
 	}
 
+	// todo make this code pretty
+	// CHANGE GAME STATE
 	if (CurrentDialogueNode)
 	{
 		for (auto Element : CurrentDialogueNode->EventBoolsToChange)
@@ -157,10 +197,21 @@ void UDialogue::UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* 
 		}
 		for (auto Element2 : CurrentDialogueNode->TopicBoolsToChange)
 		{
-
 			GameState->bTopicHasBeenRevealed[static_cast<int>(Element2.Key)] = Element2.Value;
 			// GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
 		}
+
+		if (CurrentDialogueNode->TimeOfDayChange != ETimeOfDay::None)
+		{
+			GameState->ChangeTimeOfDay(CurrentDialogueNode->TimeOfDayChange);
+			// do other stuff to change day??
+		}
+		if (CurrentDialogueNode->ActiveStoryChange != EStory::None)
+		{
+			GameState->ChangeStory(CurrentDialogueNode->ActiveStoryChange);
+			// do other stuff to change story??
+		}
+		
 	}
 }
 

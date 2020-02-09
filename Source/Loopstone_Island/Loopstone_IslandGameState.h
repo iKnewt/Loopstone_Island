@@ -43,12 +43,20 @@ public:
 	
 	class UDialogueWidget* DialogueWidget = nullptr;
 
+	class ASunSky* SunSky = nullptr;
+
+	class APlayerCharacter* Player = nullptr;
+
 	/**
 * Opens Dialogue
 */
-	void StartDialogue(ABaseIslanderCharacter* Islander);
+	bool StartDialogue(ABaseIslanderCharacter* Islander);
 
 	void CloseDialogue();
 
 	bool UpdateDialogueBasedOnResponse(int ResponseID);
+
+	void ChangeTimeOfDay(ETimeOfDay NewTimeOfDay);
+
+	void ChangeStory(EStory NewStory);
 };

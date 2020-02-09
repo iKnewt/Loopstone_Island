@@ -19,10 +19,16 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
 	FString OptionText = "Next...";
+	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
+	// EBackgroundColor EdgeColor;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
 	TMap<EEventType, bool> EventBoolsConditions;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
 	TMap<ETopic, bool> TopicBoolsConditions;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
+	ETimeOfDay TimeOfDayCondition = ETimeOfDay::None;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
+	EStory ActiveStoryCondition = EStory::None;
+	
 };
