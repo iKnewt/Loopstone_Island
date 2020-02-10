@@ -102,6 +102,13 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	// update the dialogue widget
 	DialogueText = CurrentDialogue->CurrentDialogueNode->DialogueText.ToString();
 
+	// todo find better solution to catch this
+	if (DialogueText == "CONDITION")
+	{
+		CloseDialogue();
+		return false;
+	}
+
 	TArray<FString> Options;
 	for (auto Option : CurrentDialogue->CurrentAvailableOptions)
 	{

@@ -172,7 +172,7 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 			}
 		}
 	}
-
+	
 	return true;
 }
 
