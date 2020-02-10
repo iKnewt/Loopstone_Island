@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameStateEnums.h"
 #include "InteractableObjectBase.generated.h"
 
 
@@ -20,6 +21,32 @@ public:
 	virtual void Interact(){}
 	virtual void VisualizeInteraction(bool bActivate){}
 	bool bVisualizingInteraction = false;
+
+
+
+
+
+
+
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
+		TMap<EEventType, bool> EventBoolsConditions;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
+		TMap<ETopic, bool> TopicBoolsConditions;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
+		ETimeOfDay TimeOfDayCondition = ETimeOfDay::None;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
+		EStory ActiveStoryCondition = EStory::None;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
+		TMap<ETopic, bool> TopicBoolsToChange;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
+		TMap<EEventType, bool> EventBoolsToChange;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
+		ETimeOfDay TimeOfDayChange = ETimeOfDay::None;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
+		EStory ActiveStoryChange = EStory::None;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

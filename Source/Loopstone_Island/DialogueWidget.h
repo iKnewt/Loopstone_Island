@@ -35,7 +35,7 @@ public:
 	 * Should be run whenever a new islander speaks.
 	 */
 	UFUNCTION(BlueprintCallable)
-		void SetSpeakerName(FText Name) const;
+		void SetSpeakerName(FString Name) const;
 
 	
 	UFUNCTION()

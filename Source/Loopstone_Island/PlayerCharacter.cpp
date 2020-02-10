@@ -152,10 +152,10 @@ bool APlayerCharacter::InteractWithIslander(FHitResult Hit)
 
 bool APlayerCharacter::InteractWithObject(FHitResult Hit)
 {
-	AInteractableObjectBase* InteractiveObject = Cast<AInteractableObjectBase>(Hit.Actor);
-	if (InteractiveObject)
+	AInteractableObjectBase* InteractableObject = Cast<AInteractableObjectBase>(Hit.Actor);
+	if (InteractableObject)
 	{
-		InteractiveObject->Interact();
+		GameState->InteractWithObject(InteractableObject);
 		return true;
 	}
 	return false;

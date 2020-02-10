@@ -7,6 +7,7 @@
 #include "DialogueEdge.h"
 #include "DialogueNode.h"
 #include "SunSky.h"
+#include "InteractableObjectBase.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
@@ -38,6 +39,98 @@ bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 
 	UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(EventType),
 	       (NewBoolValue ? TEXT("true") : TEXT("false")));
+
+	if (RunFunction)
+	{
+		switch (EventType)
+		{
+		case EEventType::HasTape:
+		{
+			if (NewBoolValue == true) // add to inventory
+			{
+			}
+			else // remove from inventory
+			{
+			}
+			break;
+		}
+		case EEventType::HasRope:
+			break;
+		case EEventType::HasKnife:
+			break;
+		case EEventType::None:
+			break;
+		default:;
+		}
+	}
+
+	return true;
+}
+
+bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* InteractableObject)
+{
+	// CHECK CONDITIONS
+
+	// todo make better implementation of condition checking
+	for (auto Element : InteractableObject->EventBoolsConditions)
+	{
+		// if any element doesn't match the library it shouldn't display
+		if (Element.Value != this->bEventHasBeenTriggered[static_cast<int>(Element.Key)])
+		{
+			return false;
+		}
+	}
+	for (auto Element : InteractableObject->TopicBoolsConditions)
+	{
+		// if any element doesn't match the library it shouldn't display
+		if (Element.Value != this->bTopicHasBeenRevealed[static_cast<int>(Element.Key)])
+		{
+			return false;
+		}
+	}
+
+	if (InteractableObject->TimeOfDayCondition != ETimeOfDay::None &&
+		InteractableObject->TimeOfDayCondition != this->CurrentTimeOfDay)
+	{
+		return false;
+	}
+	if (InteractableObject->ActiveStoryCondition != EStory::None &&
+		InteractableObject->ActiveStoryCondition != this->CurrentStory)
+	{
+		return false;
+	}
+
+
+	// if all conditions pass
+
+	// do any local changes to the object
+	InteractableObject->Interact();
+
+	// CHECK GLOBAL EVENT TRIGGER
+	// todo make better implementation for event trigger
+	for (auto Element : InteractableObject->EventBoolsToChange)
+	{
+		// if (GameState->TriggerEvent(Element.Key, Element.Value))
+		// {
+		// }
+		this->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
+	}
+	for (auto Element2 : InteractableObject->TopicBoolsToChange)
+	{
+		this->bTopicHasBeenRevealed[static_cast<int>(Element2.Key)] = Element2.Value;
+		// GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
+	}
+
+	if (InteractableObject->TimeOfDayChange != ETimeOfDay::None)
+	{
+		this->ChangeTimeOfDay(InteractableObject->TimeOfDayChange);
+		// do other stuff to change day??
+	}
+	if (InteractableObject->ActiveStoryChange != EStory::None)
+	{
+		this->ChangeStory(InteractableObject->ActiveStoryChange);
+		// do other stuff to change story??
+	}
 	return true;
 }
 
@@ -60,6 +153,7 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		Player->DisableInput(GetWorld()->GetFirstPlayerController());
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 
+		DialogueWidget->SetSpeakerName(Islander->Name);
 		UpdateDialogueBasedOnResponse(0);
 	}
 	else

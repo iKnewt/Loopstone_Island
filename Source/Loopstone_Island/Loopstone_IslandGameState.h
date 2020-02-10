@@ -36,7 +36,7 @@ public:
 	class UDialogue* CurrentDialogue = nullptr;
 
 	UFUNCTION()
-	bool TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction = false);
+	bool TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction = true);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
 	TSubclassOf<class UDialogueWidget> BP_DialogueWidget;
@@ -50,6 +50,8 @@ public:
 	/**
 * Opens Dialogue
 */
+	bool InteractWithObject(class AInteractableObjectBase* InteractableObject);
+	
 	bool StartDialogue(ABaseIslanderCharacter* Islander);
 
 	void CloseDialogue();
