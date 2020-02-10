@@ -26,6 +26,10 @@ class LOOPSTONE_ISLAND_API UInventoryWidget : public UUserWidget
 		
 	UFUNCTION(BlueprintCallable)
 	void AddItem(EItem Item);
+	
+	UFUNCTION(BlueprintCallable)
+		void RemoveItem(EItem Item);
+	
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_Tape;
 
