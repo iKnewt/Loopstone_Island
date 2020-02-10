@@ -15,8 +15,8 @@ UCLASS()
 class LOOPSTONE_ISLAND_API AInteractableDoor : public AInteractableObjectBase
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AInteractableDoor();
 
@@ -30,10 +30,6 @@ public:
 	void VisualizeInteraction(bool bActivate) override;
 
 
-
-	
-	
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -46,13 +42,13 @@ protected:
 	UCurveFloat* CurveFloat;
 
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* DoorMesh = nullptr;
+	UStaticMeshComponent* DoorMesh = nullptr;
 	//door offset = 43
 
 	UFUNCTION()
-		void PlayAnimation();
+	void PlayAnimation();
 	UFUNCTION()
-		void UpdateAnimation(float Value);
+	void UpdateAnimation(float Value);
 
 	void CreateDynamicMaterial();
 
@@ -60,10 +56,7 @@ protected:
 
 	bool bGlowing = false;
 
-
-
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 };

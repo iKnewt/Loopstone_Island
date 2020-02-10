@@ -16,17 +16,21 @@ class LOOPSTONE_ISLAND_API AInteractableObjectBase : public AActor
 	
 public:	
 	// Sets default values for this actor's properties
-	AInteractableObjectBase();
+	AInteractableObjectBase(){}
 
 	virtual void Interact(){}
 	virtual void VisualizeInteraction(bool bActivate){}
 	bool bVisualizingInteraction = false;
 
 
-
-
-
-
+	// UPROPERTY(VisibleAnywhere)
+	// 	UStaticMeshComponent* ObjectMesh = nullptr;
+	//
+	// void CreateDynamicMaterial();
+	//
+	// UMaterialInstanceDynamic* Material = nullptr;
+	//
+	// bool bGlowing = false;
 
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
