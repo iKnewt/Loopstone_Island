@@ -17,6 +17,7 @@ class LOOPSTONE_ISLAND_API ALoopstone_IslandGameState : public AGameStateBase
 	GENERATED_BODY()
 
 	void BeginPlay() override;
+	void EditInventory(bool NewBoolValue);
 
 public:
 	UPROPERTY()
@@ -38,10 +39,17 @@ public:
 	UFUNCTION()
 	bool TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction = true);
 
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
 	TSubclassOf<class UDialogueWidget> BP_DialogueWidget;
 	
 	class UDialogueWidget* DialogueWidget = nullptr;
+
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+		TSubclassOf<class UInventoryWidget> BP_InventoryWidget;
+
+	class UInventoryWidget* InventoryWidget = nullptr;
 
 	class ASunSky* SunSky = nullptr;
 

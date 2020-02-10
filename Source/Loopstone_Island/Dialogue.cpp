@@ -141,7 +141,7 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 		{
 			Visible = false;
 		}
-		
+
 		if (Visible)
 		{
 			CurrentAvailableOptions.Add(DialogueEdge);
@@ -159,7 +159,7 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 	else if (DialogueText == "CONDITION")
 	{
 		// if end node
-		if(CurrentAvailableOptions.Num() == 0)
+		if (CurrentAvailableOptions.Num() == 0)
 		{
 			return false;
 		}
@@ -172,7 +172,7 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 			}
 		}
 	}
-	
+
 	return true;
 }
 
@@ -190,10 +190,7 @@ void UDialogue::UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* 
 	{
 		for (auto Element : CurrentDialogueNode->EventBoolsToChange)
 		{
-			// if (GameState->TriggerEvent(Element.Key, Element.Value))
-			// {
-			// }
-			GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
+			GameState->TriggerEvent(Element.Key, Element.Value);
 		}
 		for (auto Element2 : CurrentDialogueNode->TopicBoolsToChange)
 		{
@@ -211,7 +208,6 @@ void UDialogue::UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* 
 			GameState->ChangeStory(CurrentDialogueNode->ActiveStoryChange);
 			// do other stuff to change story??
 		}
-		
 	}
 }
 

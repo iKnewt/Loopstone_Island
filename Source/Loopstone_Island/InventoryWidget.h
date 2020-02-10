@@ -23,21 +23,23 @@ UCLASS()
 class LOOPSTONE_ISLAND_API UInventoryWidget : public UUserWidget
 {
 	GENERATED_BODY()
-		
+
+public:
+	void EditInventoryItem(EItem Item, bool TrueToAddFalseToRemove);
+
+private:
 	UFUNCTION(BlueprintCallable)
 	void AddItem(EItem Item);
-	
+
 	UFUNCTION(BlueprintCallable)
-		void RemoveItem(EItem Item);
-	
+	void RemoveItem(EItem Item);
+
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_Tape;
 
 	UPROPERTY(meta = (BindWidget))
-		UImage* Image_Rope;
+	UImage* Image_Rope;
 
 	UPROPERTY(meta = (BindWidget))
-		UImage* Image_Knife;
-
-	
+	UImage* Image_Knife;
 };

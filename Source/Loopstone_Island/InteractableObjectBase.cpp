@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "InteractableObjectBase.h"
 #include "Components/StaticMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
-#include "InteractableObjectBase.h"
 
 // Sets default values
 // AInteractableObjectBase::AInteractableObjectBase()

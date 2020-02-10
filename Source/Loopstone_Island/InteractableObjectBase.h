@@ -8,18 +8,25 @@
 #include "InteractableObjectBase.generated.h"
 
 
-
 UCLASS()
 class LOOPSTONE_ISLAND_API AInteractableObjectBase : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	AInteractableObjectBase(){}
 
-	virtual void Interact(){}
-	virtual void VisualizeInteraction(bool bActivate){}
+public:
+	// Sets default values for this actor's properties
+	AInteractableObjectBase()
+	{
+	}
+
+	virtual void Interact()
+	{
+	}
+
+	virtual void VisualizeInteraction(bool bActivate)
+	{
+	}
+
 	bool bVisualizingInteraction = false;
 
 
@@ -32,31 +39,30 @@ public:
 	//
 	// bool bGlowing = false;
 
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
-		TMap<EEventType, bool> EventBoolsConditions;
+	TMap<EEventType, bool> EventBoolsConditions;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
-		TMap<ETopic, bool> TopicBoolsConditions;
+	TMap<ETopic, bool> TopicBoolsConditions;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
-		ETimeOfDay TimeOfDayCondition = ETimeOfDay::None;
+	ETimeOfDay TimeOfDayCondition = ETimeOfDay::None;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
-		EStory ActiveStoryCondition = EStory::None;
-	
+	EStory ActiveStoryCondition = EStory::None;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
-		TMap<ETopic, bool> TopicBoolsToChange;
+	TMap<ETopic, bool> TopicBoolsToChange;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
-		TMap<EEventType, bool> EventBoolsToChange;
+	TMap<EEventType, bool> EventBoolsToChange;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
-		ETimeOfDay TimeOfDayChange = ETimeOfDay::None;
+	ETimeOfDay TimeOfDayChange = ETimeOfDay::None;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
-		EStory ActiveStoryChange = EStory::None;
-	
+	EStory ActiveStoryChange = EStory::None;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 };

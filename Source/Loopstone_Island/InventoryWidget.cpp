@@ -3,6 +3,19 @@
 
 #include "InventoryWidget.h"
 #include "Image.h"
+
+void UInventoryWidget::EditInventoryItem(EItem Item, bool TrueToAddFalseToRemove)
+{
+	if(TrueToAddFalseToRemove)
+	{
+		AddItem(Item);
+	}
+	else
+	{
+		RemoveItem(Item);
+	}
+}
+
 void UInventoryWidget::AddItem(EItem Item)
 {
 	switch(Item)

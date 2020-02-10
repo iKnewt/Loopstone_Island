@@ -8,6 +8,7 @@
 #include "DialogueNode.h"
 #include "SunSky.h"
 #include "InteractableObjectBase.h"
+#include "InventoryWidget.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
@@ -19,10 +20,9 @@ void ALoopstone_IslandGameState::BeginPlay()
 	bTopicHasBeenRevealed.SetNum(static_cast<int>(ETopic::None) + 1);
 	UE_LOG(LogTemp, Warning, TEXT("bTopicHasBeenRevealed contains:  %i"), bTopicHasBeenRevealed.Num());
 
+	
 	if (BP_DialogueWidget)
 	{
-		// DialogueWidget = CreateWidget(GetWorld()->GetFirstPlayerController(), BP_DialogueWidget);
-
 		DialogueWidget = CreateWidget<UDialogueWidget>(GetWorld()->GetFirstPlayerController(), BP_DialogueWidget);
 		DialogueWidget->AddToViewport();
 		DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
@@ -31,6 +31,18 @@ void ALoopstone_IslandGameState::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("DIALOGUE WIDGET NOT CREATED"));
 	}
+
+	if (BP_InventoryWidget)
+	{
+		InventoryWidget = CreateWidget<UInventoryWidget>(GetWorld()->GetFirstPlayerController(), BP_InventoryWidget);
+		InventoryWidget->AddToViewport();
+	}
+	if (!InventoryWidget)
+	{
+		UE_LOG(LogTemp, Error, TEXT("INVENTORY WIDGET NOT CREATED"));
+	}
+
+	
 }
 
 bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction)
@@ -40,24 +52,30 @@ bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 	UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(EventType),
 	       (NewBoolValue ? TEXT("true") : TEXT("false")));
 
+	if(!InventoryWidget)
+	{
+		return true;
+	}
+	
 	if (RunFunction)
 	{
 		switch (EventType)
 		{
 		case EEventType::HasTape:
 		{
-			if (NewBoolValue == true) // add to inventory
-			{
-			}
-			else // remove from inventory
-			{
-			}
+			InventoryWidget->EditInventoryItem(EItem::Tape, NewBoolValue);
 			break;
 		}
 		case EEventType::HasRope:
+		{
+			InventoryWidget->EditInventoryItem(EItem::Rope, NewBoolValue);
 			break;
+		}
 		case EEventType::HasKnife:
+		{
+			InventoryWidget->EditInventoryItem(EItem::Knife, NewBoolValue);
 			break;
+		}
 		case EEventType::None:
 			break;
 		default:;
@@ -110,10 +128,7 @@ bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* Int
 	// todo make better implementation for event trigger
 	for (auto Element : InteractableObject->EventBoolsToChange)
 	{
-		// if (GameState->TriggerEvent(Element.Key, Element.Value))
-		// {
-		// }
-		this->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
+		this->TriggerEvent(Element.Key, Element.Value);
 	}
 	for (auto Element2 : InteractableObject->TopicBoolsToChange)
 	{
@@ -149,8 +164,9 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		CurrentDialogue = Islander->Dialogue;
 
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
+		// DialogueWidget->SetUserFocus(GetWorld()->GetFirstPlayerController());
+		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-		Player->DisableInput(GetWorld()->GetFirstPlayerController());
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 
 		DialogueWidget->SetSpeakerName(Islander->Name);
@@ -176,7 +192,7 @@ void ALoopstone_IslandGameState::CloseDialogue()
 
 		DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
-		Player->EnableInput(GetWorld()->GetFirstPlayerController());
+		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameOnly());
 	}
 }
 
