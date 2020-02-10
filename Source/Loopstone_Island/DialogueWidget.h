@@ -30,6 +30,14 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 		void SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> InResponses, UFont* Font = nullptr);
+	/**
+	 * Sets the speaker's name.
+	 * Should be run whenever a new islander speaks.
+	 */
+	UFUNCTION(BlueprintCallable)
+		void SetSpeakerName(FText Name);
+
+	
 	UFUNCTION()
 	void onOption0Pressed()
 	{
@@ -108,6 +116,9 @@ private:
 	//Dialogue Text
 	UPROPERTY(meta = (BindWidget))
 		UTextBlock* Dialogue_Text;
+
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* Speaker_Name;
 
 	UPROPERTY()
 		TArray<UButton*> Buttons;

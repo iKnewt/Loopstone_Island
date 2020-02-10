@@ -42,6 +42,11 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 	GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::AppendDialogueString, TextSpeedChecker,true);
 }
 
+void UDialogueWidget::SetSpeakerName(FText Name) const
+{
+	Speaker_Name->SetText(Name);
+}
+
 bool UDialogueWidget::Initialize()
 {
 	bool init = Super::Initialize();
