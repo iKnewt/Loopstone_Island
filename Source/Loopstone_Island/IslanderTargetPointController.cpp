@@ -35,25 +35,25 @@ void AIslanderTargetPointController::BeginPlay()
 	Super::BeginPlay();
 	SetupIslandersArray();
 	SetupIslandPositions();
-	for(int i = 0; i < Islanders.Num(); i++)
-	{
-		if(IsValid(Islanders[i]))
-		{
-			UE_LOG(LogTemp, Error, TEXT("VALUE: %i"), int32(Islanders[i]->IslanderType));
-		}
-		else
-		{
-			UE_LOG(LogTemp, Error, TEXT("AYO NOTHING HERE "));
-		}
+	//for(int i = 0; i < Islanders.Num(); i++)
+	//{
+	//	if(IsValid(Islanders[i]))
+	//	{
+	//		UE_LOG(LogTemp, Error, TEXT("VALUE: %i"), int32(Islanders[i]->IslanderType));
+	//	}
+	//	else
+	//	{
+	//		UE_LOG(LogTemp, Error, TEXT("AYO NOTHING HERE "));
+	//	}
 
-	}
-	for(int i = 0; i < Points.Num(); i++)
-	{
-		for(int j = 0; j < Points[i].Num(); j++)
-		{
-			UE_LOG(LogTemp, Error, TEXT("THING: %i, THING2: %i"),i,j);
-		}
-	}
+	//}
+	//for(int i = 0; i < Points.Num(); i++)
+	//{
+	//	for(int j = 0; j < Points[i].Num(); j++)
+	//	{
+	//		UE_LOG(LogTemp, Error, TEXT("THING: %i, THING2: %i"),i,j);
+	//	}
+	//}
 }
 
 void AIslanderTargetPointController::SetupIslandersArray()

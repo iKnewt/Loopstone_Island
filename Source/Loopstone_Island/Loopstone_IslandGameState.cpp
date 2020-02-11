@@ -62,7 +62,8 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-		Player->DisableInput(GetWorld()->GetFirstPlayerController());
+		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
+		
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 
 		UpdateDialogueBasedOnResponse(0);
