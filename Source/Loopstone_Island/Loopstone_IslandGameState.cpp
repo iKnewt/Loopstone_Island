@@ -7,6 +7,8 @@
 #include "DialogueEdge.h"
 #include "DialogueNode.h"
 #include "SunSky.h"
+#include "Kismet/GameplayStatics.h"
+#include "IslanderTargetPointController.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
@@ -30,6 +32,9 @@ void ALoopstone_IslandGameState::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("DIALOGUE WIDGET NOT CREATED"));
 	}
+
+	//Spawning target point controllers
+	TargetPointController = Cast<AIslanderTargetPointController>(GetWorld()->SpawnActor(AIslanderTargetPointController::StaticClass()));
 }
 
 bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction)
@@ -126,6 +131,10 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 	if (SunSky)
 	{
 		SunSky->ChangeTimeOfDay(NewTimeOfDay);
+		if(IsValid(TargetPointController))
+		{
+			TargetPointController->MoveIslandersToPosition(NewTimeOfDay);
+		}
 	}
 }
 
