@@ -8,6 +8,7 @@
 #include "GameStateEnums.h"
 #include "Loopstone_IslandGameState.generated.h"
 
+
 /**
  * 
  */
@@ -54,6 +55,8 @@ public:
 	class ASunSky* SunSky = nullptr;
 
 	class APlayerCharacter* Player = nullptr;
+
+	class AIslanderTargetPointController* TargetPointController = nullptr;
 
 	/**
 * Opens Dialogue

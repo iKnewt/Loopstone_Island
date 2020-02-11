@@ -9,6 +9,8 @@
 #include "SunSky.h"
 #include "InteractableObjectBase.h"
 #include "InventoryWidget.h"
+#include "Kismet/GameplayStatics.h"
+#include "IslanderTargetPointController.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
@@ -20,7 +22,7 @@ void ALoopstone_IslandGameState::BeginPlay()
 	bTopicHasBeenRevealed.SetNum(static_cast<int>(ETopic::None) + 1);
 	UE_LOG(LogTemp, Warning, TEXT("bTopicHasBeenRevealed contains:  %i"), bTopicHasBeenRevealed.Num());
 
-	
+
 	if (BP_DialogueWidget)
 	{
 		DialogueWidget = CreateWidget<UDialogueWidget>(GetWorld()->GetFirstPlayerController(), BP_DialogueWidget);
@@ -42,7 +44,8 @@ void ALoopstone_IslandGameState::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("INVENTORY WIDGET NOT CREATED"));
 	}
 
-	
+	//Spawning target point controllers
+	TargetPointController = Cast<AIslanderTargetPointController>(GetWorld()->SpawnActor(AIslanderTargetPointController::StaticClass()));
 }
 
 bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction)
@@ -56,7 +59,7 @@ bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 	{
 		return true;
 	}
-	
+
 	if (RunFunction)
 	{
 		switch (EventType)
@@ -163,6 +166,8 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
 		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
+
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 
 		DialogueWidget->SetSpeakerName(Islander->Name);
@@ -238,6 +243,10 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 	if (SunSky)
 	{
 		SunSky->ChangeTimeOfDay(NewTimeOfDay);
+		if(IsValid(TargetPointController))
+		{
+			TargetPointController->MoveIslandersToPosition(NewTimeOfDay);
+		}
 	}
 }
 

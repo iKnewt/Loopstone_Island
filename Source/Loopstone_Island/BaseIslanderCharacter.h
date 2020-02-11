@@ -5,18 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "PaperFlipBookComponent.h"
+#include "GameStateEnums.h"
 #include "BaseIslanderCharacter.generated.h"
 
-UENUM(BlueprintType)
-enum class EIslanderType : uint8
-{
-	Sboi,
-	Child,
-	Mother,
-	Farmer,
-	Innkeeper,
-	Doctor
-};
+
 
 UENUM(BlueprintType)
 enum class EMouthExpression : uint8
