@@ -133,18 +133,15 @@ bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* Int
 	for (auto Element2 : InteractableObject->TopicBoolsToChange)
 	{
 		this->bTopicHasBeenRevealed[static_cast<int>(Element2.Key)] = Element2.Value;
-		// GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)] = Element.Value;
 	}
 
 	if (InteractableObject->TimeOfDayChange != ETimeOfDay::None)
 	{
 		this->ChangeTimeOfDay(InteractableObject->TimeOfDayChange);
-		// do other stuff to change day??
 	}
 	if (InteractableObject->ActiveStoryChange != EStory::None)
 	{
 		this->ChangeStory(InteractableObject->ActiveStoryChange);
-		// do other stuff to change story??
 	}
 	return true;
 }
@@ -164,7 +161,6 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		CurrentDialogue = Islander->Dialogue;
 
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
-		// DialogueWidget->SetUserFocus(GetWorld()->GetFirstPlayerController());
 		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 		CurrentDialogue->CurrentDialogueNode = nullptr;
@@ -219,6 +215,12 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 		return false;
 	}
 
+	// Change facial expression on islander
+	CurrentIslander->ChangeMouthExpression(CurrentDialogue->CurrentDialogueNode->MouthExpression);
+	CurrentIslander->ChangeEyeExpression(CurrentDialogue->CurrentDialogueNode->RightEyeExpression, CurrentDialogue->CurrentDialogueNode->LeftEyeExpression);
+	// Change animation??
+
+	// Update widget
 	TArray<FString> Options;
 	for (auto Option : CurrentDialogue->CurrentAvailableOptions)
 	{

@@ -97,14 +97,6 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 		}
 	}
 
-	// todo remove from this class or at least do a check
-	// if (CurrentIslander)
-	// {
-	// 	CurrentIslander->ChangeEyeExpression(CurrentDialogueNode->RightEyeExpression,
-	// 	                                     CurrentDialogueNode->LeftEyeExpression);
-	// 	CurrentIslander->ChangeMouthExpression(CurrentDialogueNode->MouthExpression);
-	// }
-
 	// update current options
 	CurrentAvailableOptions.Empty();
 	for (auto EdgeToCheck : CurrentDialogueNode->Edges)
