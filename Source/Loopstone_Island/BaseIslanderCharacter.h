@@ -29,17 +29,16 @@ enum class EMouthExpression : uint8
 UENUM(BlueprintType)
 enum class EEyeExpression : uint8
 {
-	Eye_Open,
 	Eye_Blinking,
+	Eye_Calm,
+	Eye_Content,
+	Eye_Happy,
+	Eye_Excited,
+	Eye_Sigh,
+	Eye_Sad,
+	Eye_Skeptic,
 	Eye_Angry,
 	Eye_Shock,
-	Eye_Skeptic,
-	Eye_HalfOpen,
-	Eye_Closed_Neutral,
-	Eye_Closed_Happy,
-	Eye_Closed_Sigh,
-	Eye_Closed_Calm,
-	Eye_Closed_Excited,
 	None
 };
 

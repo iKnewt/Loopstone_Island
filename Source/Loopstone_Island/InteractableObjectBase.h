@@ -19,9 +19,8 @@ public:
 	{
 	}
 
-	virtual void Interact()
-	{
-	}
+	// UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	virtual void Interact();
 
 	virtual void VisualizeInteraction(bool bActivate)
 	{

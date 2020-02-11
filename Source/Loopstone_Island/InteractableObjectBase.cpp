@@ -30,6 +30,10 @@
 // 	ObjectMesh->SetMaterial(0, Material);
 // }
 
+void AInteractableObjectBase::Interact()
+{
+}
+
 // Called when the game starts or when spawned
 void AInteractableObjectBase::BeginPlay()
 {
