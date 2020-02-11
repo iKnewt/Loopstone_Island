@@ -55,7 +55,7 @@ enum class EBackgroundColor : uint8
 UENUM(BlueprintType)
 enum class EIslanderType : uint8
 {
-	Sboi,
+	SB,
 	Child,
 	Mother,
 	Farmer,
