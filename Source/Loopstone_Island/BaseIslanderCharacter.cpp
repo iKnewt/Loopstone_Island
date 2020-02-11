@@ -8,16 +8,19 @@
 // Sets default values
 ABaseIslanderCharacter::ABaseIslanderCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	
+
 	RightEye = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("RightEye"));
 	LeftEye = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("LeftEye"));
 	Mouth = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("MouthPlate"));
-	RightEye->SetupAttachment(GetMesh(),FName("HeadSocket"));
-	LeftEye->SetupAttachment(GetMesh(),FName("HeadSocket"));
+	RightEye->SetupAttachment(GetMesh(), FName("HeadSocket"));
+	LeftEye->SetupAttachment(GetMesh(), FName("HeadSocket"));
 	Mouth->SetupAttachment(GetMesh(), FName("HeadSocket"));
+
+	EyeExpressions.SetNum(static_cast<int>(EEyeExpression::None));
+	MouthExpressions.SetNum(static_cast<int>(EMouthExpression::None));
 }
 
 // Called when the game starts or when spawned
@@ -43,7 +46,13 @@ void ABaseIslanderCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 void ABaseIslanderCharacter::ChangeMouthExpression(const EMouthExpression MouthExpression)
 {
-	switch(MouthExpression)
+	// testing arrayed
+	Mouth->SetFlipbook(MouthExpressions[static_cast<int>(MouthExpression)]);
+	Mouth->PlayFromStart();
+
+	return;
+
+	switch (MouthExpression)
 	{
 	case EMouthExpression::Mouth_Talk:
 		Mouth->SetFlipbook(Mouth_Talk);
@@ -58,6 +67,14 @@ void ABaseIslanderCharacter::ChangeMouthExpression(const EMouthExpression MouthE
 
 void ABaseIslanderCharacter::ChangeEyeExpression(EEyeExpression RightEyeExpression, EEyeExpression LeftEyeExpression)
 {
+	RightEye->SetFlipbook(EyeExpressions[static_cast<int>(RightEyeExpression)]);
+	LeftEye->SetFlipbook(EyeExpressions[static_cast<int>(LeftEyeExpression)]);
+
+	RightEye->PlayFromStart();
+	LeftEye->PlayFromStart();
+
+	return;
+
 	UE_LOG(LogTemp, Warning, TEXT("CHANGING EYE"))
 	switch (RightEyeExpression)
 	{
@@ -71,7 +88,7 @@ void ABaseIslanderCharacter::ChangeEyeExpression(EEyeExpression RightEyeExpressi
 		break;
 	default: ;
 	}
-	switch(LeftEyeExpression)
+	switch (LeftEyeExpression)
 	{
 	case EEyeExpression::Eye_Open:
 		LeftEye->SetFlipbook(OpenEye);
@@ -84,5 +101,3 @@ void ABaseIslanderCharacter::ChangeEyeExpression(EEyeExpression RightEyeExpressi
 	RightEye->PlayFromStart();
 	LeftEye->PlayFromStart();
 }
-
-

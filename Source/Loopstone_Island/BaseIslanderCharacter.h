@@ -22,14 +22,25 @@ UENUM(BlueprintType)
 enum class EMouthExpression : uint8
 {
 	Mouth_Talk,
-	Mouth_Smile
+	Mouth_Smile,
+	None
 };
 
 UENUM(BlueprintType)
 enum class EEyeExpression : uint8
 {
 	Eye_Open,
-	Eye_Blinking
+	Eye_Blinking,
+	Eye_Angry,
+	Eye_Shock,
+	Eye_Skeptic,
+	Eye_HalfOpen,
+	Eye_Closed_Neutral,
+	Eye_Closed_Happy,
+	Eye_Closed_Sigh,
+	Eye_Closed_Calm,
+	Eye_Closed_Excited,
+	None
 };
 
 UCLASS(Blueprintable)
@@ -71,16 +82,23 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	UPaperFlipbookComponent* LeftEye = nullptr;
-
 	UPROPERTY(VisibleAnywhere)
 	UPaperFlipbookComponent* RightEye = nullptr;
-
 	UPROPERTY(VisibleAnywhere)
 	UPaperFlipbookComponent* Mouth = nullptr;
 
+
+	UPROPERTY(EditAnywhere)
+	TArray<UPaperFlipbook*> EyeExpressions;
+	UPROPERTY(EditAnywhere)
+	TArray<UPaperFlipbook*> MouthExpressions;
+
+
+
+	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UPaperFlipbook* Blinking = nullptr;
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UPaperFlipbook* OpenEye = nullptr;
 
