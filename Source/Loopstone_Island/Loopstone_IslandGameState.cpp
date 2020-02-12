@@ -163,10 +163,12 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		CurrentIslander = Islander;
 		CurrentDialogue = Islander->Dialogue;
 
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Islander, 0.5f);
+		
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
+		// GetWorld()->GetFirstPlayerController()->GetPawn()->GetMovementComponent().
 		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 
@@ -191,6 +193,9 @@ void ALoopstone_IslandGameState::CloseDialogue()
 		TArray<FString> temp;
 		DialogueWidget->SetDialogueWithOptions(0.05f, " ", temp);
 
+		// swap camera
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
+		
 		DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameOnly());

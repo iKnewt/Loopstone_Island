@@ -1,16 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "BaseIslanderCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ABaseIslanderCharacter::ABaseIslanderCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	// Set size for collision capsule
 
 	RightEye = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("RightEye"));
 	LeftEye = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("LeftEye"));
@@ -21,6 +22,10 @@ ABaseIslanderCharacter::ABaseIslanderCharacter()
 
 	EyeExpressions.SetNum(static_cast<int>(EEyeExpression::None) + 1);
 	MouthExpressions.SetNum(static_cast<int>(EMouthExpression::None) + 1);
+
+	// Create a CameraComponent	
+	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());	
 }
 
 // Called when the game starts or when spawned

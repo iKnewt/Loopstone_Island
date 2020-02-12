@@ -16,6 +16,14 @@ class LOOPSTONE_ISLAND_API APlayerCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FirstPersonCameraComponent;
 
+	// UPROPERTY()
+	// class UHeadBobCameraShake* HeadBobCameraShake;
+	//
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UCameraShake> HeadBobWalk;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UCameraShake> HeadBobRun;
+
 public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
@@ -30,6 +38,11 @@ public:
 
 	UPROPERTY()
 	class ALoopstone_IslandGameState* GameState = nullptr;
+
+	UPROPERTY()
+	float WalkSpeed = 200;
+	UPROPERTY()
+	float RunSpeed = 500;
 
 protected:
 	// Called when the game starts or when spawned

@@ -10,7 +10,6 @@
 #include "DrawDebugHelpers.h"
 #include "Engine/Engine.h"
 #include "CookStats.h"
-#include "Loopstone_IslandGameModeBase.h"
 #include "BaseIslanderCharacter.h"
 #include "Loopstone_IslandGameState.h"
 
@@ -28,8 +27,8 @@ APlayerCharacter::APlayerCharacter()
 	BaseLookUpRate = 45.f;
 
 	// setup default settings for movement
-	GetCharacterMovement()->MaxStepHeight = 60.f;
-	GetCharacterMovement()->MaxWalkSpeed = 600;
+	GetCharacterMovement()->MaxStepHeight = 10.f;
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 	GetCharacterMovement()->JumpZVelocity = 300;
 	GetCharacterMovement()->AirControl = 0.4f;
 
@@ -46,9 +45,9 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	GameState = dynamic_cast<ALoopstone_IslandGameState*>(GetWorld()->GetGameState());
-	if(!GameState)
+	if (!GameState)
 	{
-			UE_LOG(LogTemp, Error, TEXT("CORRECT GAME STATE NOT FOUND"));
+		UE_LOG(LogTemp, Error, TEXT("CORRECT GAME STATE NOT FOUND"));
 	}
 	else
 	{
@@ -63,6 +62,8 @@ void APlayerCharacter::MoveForward(float Val)
 		// add movement in that direction
 		AddMovementInput(GetActorForwardVector(), Val);
 	}
+
+	//	GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(MyShake, 1.0f);
 }
 
 void APlayerCharacter::MoveRight(float Val)
@@ -82,13 +83,12 @@ void APlayerCharacter::TurnAtRate(float Rate)
 
 void APlayerCharacter::Run()
 {
-	GetCharacterMovement()->MaxWalkSpeed = 1200;
-	
+	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
 }
 
 void APlayerCharacter::StopRunning()
 {
-	GetCharacterMovement()->MaxWalkSpeed = 600;
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 
 void APlayerCharacter::LookUpAtRate(float Rate)
@@ -136,6 +136,26 @@ void APlayerCharacter::Tick(float DeltaTime)
 	{
 		HighlightedObject->VisualizeInteraction(false);
 		HighlightedObject = nullptr;
+	}
+
+
+	// todo refactor
+
+
+	// GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(HeadBobCameraShake, 1.0f);
+
+	if (GetVelocity().Size() > 0 && CanJump())
+	{
+		//	GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(MyShake, 1.0f);
+
+		if (GetVelocity().Size() < 300)
+		{
+			GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(HeadBobWalk);
+		}
+		else
+		{
+			GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(HeadBobRun);
+		}
 	}
 }
 

@@ -9,7 +9,6 @@
 #include "BaseIslanderCharacter.generated.h"
 
 
-
 UENUM(BlueprintType)
 enum class EMouthExpression : uint8
 {
@@ -39,7 +38,6 @@ class LOOPSTONE_ISLAND_API ABaseIslanderCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-
 public:
 	// Sets default values for this character's properties
 	ABaseIslanderCharacter();
@@ -58,6 +56,9 @@ public:
 	class UDialogue* Dialogue = nullptr;
 	// Other things that are specific to an islander??
 
+	/** First person camera */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	class UCameraComponent* FirstPersonCameraComponent;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -84,9 +85,6 @@ public:
 	UPROPERTY(EditAnywhere)
 	TArray<UPaperFlipbook*> MouthExpressions;
 
-
-
-	
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UPaperFlipbook* Blinking = nullptr;
