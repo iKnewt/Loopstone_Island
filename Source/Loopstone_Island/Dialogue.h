@@ -18,12 +18,15 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class UDialogueNode* CurrentDialogueNode = nullptr;
-
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
-	TArray<class UDialogueEdge*> CurrentAvailableOptions;
+	TArray<class UDialogueEdge*> CurrentAvailableEdges;
 
+	// TArray<class UDialogueEdge*> CurrentEdgesToPrint;
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class ABaseIslanderCharacter* CurrentIslander = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
+	class UDialogueNode* LastMenuNode = nullptr;
 
 	// UPROPERTY()
 	// class ALoopstone_IslandGameState* GameState = nullptr;
@@ -50,6 +53,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
 	void PrintAllDialogue();
+
+	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	void UpdateCurrentOptions(class ALoopstone_IslandGameState* GameState);
+
+	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	TArray<FString> GetCurrentOptions(ALoopstone_IslandGameState* GameState);
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
 	bool UpdateCurrentNode(int ResponseID, class ALoopstone_IslandGameState* GameState);

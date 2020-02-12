@@ -38,31 +38,38 @@ public:
 		void SetSpeakerName(FString Name) const;
 
 	
+
 	UFUNCTION()
-	void onOption0Pressed()
+		void onOption000Pressed()
 	{
 		GameState->UpdateDialogueBasedOnResponse(0);
 	}
 
+	
 	UFUNCTION()
-	void onOption1Pressed()
+	void onOption0Pressed()
 	{
 		GameState->UpdateDialogueBasedOnResponse(1);
 	}
 	UFUNCTION()
-	void onOption2Pressed()
+	void onOption1Pressed()
 	{
 		GameState->UpdateDialogueBasedOnResponse(2);
 	}
 	UFUNCTION()
-	void onOption3Pressed()
+	void onOption2Pressed()
 	{
 		GameState->UpdateDialogueBasedOnResponse(3);
 	}
 	UFUNCTION()
-	void onOption4Pressed()
+	void onOption3Pressed()
 	{
 		GameState->UpdateDialogueBasedOnResponse(4);
+	}
+	UFUNCTION()
+	void onOption4Pressed()
+	{
+		GameState->UpdateDialogueBasedOnResponse(5);
 	}
 
 
@@ -88,6 +95,10 @@ private:
 
 	void RevealOptions();
 
+	// Test invisible button
+	UPROPERTY(meta = (BindWidget))
+		UButton* Button_Option000;
+	
 	//Buttons
 	UPROPERTY(meta = (BindWidget))
 		UButton* Button_Option0;

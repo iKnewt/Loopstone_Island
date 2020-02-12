@@ -7,6 +7,18 @@
 #include "Loopstone_IslandGameState.h"
 #include "DialogueNode.generated.h"
 
+UENUM(BlueprintType)
+enum class ENodeExits : uint8
+{
+	NoOptions,
+	OptionsWithExit,
+	Exit,
+	ReturnToLastOptionsWithExit,
+	Options,
+	Condition,
+	None
+};
+
 /**
  * 
  */
@@ -20,6 +32,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
 	FText DialogueText;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
+	ENodeExits NodeExits = ENodeExits::NoOptions;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
 	EBackgroundColor NodeColor;
 
@@ -54,6 +68,9 @@ public:
 
 	UFUNCTION()
 	void PrintSelfAndChildren();
+
+	UFUNCTION()
+		bool ConditionsMet(class ALoopstone_IslandGameState* GameState);
 
 	bool bHasBeenVisited = false;
 

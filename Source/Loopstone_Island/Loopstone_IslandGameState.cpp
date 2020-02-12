@@ -231,13 +231,14 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	// Change animation??
 
 	// Update widget
-	TArray<FString> Options;
-	for (auto Option : CurrentDialogue->CurrentAvailableOptions)
-	{
-		Options.Add(Option->OptionText);
-	}
-
-	DialogueWidget->SetDialogueWithOptions(0.01f, DialogueText, Options);
+	// TArray<FString> Options;
+	// for (auto Option : CurrentDialogue->CurrentAvailableEdges)
+	// {
+	// 	Options.Add(Option->OptionText);
+	// }
+	//
+	// DialogueWidget->SetDialogueWithOptions(0.01f, DialogueText, Options);
+	DialogueWidget->SetDialogueWithOptions(0.01f, DialogueText, CurrentDialogue->GetCurrentOptions(this));
 
 	return true;
 }

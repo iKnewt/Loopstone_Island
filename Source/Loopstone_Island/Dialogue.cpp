@@ -34,74 +34,14 @@ void UDialogue::PrintAllDialogue()
 	}
 }
 
-bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* GameState)
+
+void UDialogue::UpdateCurrentOptions(ALoopstone_IslandGameState* GameState)
 {
-	if (!GameState)
-	{
-		UE_LOG(LogTemp, Error, TEXT("DIALOGUE: CORRECT GAME MODE NOT FOUND"));
-		return false;
-	}
-
-
-	// actually finding a new current node
-	if (!CurrentDialogueNode)
-	{
-		// set current to root if none, meaning this is a new conversation
-		CurrentDialogueNode = dynamic_cast<UDialogueNode*>(AllNodes[0]);
-	}
-	else
-	{
-		// check if the node has that many children, otherwise exit convo
-		if (CurrentAvailableOptions.Num() <= ResponseID)
-		{
-			return false;
-		}
-
-		// update current node if available
-		auto DialogueNode = dynamic_cast<UDialogueNode*>(CurrentAvailableOptions[ResponseID]->EndNode);
-		if (DialogueNode)
-		{
-			// todo make conditions a separate function
-			// CHECK CONDITIONS
-
-			for (auto Element : DialogueNode->EventBoolsConditions)
-			{
-				// if any element doesn't match the library it shouldn't display
-				if (Element.Value != GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)])
-				{
-					return false;
-				}
-			}
-			for (auto Element : DialogueNode->TopicBoolsConditions)
-			{
-				// if any element doesn't match the library it shouldn't display
-				if (Element.Value != GameState->bTopicHasBeenRevealed[static_cast<int>(Element.Key)])
-				{
-					return false;
-				}
-			}
-
-			if (DialogueNode->TimeOfDayCondition != ETimeOfDay::None &&
-				DialogueNode->TimeOfDayCondition != GameState->CurrentTimeOfDay)
-			{
-				return false;
-			}
-			if (DialogueNode->ActiveStoryCondition != EStory::None &&
-				DialogueNode->ActiveStoryCondition != GameState->CurrentStory)
-			{
-				return false;
-			}
-
-			// only happens if dialogue passes all conditions
-			CurrentDialogueNode = DialogueNode;
-		}
-	}
-
 	// update current options
-	CurrentAvailableOptions.Empty();
+	CurrentAvailableEdges.Empty();
 	for (auto EdgeToCheck : CurrentDialogueNode->Edges)
 	{
-		UDialogueEdge* DialogueEdge = dynamic_cast<UDialogueEdge*>(EdgeToCheck.Value);
+		UDialogueEdge* DialogueEdge = UE4Casts_Private::DynamicCast<UDialogueEdge*>(EdgeToCheck.Value);
 		bool Visible = true;
 
 		// todo make conditions a separate function
@@ -136,33 +76,191 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 
 		if (Visible)
 		{
-			CurrentAvailableOptions.Add(DialogueEdge);
+			CurrentAvailableEdges.Add(DialogueEdge);
 		}
 	}
+}
 
-	FString DialogueText = CurrentDialogueNode->DialogueText.ToString();
-
-	// see if it should do recusive checking	
-
-	if (DialogueText == "EXIT")
+TArray<FString> UDialogue::GetCurrentOptions(ALoopstone_IslandGameState* GameState)
+{
+	UpdateCurrentOptions(GameState);
+	TArray<FString> Options;
+	switch (CurrentDialogueNode->NodeExits)
 	{
+	case ENodeExits::OptionsWithExit:
+		{
+			LastMenuNode = CurrentDialogueNode;
+			Options.Add("Good-bye");
+			for (auto Option : CurrentAvailableEdges)
+			{
+				Options.Add(Option->OptionText);
+			}
+			break;
+		}
+	case ENodeExits::Options:
+	{
+		for (auto Option : CurrentAvailableEdges)
+		{
+			Options.Add(Option->OptionText);
+		}
+		break;
+			break;
+	}
+	default: ;
+	}
+	return Options;
+}
+
+bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* GameState)
+{
+	// return true means we print the (hopefully updated) current node
+	// return false means close the conversation
+
+	if (!GameState)
+	{
+		UE_LOG(LogTemp, Error, TEXT("DIALOGUE: CORRECT GAME STATE NOT FOUND"));
 		return false;
 	}
-	else if (DialogueText == "CONDITION")
+
+	if (!CurrentDialogueNode)
 	{
-		// if end node
-		if (CurrentAvailableOptions.Num() == 0)
+		// set current to root if none, meaning this is a new conversation
+		CurrentDialogueNode = dynamic_cast<UDialogueNode*>(AllNodes[0]);
+		return UpdateCurrentNode(0, GameState);
+		// if (UpdateCurrentNode(0, GameState))
+		// {
+		// 	return true;
+		// }
+	}
+
+	// collect the available children of the current node
+	UpdateCurrentOptions(GameState);
+
+
+	UDialogueNode* NextNode = nullptr;
+
+	switch (CurrentDialogueNode->NodeExits)
+	{
+	case ENodeExits::NoOptions:
+		// update next node to be its edge 0 to node
+		if (CurrentAvailableEdges.Num() > 0)
+		{
+			CurrentDialogueNode = static_cast<UDialogueNode*>(CurrentAvailableEdges[0]->EndNode);
+			// // // check conditions
+			if (CurrentDialogueNode->ConditionsMet(GameState))
+			{
+				// the current node is the one we want, no options needed
+				return true;
+			}
+			else
+			{
+				// recursively check the next child node
+				return UpdateCurrentNode(0, GameState);
+			}
+		}
+		else
 		{
 			return false;
 		}
-		// runs until an acceptable child is found
-		for (int i = 0; i < CurrentAvailableOptions.Num(); i++)
+		break;
+	case ENodeExits::OptionsWithExit:
+
+		// the player went with exit no new node, close dialogue
+		if (ResponseID <= 1)
 		{
-			if (UpdateCurrentNode(i, GameState))
+			CurrentDialogueNode = nullptr;
+			return false;
+		}
+
+
+		if (CurrentAvailableEdges.Num() > 0)
+		{
+			CurrentDialogueNode = static_cast<UDialogueNode*>(CurrentAvailableEdges[ResponseID - 2]->EndNode);
+			// // // check conditions
+			if (CurrentDialogueNode->ConditionsMet(GameState))
 			{
-				break;
+				// the current node is the one we want, no options needed
+				// CurrentOptionsToDisplay.Add("Good-bye");
+				return true;
+			}
+			else
+			{
+				// recursively check the next child node
+				return UpdateCurrentNode(0, GameState);
 			}
 		}
+		else
+		{
+			return false;
+		}
+		break;
+	case ENodeExits::Exit:
+		return false;
+		break;
+	case ENodeExits::ReturnToLastOptionsWithExit:
+		if (LastMenuNode)
+		{
+			CurrentDialogueNode = LastMenuNode;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		break;
+	case ENodeExits::Options:
+
+// the player went with exit no new node, close dialogue
+		if (ResponseID == 0)
+		{
+			CurrentDialogueNode = nullptr;
+			return false;
+		}
+
+		if (CurrentAvailableEdges.Num() > 0)
+		{
+			CurrentDialogueNode = static_cast<UDialogueNode*>(CurrentAvailableEdges[ResponseID - 1]->EndNode);
+			// // // check conditions
+			if (CurrentDialogueNode->ConditionsMet(GameState))
+			{
+				// the current node is the one we want
+				return true;
+			}
+			else
+			{
+				// recursively check the next child node
+				return UpdateCurrentNode(0, GameState);
+			}
+		}
+		else
+		{
+			return false;
+		}
+		break;
+		// displays options with no exit
+		// useful only when flavor text
+		break;
+	case ENodeExits::Condition:
+		// if (CurrentDialogueNode->ConditionsMet(GameState))
+		// {
+		// 	// recursive runs until an acceptable child is found
+		// 	for (int i = 0; i < CurrentAvailableEdges.Num(); i++)
+		// 	{
+		// 		if (UpdateCurrentNode(i, GameState))
+		// 		{
+		// 			break;
+		// 		}
+		// 	}
+		// 	if (CurrentDialogueNode)
+		// 	{
+		// 		return true;
+		// 	}
+		// }
+		// return false;
+		break;
+	case ENodeExits::None:
+		break;
+	default: ;
 	}
 
 	return true;

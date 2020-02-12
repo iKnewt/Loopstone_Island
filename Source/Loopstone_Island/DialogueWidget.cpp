@@ -26,6 +26,7 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 		// UE_LOG(LogTemp, Warning, TEXT("SETTING BUTTON VISIBILITY"))
 			Button->SetVisibility(ESlateVisibility::Hidden);
 	}
+	
 	//font still not set
 	FullDialogue = InDialogue;
 	FullDialogueInChars = FullDialogue.GetCharArray();
@@ -50,6 +51,9 @@ void UDialogueWidget::SetSpeakerName(FString Name) const
 bool UDialogueWidget::Initialize()
 {
 	bool init = Super::Initialize();
+
+	Button_Option000->OnClicked.AddDynamic(this, &UDialogueWidget::onOption000Pressed);
+	
 	Button_Option0->OnClicked.AddDynamic(this, &UDialogueWidget::onOption0Pressed);
 	Button_Option1->OnClicked.AddDynamic(this, &UDialogueWidget::onOption1Pressed);
 	Button_Option2->OnClicked.AddDynamic(this, &UDialogueWidget::onOption2Pressed);
