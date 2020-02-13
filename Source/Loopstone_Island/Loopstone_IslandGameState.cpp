@@ -11,10 +11,14 @@
 #include "InventoryWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "IslanderTargetPointController.h"
+#include "Sound/SoundWave.h"
+#include "Kismet/GameplayStatics.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
 	Super::BeginPlay();
+
+	ChangeTimeOfDay(ETimeOfDay::Morning);
 
 	bEventHasBeenTriggered.SetNum(static_cast<int>(EEventType::None) + 1);
 	UE_LOG(LogTemp, Warning, TEXT("bEventHasBeenTriggered contains:  %i"), bEventHasBeenTriggered.Num());
@@ -209,6 +213,15 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 		CloseDialogue();
 		return false;
 	}
+	// todo move this check into dialogue system somehow
+	if(CurrentDialogue->CurrentDialogueNode->NodeExits == ENodeExits::Condition)
+	{
+		if (!CurrentDialogue->UpdateCurrentNode(ResponseID, this))
+		{
+			CloseDialogue();
+			return false;
+		}
+	}
 
 	UE_LOG(LogTemp, Warning, TEXT("trying to update event library"));
 	CurrentDialogue->UpdateEventLibaryBasedOnCurrentNode(this);
@@ -218,26 +231,11 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	// update the dialogue widget
 	DialogueText = CurrentDialogue->CurrentDialogueNode->DialogueText.ToString();
 
-	// todo find better solution to catch this
-	if (DialogueText == "CONDITION")
-	{
-		CloseDialogue();
-		return false;
-	}
-
 	// Change facial expression on islander
 	CurrentIslander->ChangeMouthExpression(CurrentDialogue->CurrentDialogueNode->MouthExpression);
 	CurrentIslander->ChangeEyeExpression(CurrentDialogue->CurrentDialogueNode->RightEyeExpression, CurrentDialogue->CurrentDialogueNode->LeftEyeExpression);
 	// Change animation??
 
-	// Update widget
-	// TArray<FString> Options;
-	// for (auto Option : CurrentDialogue->CurrentAvailableEdges)
-	// {
-	// 	Options.Add(Option->OptionText);
-	// }
-	//
-	// DialogueWidget->SetDialogueWithOptions(0.01f, DialogueText, Options);
 	DialogueWidget->SetDialogueWithOptions(0.01f, DialogueText, CurrentDialogue->GetCurrentOptions(this));
 
 	return true;
@@ -249,6 +247,14 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 	if (SunSky)
 	{
 		SunSky->ChangeTimeOfDay(NewTimeOfDay);
+		
+		if(Music.Num() > static_cast<int>(NewTimeOfDay))
+		{
+			if(Music[static_cast<int>(NewTimeOfDay)])
+			{
+				// UGameplayStatics::PlaySound2D(GetWorld(), Music[static_cast<int>(NewTimeOfDay)]);
+			}
+		}
 		if(IsValid(TargetPointController))
 		{
 			TargetPointController->MoveIslandersToPosition(NewTimeOfDay);

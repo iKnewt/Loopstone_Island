@@ -40,12 +40,9 @@ public:
 	
 
 	UFUNCTION()
-		void onOption000Pressed()
-	{
-		GameState->UpdateDialogueBasedOnResponse(0);
-	}
+	void onOption000Pressed();
 
-	
+
 	UFUNCTION()
 	void onOption0Pressed()
 	{

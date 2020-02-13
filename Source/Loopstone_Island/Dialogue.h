@@ -27,6 +27,8 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class UDialogueNode* LastMenuNode = nullptr;
+	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
+	class UDialogueNode* LastConditionNode = nullptr;
 
 	// UPROPERTY()
 	// class ALoopstone_IslandGameState* GameState = nullptr;

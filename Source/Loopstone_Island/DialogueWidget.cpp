@@ -48,6 +48,11 @@ void UDialogueWidget::SetSpeakerName(FString Name) const
 	Speaker_Name->SetText(FText::FromString(Name));
 }
 
+void UDialogueWidget::onOption000Pressed()
+{
+	GameState->UpdateDialogueBasedOnResponse(0);
+}
+
 bool UDialogueWidget::Initialize()
 {
 	bool init = Super::Initialize();
@@ -71,6 +76,7 @@ bool UDialogueWidget::Initialize()
 
 void UDialogueWidget::AppendDialogueString()
 {
+	Button_Option000->SetVisibility(ESlateVisibility::Hidden);
 	Dialogue.AppendChar(FullDialogueInChars[DialogueCharIndex]);
 	Dialogue_Text->SetText(FText::FromString(Dialogue));
 	if (FullDialogueInChars.Num() == DialogueCharIndex +1)
@@ -88,6 +94,10 @@ void UDialogueWidget::AppendDialogueString()
 
 void UDialogueWidget::RevealOptions()
 {
+	if(Responses.Num() == 0)
+	{
+		Button_Option000->SetVisibility(ESlateVisibility::Visible);
+	}
 	for (int i = 0; i < Responses.Num(); i++)
 	{
 		// UE_LOG(LogTemp, Warning, TEXT("SETTING stuff"))

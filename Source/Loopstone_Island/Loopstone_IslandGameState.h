@@ -43,6 +43,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
 	TSubclassOf<class UDialogueWidget> BP_DialogueWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Music")
+		TArray<USoundBase*> Music;
 	
 	class UDialogueWidget* DialogueWidget = nullptr;
 

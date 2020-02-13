@@ -98,14 +98,14 @@ TArray<FString> UDialogue::GetCurrentOptions(ALoopstone_IslandGameState* GameSta
 			break;
 		}
 	case ENodeExits::Options:
-	{
-		for (auto Option : CurrentAvailableEdges)
 		{
-			Options.Add(Option->OptionText);
-		}
-		break;
+			for (auto Option : CurrentAvailableEdges)
+			{
+				Options.Add(Option->OptionText);
+			}
 			break;
-	}
+			break;
+		}
 	default: ;
 	}
 	return Options;
@@ -116,6 +116,7 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 	// return true means we print the (hopefully updated) current node
 	// return false means close the conversation
 
+	// if the gamestate is no good close conversation
 	if (!GameState)
 	{
 		UE_LOG(LogTemp, Error, TEXT("DIALOGUE: CORRECT GAME STATE NOT FOUND"));
@@ -126,18 +127,20 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 	{
 		// set current to root if none, meaning this is a new conversation
 		CurrentDialogueNode = dynamic_cast<UDialogueNode*>(AllNodes[0]);
-		return UpdateCurrentNode(0, GameState);
-		// if (UpdateCurrentNode(0, GameState))
+		// UpdateCurrentOptions(GameState);
+		// // go through the children of the root until a valid is found
+		// for (int i = 0; i < CurrentAvailableEdges.Num(); i++)
 		// {
-		// 	return true;
+		// 	if (UpdateCurrentNode(i, GameState))
+		// 	{
+		// 		return true;
+		// 	}
 		// }
+		// return false;
 	}
 
 	// collect the available children of the current node
 	UpdateCurrentOptions(GameState);
-
-
-	UDialogueNode* NextNode = nullptr;
 
 	switch (CurrentDialogueNode->NodeExits)
 	{
@@ -210,7 +213,7 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 		break;
 	case ENodeExits::Options:
 
-// the player went with exit no new node, close dialogue
+		// the player went with exit no new node, close dialogue
 		if (ResponseID == 0)
 		{
 			CurrentDialogueNode = nullptr;
@@ -237,33 +240,26 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 			return false;
 		}
 		break;
-		// displays options with no exit
-		// useful only when flavor text
-		break;
 	case ENodeExits::Condition:
-		// if (CurrentDialogueNode->ConditionsMet(GameState))
-		// {
-		// 	// recursive runs until an acceptable child is found
-		// 	for (int i = 0; i < CurrentAvailableEdges.Num(); i++)
-		// 	{
-		// 		if (UpdateCurrentNode(i, GameState))
-		// 		{
-		// 			break;
-		// 		}
-		// 	}
-		// 	if (CurrentDialogueNode)
-		// 	{
-		// 		return true;
-		// 	}
-		// }
-		// return false;
+		// set current to root if none, meaning this is a new conversation
+		// go through the children of the root until a valid is found
+		for (int i = 0; i < CurrentAvailableEdges.Num(); i++)
+		{
+			CurrentDialogueNode = static_cast<UDialogueNode*>(CurrentAvailableEdges[i]->EndNode);
+			if (CurrentDialogueNode->ConditionsMet(GameState))
+			{
+				// the current node is the one we want, no options needed
+				return true;
+			}
+		}
+		return false;
 		break;
 	case ENodeExits::None:
 		break;
 	default: ;
 	}
 
-	return true;
+	return false;
 }
 
 void UDialogue::UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* GameState)
