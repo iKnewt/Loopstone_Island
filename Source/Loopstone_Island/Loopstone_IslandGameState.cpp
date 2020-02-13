@@ -214,7 +214,8 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 		return false;
 	}
 	// todo move this check into dialogue system somehow
-	if(CurrentDialogue->CurrentDialogueNode->NodeExits == ENodeExits::Condition)
+
+	while(CurrentDialogue->CurrentDialogueNode->NodeExits == ENodeExits::Condition)
 	{
 		if (!CurrentDialogue->UpdateCurrentNode(ResponseID, this))
 		{
