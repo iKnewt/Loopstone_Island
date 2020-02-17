@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Engine/Font.h"
 #include "TextBlock.h"
+#include "RichTextBlock.h"
 #include "PlayerCharacter.h"
 #include "Loopstone_IslandGameState.h"
 #include "DialogueWidget.generated.h"
@@ -23,21 +24,22 @@ public:
 
 	UPROPERTY()
 	ALoopstone_IslandGameState* GameState = nullptr;
-	
+
 	/**
 	 * The function that starts it all.
 	 * Send in dialogue and options for the specific dialogue option, and this will set it up 
 	 */
 	UFUNCTION(BlueprintCallable)
-		void SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> InResponses, UFont* Font = nullptr);
+	void SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> InResponses,
+	                            UFont* Font = nullptr);
 	/**
 	 * Sets the speaker's name.
 	 * Should be run whenever a new islander speaks.
 	 */
 	UFUNCTION(BlueprintCallable)
-		void SetSpeakerName(FString Name) const;
+	void SetSpeakerName(FString Name) const;
+	void SetRichStyleText(UDataTable* RichStyleTable) const;
 
-	
 
 	UFUNCTION()
 	void onOption000Pressed();
@@ -48,21 +50,25 @@ public:
 	{
 		GameState->UpdateDialogueBasedOnResponse(1);
 	}
+
 	UFUNCTION()
 	void onOption1Pressed()
 	{
 		GameState->UpdateDialogueBasedOnResponse(2);
 	}
+
 	UFUNCTION()
 	void onOption2Pressed()
 	{
 		GameState->UpdateDialogueBasedOnResponse(3);
 	}
+
 	UFUNCTION()
 	void onOption3Pressed()
 	{
 		GameState->UpdateDialogueBasedOnResponse(4);
 	}
+
 	UFUNCTION()
 	void onOption4Pressed()
 	{
@@ -70,12 +76,14 @@ public:
 	}
 
 
-	
 protected:
-	
+
 	bool Initialize() override;
 private:
-	void AddLetterToDialogue(){}
+	void AddLetterToDialogue()
+	{
+	}
+
 	FString Dialogue = "helo";
 	TArray<wchar_t> FullDialogueInChars;
 	FString FullDialogue = "helo fren";
@@ -84,6 +92,7 @@ private:
 	UFont* DialogueFont = nullptr;
 
 	bool bCurrentlyWriting = false;
+	bool bHighlightText = false;
 
 	/**
 	 * adds a character onto the Dialogue string that's written. Used to create the writing text animation.
@@ -94,47 +103,46 @@ private:
 
 	// Test invisible button
 	UPROPERTY(meta = (BindWidget))
-		UButton* Button_Option000;
-	
+	UButton* Button_Option000;
+
 	//Buttons
 	UPROPERTY(meta = (BindWidget))
-		UButton* Button_Option0;
+	UButton* Button_Option0;
 	UPROPERTY(meta = (BindWidget))
-		UButton* Button_Option1;
+	UButton* Button_Option1;
 	UPROPERTY(meta = (BindWidget))
-		UButton* Button_Option2;
+	UButton* Button_Option2;
 	UPROPERTY(meta = (BindWidget))
-		UButton* Button_Option3;
+	UButton* Button_Option3;
 	UPROPERTY(meta = (BindWidget))
-		UButton* Button_Option4;
+	UButton* Button_Option4;
 
 	//Text for Buttons
 
 	UPROPERTY(meta = (BindWidget))
-		UTextBlock* Option_0;
+	UTextBlock* Option_0;
 	UPROPERTY(meta = (BindWidget))
-		UTextBlock* Option_1;
+	UTextBlock* Option_1;
 	UPROPERTY(meta = (BindWidget))
-		UTextBlock* Option_2;
+	UTextBlock* Option_2;
 	UPROPERTY(meta = (BindWidget))
-		UTextBlock* Option_3;
+	UTextBlock* Option_3;
 	UPROPERTY(meta = (BindWidget))
-		UTextBlock* Option_4;
+	UTextBlock* Option_4;
 
 	//Dialogue Text
 	UPROPERTY(meta = (BindWidget))
-		UTextBlock* Dialogue_Text;
+	UTextBlock* Dialogue_Text;
+	UPROPERTY(meta = (BindWidget))
+	URichTextBlock* RichTextTest;
 
 	UPROPERTY(meta = (BindWidget))
-		UTextBlock* Speaker_Name;
+	UTextBlock* Speaker_Name;
 
 	UPROPERTY()
-		TArray<UButton*> Buttons;
+	TArray<UButton*> Buttons;
 	UPROPERTY()
-		TArray<UTextBlock*> Options;
+	TArray<UTextBlock*> Options;
 
 	FTimerHandle DialogueTimerHandle;
-
-
-
 };

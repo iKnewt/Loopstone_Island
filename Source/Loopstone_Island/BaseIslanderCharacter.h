@@ -53,6 +53,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	UFont* Font;
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	class UDataTable* RichTextStyles;
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	class UDialogue* Dialogue = nullptr;
 	// Other things that are specific to an islander??
 

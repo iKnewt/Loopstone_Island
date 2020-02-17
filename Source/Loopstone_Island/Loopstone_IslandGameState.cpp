@@ -177,6 +177,7 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 
 		DialogueWidget->SetSpeakerName(Islander->Name);
+		DialogueWidget->SetRichStyleText(Islander->RichTextStyles);
 		UpdateDialogueBasedOnResponse(0);
 	}
 	else

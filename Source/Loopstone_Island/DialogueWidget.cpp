@@ -5,9 +5,10 @@
 #include "TimerManager.h"
 #include "Components/Button.h"
 
-void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> InResponses, UFont* Font)
+void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> InResponses,
+                                             UFont* Font)
 {
-	if(Buttons.Num() == 0)
+	if (Buttons.Num() == 0)
 	{
 		Buttons.Add(Button_Option0);
 		Buttons.Add(Button_Option1);
@@ -24,9 +25,9 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 	for (auto& Button : Buttons)
 	{
 		// UE_LOG(LogTemp, Warning, TEXT("SETTING BUTTON VISIBILITY"))
-			Button->SetVisibility(ESlateVisibility::Hidden);
+		Button->SetVisibility(ESlateVisibility::Hidden);
 	}
-	
+
 	//font still not set
 	FullDialogue = InDialogue;
 	FullDialogueInChars = FullDialogue.GetCharArray();
@@ -34,18 +35,25 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 	this->Dialogue = "";
 	Responses = InResponses;
 	// UE_LOG(LogTemp, Warning, TEXT("SETTING DIALOGUE"))
-		float TextSpeedChecker = TextSpeed;
-	if(TextSpeedChecker < 0.00001f)
+	float TextSpeedChecker = TextSpeed;
+	if (TextSpeedChecker < 0.00001f)
 	{
 		TextSpeedChecker = 0.03f;
 	}
 	bCurrentlyWriting = true;
-	GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::AppendDialogueString, TextSpeedChecker,true);
+	GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::AppendDialogueString,
+	                                       TextSpeedChecker, true);
 }
 
 void UDialogueWidget::SetSpeakerName(FString Name) const
 {
 	Speaker_Name->SetText(FText::FromString(Name));
+}
+
+void UDialogueWidget::SetRichStyleText(UDataTable* RichStyleTable) const
+{
+	RichTextTest->SetTextStyleSet(RichStyleTable);
+	// Speaker_Name->SetText(FText::FromString(Name));
 }
 
 void UDialogueWidget::onOption000Pressed()
@@ -58,7 +66,7 @@ bool UDialogueWidget::Initialize()
 	bool init = Super::Initialize();
 
 	Button_Option000->OnClicked.AddDynamic(this, &UDialogueWidget::onOption000Pressed);
-	
+
 	Button_Option0->OnClicked.AddDynamic(this, &UDialogueWidget::onOption0Pressed);
 	Button_Option1->OnClicked.AddDynamic(this, &UDialogueWidget::onOption1Pressed);
 	Button_Option2->OnClicked.AddDynamic(this, &UDialogueWidget::onOption2Pressed);
@@ -77,13 +85,39 @@ bool UDialogueWidget::Initialize()
 void UDialogueWidget::AppendDialogueString()
 {
 	Button_Option000->SetVisibility(ESlateVisibility::Hidden);
-	Dialogue.AppendChar(FullDialogueInChars[DialogueCharIndex]);
+
+	// testing rich text
+	if (FullDialogueInChars[DialogueCharIndex] == '<')
+	{
+		bHighlightText = true;
+		Dialogue.Append("<Blue>");
+		Dialogue.Append("</>");
+	}
+	else if (FullDialogueInChars[DialogueCharIndex] == '>')
+	{
+		bHighlightText = false;
+	}
+	else
+	{
+		if (bHighlightText)
+		{
+			Dialogue.InsertAt(Dialogue.Len() - 3, FullDialogueInChars[DialogueCharIndex]);
+		}
+		else
+		{
+			Dialogue.AppendChar(FullDialogueInChars[DialogueCharIndex]);
+		}
+	}
+
+	// Dialogue_Text->SetFont(FSlateFontInfo())
 	Dialogue_Text->SetText(FText::FromString(Dialogue));
-	if (FullDialogueInChars.Num() == DialogueCharIndex +1)
+	RichTextTest->SetText(FText::FromString(Dialogue));
+
+	if (FullDialogueInChars.Num() == DialogueCharIndex + 1)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(DialogueTimerHandle);
 		// UE_LOG(LogTemp, Warning, TEXT("DONE"))
-			RevealOptions();
+		RevealOptions();
 		bCurrentlyWriting = false;
 	}
 	else
@@ -94,7 +128,7 @@ void UDialogueWidget::AppendDialogueString()
 
 void UDialogueWidget::RevealOptions()
 {
-	if(Responses.Num() == 0)
+	if (Responses.Num() == 0)
 	{
 		Button_Option000->SetVisibility(ESlateVisibility::Visible);
 	}
