@@ -127,16 +127,6 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 	{
 		// set current to root if none, meaning this is a new conversation
 		CurrentDialogueNode = dynamic_cast<UDialogueNode*>(AllNodes[0]);
-		// UpdateCurrentOptions(GameState);
-		// // go through the children of the root until a valid is found
-		// for (int i = 0; i < CurrentAvailableEdges.Num(); i++)
-		// {
-		// 	if (UpdateCurrentNode(i, GameState))
-		// 	{
-		// 		return true;
-		// 	}
-		// }
-		// return false;
 	}
 
 	// collect the available children of the current node

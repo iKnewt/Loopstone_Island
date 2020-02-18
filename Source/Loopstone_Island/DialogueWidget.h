@@ -132,9 +132,7 @@ private:
 
 	//Dialogue Text
 	UPROPERTY(meta = (BindWidget))
-	UTextBlock* Dialogue_Text;
-	UPROPERTY(meta = (BindWidget))
-	URichTextBlock* RichTextTest;
+	URichTextBlock* Dialogue_Text;
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Speaker_Name;

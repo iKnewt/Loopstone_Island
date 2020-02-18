@@ -52,7 +52,7 @@ void UDialogueWidget::SetSpeakerName(FString Name) const
 
 void UDialogueWidget::SetRichStyleText(UDataTable* RichStyleTable) const
 {
-	RichTextTest->SetTextStyleSet(RichStyleTable);
+	Dialogue_Text->SetTextStyleSet(RichStyleTable);
 	// Speaker_Name->SetText(FText::FromString(Name));
 }
 
@@ -90,7 +90,7 @@ void UDialogueWidget::AppendDialogueString()
 	if (FullDialogueInChars[DialogueCharIndex] == '<')
 	{
 		bHighlightText = true;
-		Dialogue.Append("<Blue>");
+		Dialogue.Append("<Highlight>");
 		Dialogue.Append("</>");
 	}
 	else if (FullDialogueInChars[DialogueCharIndex] == '>')
@@ -111,7 +111,6 @@ void UDialogueWidget::AppendDialogueString()
 
 	// Dialogue_Text->SetFont(FSlateFontInfo())
 	Dialogue_Text->SetText(FText::FromString(Dialogue));
-	RichTextTest->SetText(FText::FromString(Dialogue));
 
 	if (FullDialogueInChars.Num() == DialogueCharIndex + 1)
 	{
