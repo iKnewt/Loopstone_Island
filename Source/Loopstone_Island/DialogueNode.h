@@ -12,10 +12,10 @@ enum class ENodeExits : uint8
 {
 	NoOptions,
 	OptionsWithExit,
-	Exit,
 	ReturnToLastOptionsWithExit,
 	Options,
 	Condition,
+	ReturnToRoot,
 	None
 };
 
@@ -34,8 +34,6 @@ public:
 	FText DialogueText;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
 	ENodeExits NodeExits = ENodeExits::NoOptions;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
-	EBackgroundColor NodeColor;
 
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
@@ -70,7 +68,7 @@ public:
 	void PrintSelfAndChildren();
 
 	UFUNCTION()
-		bool ConditionsMet(class ALoopstone_IslandGameState* GameState);
+	bool ConditionsMet(class ALoopstone_IslandGameState* GameState);
 
 	bool bHasBeenVisited = false;
 

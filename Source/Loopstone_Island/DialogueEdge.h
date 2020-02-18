@@ -18,9 +18,8 @@ class LOOPSTONE_ISLAND_API UDialogueEdge : public UGenericGraphEdge
 public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
-	FString OptionText = "Next...";
-	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
-	// EBackgroundColor EdgeColor;
+	FString OptionText = "...";
+
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
 	TMap<EEventType, bool> EventBoolsConditions;

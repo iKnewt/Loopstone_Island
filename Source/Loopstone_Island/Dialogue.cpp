@@ -197,9 +197,6 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 			return false;
 		}
 		break;
-	case ENodeExits::Exit:
-		return false;
-		break;
 	case ENodeExits::ReturnToLastOptionsWithExit:
 		if (LastMenuNode)
 		{
@@ -253,6 +250,10 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 			}
 		}
 		return false;
+		break;
+	case ENodeExits::ReturnToRoot:
+		CurrentDialogueNode = dynamic_cast<UDialogueNode*>(AllNodes[0]);
+		return UpdateCurrentNode(0, GameState);
 		break;
 	case ENodeExits::None:
 		break;

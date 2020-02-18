@@ -48,7 +48,7 @@ bool UDialogueNode::ConditionsMet(ALoopstone_IslandGameState* GameState)
 			return false;
 		}
 	}
-	
+
 	// if the time of day doesn't match condition
 	if (TimeOfDayCondition != ETimeOfDay::None &&
 		TimeOfDayCondition != GameState->CurrentTimeOfDay)
@@ -68,7 +68,7 @@ bool UDialogueNode::ConditionsMet(ALoopstone_IslandGameState* GameState)
 
 FText UDialogueNode::GetNodeTitle() const
 {
-	return DialogueText.IsEmpty() ? LOCTEXT("EmptyDialogueText", "No Dialogue Text") : DialogueText;
+	return DialogueText.IsEmpty() ? LOCTEXT("EmptyDialogueText", "...") : DialogueText;
 }
 
 void UDialogueNode::SetNodeTitle(const FText& NewTitle)
@@ -88,19 +88,19 @@ FLinearColor UDialogueNode::GetBackgroundColor() const
 	switch (NodeExits)
 	{
 	case ENodeExits::NoOptions:
-		return Graph->Color1;
-	case ENodeExits::OptionsWithExit:
-		return Graph->Color2;
-	case ENodeExits::Exit:
-		return Graph->Color3;
-	case ENodeExits::ReturnToLastOptionsWithExit:
-		return Graph->Color4;
-	case ENodeExits::Options:
-		return Graph->Color5;
-	case ENodeExits::Condition:
-		return Graph->Color6;
-	default:
 		return FLinearColor::Black;
+	case ENodeExits::OptionsWithExit:
+		return FLinearColor::Red;
+	case ENodeExits::ReturnToLastOptionsWithExit:
+		return FLinearColor(1, 0.4, 0.2);
+	case ENodeExits::Options:
+		return FLinearColor(1, 1, 0);
+	case ENodeExits::Condition:
+		return FLinearColor(0.13,1,0.4);
+	case ENodeExits::ReturnToRoot:
+		return FLinearColor::Blue;
+	default:
+		return FLinearColor::White;
 	}
 }
 
