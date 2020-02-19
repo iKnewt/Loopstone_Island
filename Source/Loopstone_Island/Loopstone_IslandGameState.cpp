@@ -13,6 +13,7 @@
 #include "IslanderTargetPointController.h"
 #include "Sound/SoundWave.h"
 #include "Kismet/GameplayStatics.h"
+#include "WidgetBlueprintLibrary.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
@@ -170,10 +171,9 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Islander, 0.5f);
 		
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
-		// GetWorld()->GetFirstPlayerController()->GetPawn()->GetMovementComponent().
-		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
-		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+		UWidgetBlueprintLibrary::SetInputMode_UIOnly(GetWorld()->GetFirstPlayerController(), DialogueWidget, true);
 
+		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 
 		DialogueWidget->SetSpeakerName(Islander->Name);
@@ -191,19 +191,19 @@ void ALoopstone_IslandGameState::CloseDialogue()
 {
 	if (DialogueWidget)
 	{
+		UWidgetBlueprintLibrary::SetInputMode_UIOnly(GetWorld()->GetFirstPlayerController(), DialogueWidget, true);
 		CurrentIslander = nullptr;
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 		CurrentDialogue = nullptr;
 
-		TArray<FString> temp;
-		DialogueWidget->SetDialogueWithOptions(0.05f, " ", temp);
+		DialogueWidget->Dialogue_Text->SetText(FText::FromString(" "));
 
 		// swap camera
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
 		
 		DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
-		GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameOnly());
+		UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
 	}
 }
 

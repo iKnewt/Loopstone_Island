@@ -9,6 +9,9 @@
 #include "RichTextBlock.h"
 #include "PlayerCharacter.h"
 #include "Loopstone_IslandGameState.h"
+#include "SButton.h"
+#include "Widgets/Input/SButton.h"
+#include "VerticalBox.h"
 #include "DialogueWidget.generated.h"
 
 /**
@@ -79,7 +82,7 @@ public:
 protected:
 
 	bool Initialize() override;
-private:
+public:
 	void AddLetterToDialogue()
 	{
 	}
@@ -101,9 +104,15 @@ private:
 
 	void RevealOptions();
 
+
+	
 	// Test invisible button
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Option000;
+
+	//Buttons
+	UPROPERTY(meta = (BindWidget))
+	UVerticalBox* VerticalBox_44;
 
 	//Buttons
 	UPROPERTY(meta = (BindWidget))
@@ -143,4 +152,7 @@ private:
 	TArray<UTextBlock*> Options;
 
 	FTimerHandle DialogueTimerHandle;
+
+
+	int Index = 0;
 };

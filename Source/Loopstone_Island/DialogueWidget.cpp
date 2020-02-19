@@ -4,6 +4,7 @@
 #include "DialogueWidget.h"
 #include "TimerManager.h"
 #include "Components/Button.h"
+#include "WidgetBlueprintLibrary.h"
 
 void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> InResponses,
                                              UFont* Font)
@@ -130,7 +131,14 @@ void UDialogueWidget::RevealOptions()
 	if (Responses.Num() == 0)
 	{
 		Button_Option000->SetVisibility(ESlateVisibility::Visible);
+		UWidgetBlueprintLibrary::SetInputMode_UIOnly(GetWorld()->GetFirstPlayerController(), Button_Option000);
 	}
+	else
+	{
+		UWidgetBlueprintLibrary::SetInputMode_UIOnly(GetWorld()->GetFirstPlayerController(), Button_Option0);
+		// Button_Option0->WidgetStyle.SetNormal(Button_Option0->WidgetStyle.Hovered);
+	}
+	
 	for (int i = 0; i < Responses.Num(); i++)
 	{
 		// UE_LOG(LogTemp, Warning, TEXT("SETTING stuff"))
