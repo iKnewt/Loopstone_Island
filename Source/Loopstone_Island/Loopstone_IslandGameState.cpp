@@ -168,6 +168,7 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		CurrentIslander = Islander;
 		CurrentDialogue = Islander->Dialogue;
 
+		GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(true);
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Islander, 0.5f);
 		
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
@@ -199,6 +200,7 @@ void ALoopstone_IslandGameState::CloseDialogue()
 		DialogueWidget->Dialogue_Text->SetText(FText::FromString(" "));
 
 		// swap camera
+		GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(false);
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
 		
 		DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
