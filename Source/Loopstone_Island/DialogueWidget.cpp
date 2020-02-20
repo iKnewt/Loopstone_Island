@@ -6,6 +6,16 @@
 #include "Components/Button.h"
 #include "WidgetBlueprintLibrary.h"
 
+void UDialogueWidget::SetupButtonStyles()
+{
+	// NormalButtonStyle = FButtonStyle(Button_Option0->WidgetStyle);	
+	// *NormalButtonStyle = Button_Option0->WidgetStyle;
+	// *FocusedButtonStyle = Button_Option1->WidgetStyle;
+	// *MouseButtonStyle = Button_Option2->WidgetStyle;
+	//
+	// Button_Option0->SetStyle(Button_Option1->WidgetStyle);
+}
+
 void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> InResponses,
                                              UFont* Font)
 {
@@ -57,6 +67,56 @@ void UDialogueWidget::SetRichStyleText(UDataTable* RichStyleTable) const
 	// Speaker_Name->SetText(FText::FromString(Name));
 }
 
+void UDialogueWidget::updateButtonLookOnFocus()
+{
+	// todo fix this I wanna die ouf
+
+	if(Button_Option0->HasAnyUserFocus())
+	{
+		Button_Option0->SetStyle(Button_FocusedStyle->WidgetStyle);
+	}
+	else
+	{
+		Button_Option0->SetStyle(Button_NormalStyle->WidgetStyle);
+	}
+	
+	if (Button_Option1->HasAnyUserFocus())
+	{
+		Button_Option1->SetStyle(Button_FocusedStyle->WidgetStyle);
+	}
+	else
+	{
+		Button_Option1->SetStyle(Button_NormalStyle->WidgetStyle);
+	}
+	
+	if (Button_Option2->HasAnyUserFocus())
+	{
+		Button_Option2->SetStyle(Button_FocusedStyle->WidgetStyle);
+	}
+	else
+	{
+		Button_Option2->SetStyle(Button_NormalStyle->WidgetStyle);
+	}
+	
+	if (Button_Option3->HasAnyUserFocus())
+	{
+		Button_Option3->SetStyle(Button_FocusedStyle->WidgetStyle);
+	}
+	else
+	{
+		Button_Option3->SetStyle(Button_NormalStyle->WidgetStyle);
+	}
+	
+	if (Button_Option4->HasAnyUserFocus())
+	{
+		Button_Option4->SetStyle(Button_FocusedStyle->WidgetStyle);
+	}
+	else
+	{
+		Button_Option4->SetStyle(Button_NormalStyle->WidgetStyle);
+	}
+}
+
 void UDialogueWidget::onOption000Pressed()
 {
 	GameState->UpdateDialogueBasedOnResponse(0);
@@ -74,7 +134,8 @@ bool UDialogueWidget::Initialize()
 	Button_Option3->OnClicked.AddDynamic(this, &UDialogueWidget::onOption3Pressed);
 	Button_Option4->OnClicked.AddDynamic(this, &UDialogueWidget::onOption4Pressed);
 
-	GameState = reinterpret_cast<ALoopstone_IslandGameState*>(GetWorld()->GetGameState());
+	// GameState = reinterpret_cast<ALoopstone_IslandGameState*>(GetWorld()->GetGameState());
+	GameState = dynamic_cast<ALoopstone_IslandGameState*>(GetWorld()->GetGameState());
 	if (!GameState)
 	{
 		UE_LOG(LogTemp, Error, TEXT("DIALOGUE WIDGET: CORRECT GAME MODE NOT FOUND"));
@@ -131,12 +192,14 @@ void UDialogueWidget::RevealOptions()
 	if (Responses.Num() == 0)
 	{
 		Button_Option000->SetVisibility(ESlateVisibility::Visible);
-		UWidgetBlueprintLibrary::SetInputMode_UIOnly(GetWorld()->GetFirstPlayerController(), Button_Option000);
+		Button_Option000->SetKeyboardFocus();
+		GetWorld()->GetTimerManager().ClearTimer(DialogueTimerHandle);
 	}
 	else
 	{
-		UWidgetBlueprintLibrary::SetInputMode_UIOnly(GetWorld()->GetFirstPlayerController(), Button_Option0);
-		// Button_Option0->WidgetStyle.SetNormal(Button_Option0->WidgetStyle.Hovered);
+		Button_Option0->SetKeyboardFocus();
+		GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::updateButtonLookOnFocus,
+			0.05f, true);
 	}
 	
 	for (int i = 0; i < Responses.Num(); i++)

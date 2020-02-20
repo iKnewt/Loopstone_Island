@@ -171,7 +171,7 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Islander, 0.5f);
 		
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
-		UWidgetBlueprintLibrary::SetInputMode_UIOnly(GetWorld()->GetFirstPlayerController(), DialogueWidget, true);
+		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
 
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 		CurrentDialogue->CurrentDialogueNode = nullptr;
@@ -191,7 +191,7 @@ void ALoopstone_IslandGameState::CloseDialogue()
 {
 	if (DialogueWidget)
 	{
-		UWidgetBlueprintLibrary::SetInputMode_UIOnly(GetWorld()->GetFirstPlayerController(), DialogueWidget, true);
+		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
 		CurrentIslander = nullptr;
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 		CurrentDialogue = nullptr;

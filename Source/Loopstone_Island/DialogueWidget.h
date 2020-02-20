@@ -25,6 +25,32 @@ class LOOPSTONE_ISLAND_API UDialogueWidget : public UUserWidget
 
 public:
 
+	// todo MAKE THIS BETTER BECAUSE I HATE THIS SO MUCH
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_MouseStyle;
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_NormalStyle;
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_FocusedStyle;
+
+	// virtual void
+	// UPROPERTY(EditAnywhere)
+	// FButtonStyle* NormalButtonStyle;
+	// UPROPERTY(EditAnywhere)
+	// FButtonStyle* FocusedButtonStyle;
+	// UPROPERTY(EditAnywhere)
+	// FButtonStyle* MouseButtonStyle;
+	//
+	// UFUNCTION(BlueprintCallable)
+	// void SetupButtonStyles(FButtonStyle& NormalStyle, FButtonStyle& FocusedStyle, FButtonStyle& MouseStyle)
+	// {
+	// *NormalButtonStyle = NormalStyle;
+	// *FocusedButtonStyle = FocusedStyle;
+	// *MouseButtonStyle = MouseStyle;
+	// }
+	// UFUNCTION(BlueprintCallable)
+	void SetupButtonStyles();
+
 	UPROPERTY()
 	ALoopstone_IslandGameState* GameState = nullptr;
 
@@ -43,6 +69,8 @@ public:
 	void SetSpeakerName(FString Name) const;
 	void SetRichStyleText(UDataTable* RichStyleTable) const;
 
+	UFUNCTION(BlueprintCallable)
+	void updateButtonLookOnFocus();
 
 	UFUNCTION()
 	void onOption000Pressed();
@@ -78,11 +106,14 @@ public:
 		GameState->UpdateDialogueBasedOnResponse(5);
 	}
 
+	//Dialogue Text
+	UPROPERTY(meta = (BindWidget))
+	URichTextBlock* Dialogue_Text;
 
 protected:
 
 	bool Initialize() override;
-public:
+private:
 	void AddLetterToDialogue()
 	{
 	}
@@ -105,7 +136,6 @@ public:
 	void RevealOptions();
 
 
-	
 	// Test invisible button
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Option000;
@@ -139,20 +169,15 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Option_4;
 
-	//Dialogue Text
-	UPROPERTY(meta = (BindWidget))
-	URichTextBlock* Dialogue_Text;
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Speaker_Name;
-
 	UPROPERTY()
 	TArray<UButton*> Buttons;
 	UPROPERTY()
 	TArray<UTextBlock*> Options;
 
 	FTimerHandle DialogueTimerHandle;
-
 
 	int Index = 0;
 };
