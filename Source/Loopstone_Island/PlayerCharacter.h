@@ -51,7 +51,7 @@ protected:
 	/** Handles moving forward/backward */
 	void MoveForward(float Val);
 
-	/** Handles stafing movement, left and right */
+	/** Handles strafing movement, left and right */
 	void MoveRight(float Val);
 
 	/**
@@ -85,7 +85,6 @@ protected:
 	bool InteractWithIslander(FHitResult Hit);
 
 	bool InteractWithObject(FHitResult Hit);
-
 	//Holds the reference on the object currently highlighted.
 	class AInteractableObjectBase* HighlightedObject = nullptr;
 

@@ -12,6 +12,9 @@
 #include "CookStats.h"
 #include "BaseIslanderCharacter.h"
 #include "Loopstone_IslandGameState.h"
+#include "Sound/SoundBase.h"
+#include "Components/AudioComponent.h"
+
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -138,11 +141,9 @@ void APlayerCharacter::Tick(float DeltaTime)
 		HighlightedObject = nullptr;
 	}
 
-
-	// todo refactor
-
-
 	// GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(HeadBobCameraShake, 1.0f);
+
+	//TODO this could perhaps be on whenever the user moves? just as a way to get as little as possible on tick.
 
 	if (GetVelocity().Size() > 0 && CanJump())
 	{
