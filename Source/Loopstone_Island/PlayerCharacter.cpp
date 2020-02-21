@@ -173,6 +173,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 		}
 	}
 
+	//TODO Make sure this works
 	if(IsValid(Border))
 	{
 		if(IsValid(Border->Spline))
