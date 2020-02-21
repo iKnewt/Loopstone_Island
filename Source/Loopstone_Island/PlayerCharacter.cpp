@@ -178,7 +178,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 	{
 		if(IsValid(Border->Spline))
 		{
-			FVector PointClosestToPlayer = Border->Spline->FindLocationClosestToWorldLocation(GetActorLocation(), ESplineCoordinateSpace::Local);
+			FVector PointClosestToPlayer = Border->Spline->FindLocationClosestToWorldLocation(GetActorLocation(), ESplineCoordinateSpace::World);
 			if (!PointClosestToPlayer.ContainsNaN())
 			{
 				float Distance = FVector::Dist(PointClosestToPlayer, GetActorLocation());
@@ -201,6 +201,14 @@ void APlayerCharacter::Tick(float DeltaTime)
 				}
 			}
 		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("SPLINE NOT INITALIZED"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("BORDER NOT INITALIZED"));
 	}
 }
 
