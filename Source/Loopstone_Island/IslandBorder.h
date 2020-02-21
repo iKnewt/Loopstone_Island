@@ -20,6 +20,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class UAudioComponent* Waves = nullptr;
 
+	USceneComponent* Root;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -175,29 +175,32 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 	if(IsValid(Border))
 	{
-		FVector PointClosestToPlayer = Border->Spline->FindLocationClosestToWorldLocation(GetActorLocation(), ESplineCoordinateSpace::World);
-		float Distance = PointClosestToPlayer.Size();
+		if(IsValid(Border->Spline))
+		{
+			FVector PointClosestToPlayer = Border->Spline->FindLocationClosestToWorldLocation(GetActorLocation(), ESplineCoordinateSpace::World);
+			if (!PointClosestToPlayer.ContainsNaN())
+			{
+				float Distance = FVector::Dist(PointClosestToPlayer, GetActorLocation());
+				UE_LOG(LogTemp, Error, TEXT("%f"), Distance);
 
-		if(Distance < WaveDistance)
-		{
-			if(!Border->Waves->IsPlaying())
-			{
-				Border->Waves->Play();
+				if (Distance < WaveDistance)
+				{
+					if (!Border->Waves->IsPlaying())
+					{
+						Border->Waves->Play();
+					}
+					Border->Waves->SetVolumeMultiplier(1 - Distance / WaveDistance);
+				}
+				else
+				{
+					if (Border->Waves->IsPlaying())
+					{
+						Border->Waves->Stop();
+					}
+				}
 			}
-			Border->Waves->SetVolumeMultiplier(1 - Distance / WaveDistance);
-		
 		}
-		else
-		{
-			if(Border->Waves->IsPlaying())
-			{
-				Border->Waves->Stop();
-			}
-		}
-		
-		
 	}
-	
 }
 
 bool APlayerCharacter::InteractWithIslander(FHitResult Hit)
