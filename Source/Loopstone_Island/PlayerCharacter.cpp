@@ -12,8 +12,10 @@
 #include "CookStats.h"
 #include "BaseIslanderCharacter.h"
 #include "Loopstone_IslandGameState.h"
-#include "Sound/SoundBase.h"
+#include "IslandBorder.h"
 #include "Components/AudioComponent.h"
+#include "Components/SplineComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -46,6 +48,18 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	if(IsValid(BorderRef))
+	{
+		AActor* Actor = GetWorld()->SpawnActor(BorderRef);
+		Border = dynamic_cast<AIslandBorder*>(Actor);
+		if(!IsValid(Border))
+		{
+			UE_LOG(LogTemp, Error, TEXT("BORDER NOT INITALIZED"));
+		}
+	}
+
+
+	
 
 	GameState = dynamic_cast<ALoopstone_IslandGameState*>(GetWorld()->GetGameState());
 	if (!GameState)
@@ -158,6 +172,32 @@ void APlayerCharacter::Tick(float DeltaTime)
 			GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(HeadBobRun);
 		}
 	}
+
+	if(IsValid(Border))
+	{
+		FVector PointClosestToPlayer = Border->Spline->FindLocationClosestToWorldLocation(GetActorLocation(), ESplineCoordinateSpace::World);
+		float Distance = PointClosestToPlayer.Size();
+
+		if(Distance < WaveDistance)
+		{
+			if(!Border->Waves->IsPlaying())
+			{
+				Border->Waves->Play();
+			}
+			Border->Waves->SetVolumeMultiplier(1 - Distance / WaveDistance);
+		
+		}
+		else
+		{
+			if(Border->Waves->IsPlaying())
+			{
+				Border->Waves->Stop();
+			}
+		}
+		
+		
+	}
+	
 }
 
 bool APlayerCharacter::InteractWithIslander(FHitResult Hit)

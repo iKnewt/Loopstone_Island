@@ -4,9 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
 #include "PlayerCharacter.generated.h"
-
-
 UCLASS(Blueprintable)
 class LOOPSTONE_ISLAND_API APlayerCharacter : public ACharacter
 {
@@ -24,6 +23,9 @@ class LOOPSTONE_ISLAND_API APlayerCharacter : public ACharacter
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class UCameraShake> HeadBobRun;
 
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class AIslandBorder> BorderRef;
+
 public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
@@ -39,10 +41,17 @@ public:
 	UPROPERTY()
 	class ALoopstone_IslandGameState* GameState = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float WaveDistance = 200;
+
 	UPROPERTY()
 	float WalkSpeed = 200;
 	UPROPERTY()
 	float RunSpeed = 500;
+
+
+
+	AIslandBorder* Border = nullptr;
 
 protected:
 	// Called when the game starts or when spawned
