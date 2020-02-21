@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "IslandBorder.h"
 #include "Components/SplineComponent.h"
 #include "Components/AudioComponent.h"
-#include "IslandBorder.h"
+
 
 // Sets default values
 AIslandBorder::AIslandBorder()

@@ -177,11 +177,11 @@ void APlayerCharacter::Tick(float DeltaTime)
 	{
 		if(IsValid(Border->Spline))
 		{
-			FVector PointClosestToPlayer = Border->Spline->FindLocationClosestToWorldLocation(GetActorLocation(), ESplineCoordinateSpace::World);
+			FVector PointClosestToPlayer = Border->Spline->FindLocationClosestToWorldLocation(GetActorLocation(), ESplineCoordinateSpace::Local);
 			if (!PointClosestToPlayer.ContainsNaN())
 			{
 				float Distance = FVector::Dist(PointClosestToPlayer, GetActorLocation());
-				UE_LOG(LogTemp, Error, TEXT("%f"), Distance);
+//				UE_LOG(LogTemp, Error, TEXT("%f"), Distance);
 
 				if (Distance < WaveDistance)
 				{
