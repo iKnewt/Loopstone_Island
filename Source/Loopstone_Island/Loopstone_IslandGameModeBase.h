@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Dialogue.h"
+#include "Dialogue/Dialogue.h"
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "Loopstone_IslandGameModeBase.generated.h"

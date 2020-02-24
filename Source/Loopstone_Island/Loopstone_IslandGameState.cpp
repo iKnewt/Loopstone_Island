@@ -2,17 +2,14 @@
 
 
 #include "Loopstone_IslandGameState.h"
-#include "DialogueWidget.h"
-#include "Dialogue.h"
-#include "DialogueEdge.h"
-#include "DialogueNode.h"
-#include "SunSky.h"
-#include "InteractableObjectBase.h"
-#include "InventoryWidget.h"
+#include "GUI/DialogueWidget.h"
+#include "Dialogue/Dialogue.h"
+#include "Dialogue/DialogueNode.h"
+#include "Objects/SunSky.h"
+#include "Objects/InteractableObjectBase.h"
+#include "GUI/InventoryWidget.h"
 #include "Kismet/GameplayStatics.h"
-#include "IslanderTargetPointController.h"
-#include "Sound/SoundWave.h"
-#include "Kismet/GameplayStatics.h"
+#include "Objects/IslanderTargetPointController.h"
 #include "WidgetBlueprintLibrary.h"
 
 void ALoopstone_IslandGameState::BeginPlay()

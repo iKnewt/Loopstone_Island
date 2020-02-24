@@ -3,9 +3,9 @@
 
 #include "Loopstone_IslandGameModeBase.h"
 #include "ConstructorHelpers.h"
-#include "DialogueWidget.h"
-#include "DialogueEdge.h"
-#include "Dialogue.h"
+#include "GUI/DialogueWidget.h"
+#include "Dialogue/DialogueEdge.h"
+#include "Dialogue/Dialogue.h"
 
 ALoopstone_IslandGameModeBase::ALoopstone_IslandGameModeBase()
 	: Super()

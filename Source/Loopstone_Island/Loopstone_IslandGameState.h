@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
-#include "BaseIslanderCharacter.h"
+#include "Characters/BaseIslanderCharacter.h"
 #include "GameStateEnums.h"
 #include "Loopstone_IslandGameState.generated.h"
 

@@ -7,7 +7,7 @@
 #include "Engine/Font.h"
 #include "TextBlock.h"
 #include "RichTextBlock.h"
-#include "PlayerCharacter.h"
+#include "Characters/PlayerCharacter.h"
 #include "Loopstone_IslandGameState.h"
 #include "SButton.h"
 #include "Widgets/Input/SButton.h"

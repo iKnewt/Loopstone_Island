@@ -4,7 +4,7 @@
 #include "IslanderTargetPointController.h"
 #include "Kismet/GameplayStatics.h"
 #include "IslanderTargetPoint.h"
-#include "BaseIslanderCharacter.h"
+#include "Characters/BaseIslanderCharacter.h"
 
 // Sets default values
 AIslanderTargetPointController::AIslanderTargetPointController()
