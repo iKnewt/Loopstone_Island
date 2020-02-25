@@ -175,7 +175,7 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
 		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
 
-		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+		// GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 
 		DialogueWidget->SetSpeakerName(Islander->Name);
