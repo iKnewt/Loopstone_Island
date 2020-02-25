@@ -4,6 +4,7 @@
 #include "InteractableDoor.h"
 #include "Components/StaticMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "Components/AudioComponent.h"
 
 // Sets default values
 AInteractableDoor::AInteractableDoor()
@@ -13,6 +14,7 @@ AInteractableDoor::AInteractableDoor()
 	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("DoorMesh"));
 	RootComponent = CreateDefaultSubobject<USceneComponent>(FName("SceneRoot"));
 	DoorMesh->AttachTo(RootComponent);
+	Sound = CreateDefaultSubobject<UAudioComponent>(FName("Audio"));
 }
 
 void AInteractableDoor::PlayAnimation()
@@ -24,13 +26,23 @@ void AInteractableDoor::PlayAnimation()
 		CurveTimeline.AddInterpFloat(CurveFloat, TimelineProgress);
 		if (!bOpened)
 		{
-			CurveTimeline.PlayFromStart();
+			CurveTimeline.Play();
+			if(IsValid(DoorOpen))
+			{
+				Sound->SetSound(DoorOpen);
+			}
+
 		}
 		else
 		{
-			CurveTimeline.ReverseFromEnd();
+			CurveTimeline.Reverse();
+			if (IsValid(DoorClose))
+			{
+				Sound->SetSound(DoorClose);
+			}
 		}
 		bOpened = !bOpened;
+		Sound->Play();
 	}
 	else
 	{
@@ -69,6 +81,16 @@ void AInteractableDoor::VisualizeInteraction(bool bActivate)
 	}
 	Material->SetScalarParameterValue("Glow", int(bActivate));
 	bVisualizingInteraction = bActivate;
+}
+
+void AInteractableDoor::DoNotInteract()
+{
+	if(IsValid(DoorLocked))
+	{
+		Sound->SetSound(DoorLocked);
+		Sound->Play();
+	}
+
 }
 
 // Called when the game starts or when spawned

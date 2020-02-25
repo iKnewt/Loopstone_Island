@@ -158,12 +158,12 @@ void APlayerCharacter::Tick(float DeltaTime)
 	// GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(HeadBobCameraShake, 1.0f);
 
 	//TODO this could perhaps be on whenever the user moves? just as a way to get as little as possible on tick.
-
-	if (GetVelocity().Size() > 0 && CanJump())
+	float Velocity = GetVelocity().Size();
+	if (Velocity > 0 && CanJump())
 	{
 		//	GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(MyShake, 1.0f);
 
-		if (GetVelocity().Size() < 300)
+		if (Velocity < 300)
 		{
 			GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(HeadBobWalk);
 		}
@@ -171,7 +171,19 @@ void APlayerCharacter::Tick(float DeltaTime)
 		{
 			GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(HeadBobRun);
 		}
+		SumOfDistance += Velocity;
+		if (SumOfDistance > DistanceBetweenSteps)
+		{
+			if(Footsteps)
+			{
+				UGameplayStatics::PlaySound2D(GetWorld(), Footsteps,1,FMath::RandRange(1.f,1.2f));
+
+			}
+			SumOfDistance = 0;
+		}
+
 	}
+
 }
 
 bool APlayerCharacter::InteractWithIslander(FHitResult Hit)

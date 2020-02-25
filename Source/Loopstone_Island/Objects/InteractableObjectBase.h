@@ -22,6 +22,8 @@ public:
 	// UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	virtual void Interact();
 
+	virtual void DoNotInteract(){}
+
 	virtual void VisualizeInteraction(bool bActivate)
 	{
 	}
