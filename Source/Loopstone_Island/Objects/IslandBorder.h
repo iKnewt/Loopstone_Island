@@ -22,9 +22,14 @@ public:
 
 	USceneComponent* Root;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float AudioTimer = 0.25f;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void UpdateAudioComponentLocation();
 
 
 

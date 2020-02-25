@@ -172,44 +172,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 			GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(HeadBobRun);
 		}
 	}
-
-	//TODO Make sure this works
-	if(IsValid(Border))
-	{
-		if(IsValid(Border->Spline))
-		{
-			FVector PointClosestToPlayer = Border->Spline->FindLocationClosestToWorldLocation(GetActorLocation(), ESplineCoordinateSpace::World);
-			if (!PointClosestToPlayer.ContainsNaN())
-			{
-				float Distance = FVector::Dist(PointClosestToPlayer, GetActorLocation());
-//				UE_LOG(LogTemp, Error, TEXT("%f"), Distance);
-
-				if (Distance < WaveDistance)
-				{
-					if (!Border->Waves->IsPlaying())
-					{
-						Border->Waves->Play();
-					}
-					Border->Waves->SetVolumeMultiplier(1 - Distance / WaveDistance);
-				}
-				else
-				{
-					if (Border->Waves->IsPlaying())
-					{
-						Border->Waves->Stop();
-					}
-				}
-			}
-		}
-		else
-		{
-			UE_LOG(LogTemp, Error, TEXT("SPLINE NOT INITALIZED"));
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("BORDER NOT INITALIZED"));
-	}
 }
 
 bool APlayerCharacter::InteractWithIslander(FHitResult Hit)
