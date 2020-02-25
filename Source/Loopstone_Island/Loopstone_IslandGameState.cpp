@@ -100,6 +100,7 @@ bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* Int
 		// if any element doesn't match the library it shouldn't display
 		if (Element.Value != this->bEventHasBeenTriggered[static_cast<int>(Element.Key)])
 		{
+			InteractableObject->DoNotInteract();
 			return false;
 		}
 	}
@@ -108,6 +109,7 @@ bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* Int
 		// if any element doesn't match the library it shouldn't display
 		if (Element.Value != this->bTopicHasBeenRevealed[static_cast<int>(Element.Key)])
 		{
+			InteractableObject->DoNotInteract();
 			return false;
 		}
 	}
@@ -115,11 +117,13 @@ bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* Int
 	if (InteractableObject->TimeOfDayCondition != ETimeOfDay::None &&
 		InteractableObject->TimeOfDayCondition != this->CurrentTimeOfDay)
 	{
+		InteractableObject->DoNotInteract();
 		return false;
 	}
 	if (InteractableObject->ActiveStoryCondition != EStory::None &&
 		InteractableObject->ActiveStoryCondition != this->CurrentStory)
 	{
+		InteractableObject->DoNotInteract();
 		return false;
 	}
 

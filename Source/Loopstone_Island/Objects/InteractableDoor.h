@@ -29,6 +29,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void VisualizeInteraction(bool bActivate) override;
 
+	void DoNotInteract() override;
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -55,6 +57,17 @@ protected:
 	UMaterialInstanceDynamic* Material = nullptr;
 
 	bool bGlowing = false;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	class UAudioComponent* Sound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+		USoundBase* DoorOpen;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+		USoundBase* DoorClose;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+		USoundBase* DoorLocked;
+	
 
 public:
 	// Called every frame

@@ -158,12 +158,12 @@ void APlayerCharacter::Tick(float DeltaTime)
 	// GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(HeadBobCameraShake, 1.0f);
 
 	//TODO this could perhaps be on whenever the user moves? just as a way to get as little as possible on tick.
-
-	if (GetVelocity().Size() > 0 && CanJump())
+	float Velocity = GetVelocity().Size();
+	if (Velocity > 0 && CanJump())
 	{
 		//	GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(MyShake, 1.0f);
 
-		if (GetVelocity().Size() < 300)
+		if (Velocity < 300)
 		{
 			GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(HeadBobWalk);
 		}
@@ -171,45 +171,19 @@ void APlayerCharacter::Tick(float DeltaTime)
 		{
 			GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(HeadBobRun);
 		}
-	}
-
-	//TODO Make sure this works
-	if(IsValid(Border))
-	{
-		if(IsValid(Border->Spline))
+		SumOfDistance += Velocity;
+		if (SumOfDistance > DistanceBetweenSteps)
 		{
-			FVector PointClosestToPlayer = Border->Spline->FindLocationClosestToWorldLocation(GetActorLocation(), ESplineCoordinateSpace::World);
-			if (!PointClosestToPlayer.ContainsNaN())
+			if(Footsteps)
 			{
-				float Distance = FVector::Dist(PointClosestToPlayer, GetActorLocation());
-//				UE_LOG(LogTemp, Error, TEXT("%f"), Distance);
+				UGameplayStatics::PlaySound2D(GetWorld(), Footsteps,1,FMath::RandRange(1.f,1.2f));
 
-				if (Distance < WaveDistance)
-				{
-					if (!Border->Waves->IsPlaying())
-					{
-						Border->Waves->Play();
-					}
-					Border->Waves->SetVolumeMultiplier(1 - Distance / WaveDistance);
-				}
-				else
-				{
-					if (Border->Waves->IsPlaying())
-					{
-						Border->Waves->Stop();
-					}
-				}
 			}
+			SumOfDistance = 0;
 		}
-		else
-		{
-			UE_LOG(LogTemp, Error, TEXT("SPLINE NOT INITALIZED"));
-		}
+
 	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("BORDER NOT INITALIZED"));
-	}
+
 }
 
 bool APlayerCharacter::InteractWithIslander(FHitResult Hit)

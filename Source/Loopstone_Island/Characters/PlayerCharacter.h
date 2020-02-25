@@ -44,9 +44,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float WaveDistance = 200;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	USoundBase* Footsteps;
+
+	float SumOfDistance = 0;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float DistanceBetweenSteps = 1000000;
+	UPROPERTY(EditAnywhere, Category = "Movement")
 	float WalkSpeed = 200;
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, Category = "Movement")
 	float RunSpeed = 500;
 
 

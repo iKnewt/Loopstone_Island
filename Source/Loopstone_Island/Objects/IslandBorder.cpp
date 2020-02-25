@@ -3,6 +3,8 @@
 #include "IslandBorder.h"
 #include "Components/SplineComponent.h"
 #include "Components/AudioComponent.h"
+#include "TimerManager.h"
+#include "LoopstonePlayerController.h"
 
 
 // Sets default values
@@ -21,7 +23,19 @@ AIslandBorder::AIslandBorder()
 void AIslandBorder::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	FTimerHandle Timer;
+	GetWorldTimerManager().SetTimer(Timer,this, &AIslandBorder::UpdateAudioComponentLocation, AudioTimer, true);
+}
+
+void AIslandBorder::UpdateAudioComponentLocation()
+{
+	FVector PlayerLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
+
+	FVector PointClosestToPlayer = Spline->FindLocationClosestToWorldLocation(PlayerLocation, ESplineCoordinateSpace::World);
+	if (!PointClosestToPlayer.ContainsNaN())
+	{
+		Waves->SetWorldLocation(PointClosestToPlayer);
+	}
 }
 
 // Called every frame
