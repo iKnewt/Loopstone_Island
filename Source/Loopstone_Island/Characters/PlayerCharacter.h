@@ -45,7 +45,11 @@ public:
 		float WaveDistance = 200;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	USoundBase* Footsteps;
+		USoundBase* WoodFootstep;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USoundBase* GrassFootstep;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USoundBase* DirtFootstep;
 
 	float SumOfDistance = 0;
 
@@ -107,7 +111,12 @@ protected:
 	/**
 	 * Does a lineTrace and returns the hit-result.
 	 */
-	FHitResult RayTrace(float TraceLength, bool bVisualized = false);
+	FHitResult RayTrace(float TraceLength, FVector Direction, bool bVisualized = false);
+
+	/**
+	 * Plays the footstep sound based on physical material you're walking on
+	 */
+	void PlayFootstepSoundEffect();
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

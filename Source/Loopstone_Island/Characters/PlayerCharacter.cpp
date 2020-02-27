@@ -16,6 +16,7 @@
 #include "Components/AudioComponent.h"
 #include "Components/SplineComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
 
 
 // Sets default values
@@ -121,7 +122,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 	//TODO This should be done better. bit too many checks rn
 
-	FHitResult Hit = RayTrace(400);
+	FHitResult Hit = RayTrace(400,GetFirstPersonCameraComponent()->GetForwardVector());
 	if (Hit.bBlockingHit)
 	{
 		if (Hit.Actor->ActorHasTag("Interact"))
@@ -174,15 +175,15 @@ void APlayerCharacter::Tick(float DeltaTime)
 		SumOfDistance += Velocity;
 		if (SumOfDistance > DistanceBetweenSteps)
 		{
-			if(Footsteps)
-			{
-				UGameplayStatics::PlaySound2D(GetWorld(), Footsteps,1,FMath::RandRange(1.f,1.2f));
-
-			}
+				PlayFootstepSoundEffect();
 			SumOfDistance = 0;
 		}
-
 	}
+
+	
+
+
+	
 
 }
 
@@ -210,7 +211,7 @@ bool APlayerCharacter::InteractWithObject(FHitResult Hit)
 
 void APlayerCharacter::Interact()
 {
-	FHitResult Hit = RayTrace(400);
+	FHitResult Hit = RayTrace(400,GetFirstPersonCameraComponent()->GetForwardVector());
 
 	if (Hit.bBlockingHit)
 	{
@@ -231,13 +232,15 @@ void APlayerCharacter::Interact()
 	}
 }
 
-FHitResult APlayerCharacter::RayTrace(float TraceLength, bool bVisualized)
+FHitResult APlayerCharacter::RayTrace(float TraceLength, FVector Direction, bool bVisualized)
 {
 	FHitResult Hit(ForceInit);
 	FVector Start = FirstPersonCameraComponent->GetComponentLocation() +
 		FirstPersonCameraComponent->GetForwardVector() * 50;
-	FVector End = Start + FirstPersonCameraComponent->GetForwardVector() * 400.f;
+	FVector End = Start + Direction * TraceLength;
 	FCollisionQueryParams collisionParam;
+	collisionParam.AddIgnoredActor(this);
+	collisionParam.bReturnPhysicalMaterial = true;
 	GetWorld()->LineTraceSingleByChannel(
 		Hit, Start, End, ECC_WorldDynamic, collisionParam);
 	if (bVisualized)
@@ -245,6 +248,32 @@ FHitResult APlayerCharacter::RayTrace(float TraceLength, bool bVisualized)
 		DrawDebugLine(GetWorld(), Start, End, FColor::Red);
 	}
 	return Hit;
+}
+
+void APlayerCharacter::PlayFootstepSoundEffect()
+{
+	FHitResult Hit = RayTrace(200, GetActorUpVector() * -1);
+	if(Hit.bBlockingHit)
+	{
+		switch(Hit.PhysMaterial->SurfaceType)
+		{
+			//Wood
+		case SurfaceType1:
+			if(IsValid(WoodFootstep))
+			{
+				UGameplayStatics::PlaySound2D(GetWorld(), WoodFootstep, 1, FMath::RandRange(1.f, 1.2f));
+			}
+			break;
+			//Grass
+		case SurfaceType2:
+			UGameplayStatics::PlaySound2D(GetWorld(), GrassFootstep, 1, FMath::RandRange(1.f, 1.2f));
+			break;
+			//Dirt
+		case SurfaceType3:
+			UGameplayStatics::PlaySound2D(GetWorld(), DirtFootstep, 1, FMath::RandRange(1.f, 1.2f));
+			break;
+		}
+	}
 }
 
 // Called to bind functionality to input
