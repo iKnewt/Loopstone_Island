@@ -179,12 +179,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 			SumOfDistance = 0;
 		}
 	}
-
-	
-
-
-	
-
 }
 
 bool APlayerCharacter::InteractWithIslander(FHitResult Hit)
