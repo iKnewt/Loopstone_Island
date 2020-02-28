@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Objects/IslanderTargetPointController.h"
 #include "WidgetBlueprintLibrary.h"
+#include "Objects/IslandSound.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {

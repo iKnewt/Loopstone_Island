@@ -6,7 +6,6 @@
 #include "GameFramework/GameStateBase.h"
 #include "Characters/BaseIslanderCharacter.h"
 #include "GameStateEnums.h"
-#include "Objects/IslandAmbientSound.h"
 #include "Loopstone_IslandGameState.generated.h"
 
 
@@ -62,7 +61,7 @@ public:
 
 	class AIslanderTargetPointController* TargetPointController = nullptr;
 
-	AIslandAmbientSound* MusicActor;
+	class AIslandSound* MusicActor;
 
 	/**
 * Opens Dialogue
