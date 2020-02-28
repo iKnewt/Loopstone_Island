@@ -6,6 +6,7 @@
 #include "GameFramework/GameStateBase.h"
 #include "Characters/BaseIslanderCharacter.h"
 #include "GameStateEnums.h"
+#include "Objects/IslandAmbientSound.h"
 #include "Loopstone_IslandGameState.generated.h"
 
 
@@ -17,39 +18,39 @@ class LOOPSTONE_ISLAND_API ALoopstone_IslandGameState : public AGameStateBase
 {
 	GENERATED_BODY()
 
-	void BeginPlay() override;
+		void BeginPlay() override;
 	void EditInventory(bool NewBoolValue);
 
 public:
 	UPROPERTY()
-	TArray<bool> bEventHasBeenTriggered;
+		TArray<bool> bEventHasBeenTriggered;
 	TArray<bool> bTopicHasBeenRevealed;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Current Conditions")
-	ETimeOfDay CurrentTimeOfDay = ETimeOfDay::Morning;
+		ETimeOfDay CurrentTimeOfDay = ETimeOfDay::Morning;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Current Conditions")
-	EStory CurrentStory = EStory::None;
+		EStory CurrentStory = EStory::None;
 
 	UPROPERTY()
-	ABaseIslanderCharacter* CurrentIslander = nullptr;
+		ABaseIslanderCharacter* CurrentIslander = nullptr;
 
 	UPROPERTY()
-	class UDialogue* CurrentDialogue = nullptr;
+		class UDialogue* CurrentDialogue = nullptr;
 
 	UFUNCTION()
-	bool TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction = true);
+		bool TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction = true);
 
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
-	TSubclassOf<class UDialogueWidget> BP_DialogueWidget;
+		TSubclassOf<class UDialogueWidget> BP_DialogueWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Music")
 		TArray<USoundBase*> Music;
-	
+
 	class UDialogueWidget* DialogueWidget = nullptr;
 
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 		TSubclassOf<class UInventoryWidget> BP_InventoryWidget;
 
@@ -61,11 +62,13 @@ public:
 
 	class AIslanderTargetPointController* TargetPointController = nullptr;
 
+	AIslandAmbientSound* MusicActor;
+
 	/**
 * Opens Dialogue
 */
 	bool InteractWithObject(class AInteractableObjectBase* InteractableObject);
-	
+
 	bool StartDialogue(ABaseIslanderCharacter* Islander);
 
 	void CloseDialogue();
@@ -75,4 +78,8 @@ public:
 	void ChangeTimeOfDay(ETimeOfDay NewTimeOfDay);
 
 	void ChangeStory(EStory NewStory);
+
+
+
+
 };
