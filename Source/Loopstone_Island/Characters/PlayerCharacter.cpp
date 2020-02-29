@@ -260,11 +260,19 @@ void APlayerCharacter::PlayFootstepSoundEffect()
 			break;
 			//Grass
 		case SurfaceType2:
-			UGameplayStatics::PlaySound2D(GetWorld(), GrassFootstep, 1, FMath::RandRange(1.f, 1.2f));
+			if(IsValid(GrassFootstep))
+			{
+				UGameplayStatics::PlaySound2D(GetWorld(), GrassFootstep, 1, FMath::RandRange(1.f, 1.2f));
+			}
+
 			break;
 			//Dirt
 		case SurfaceType3:
-			UGameplayStatics::PlaySound2D(GetWorld(), DirtFootstep, 1, FMath::RandRange(1.f, 1.2f));
+			if(IsValid(DirtFootstep))
+			{
+				UGameplayStatics::PlaySound2D(GetWorld(), DirtFootstep, 1, FMath::RandRange(1.f, 1.2f));
+			}
+
 			break;
 		}
 	}
