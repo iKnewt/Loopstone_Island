@@ -21,7 +21,7 @@ void AIslandSound::BeginPlay()
 	ALoopstone_IslandGameState* GameState = Cast<ALoopstone_IslandGameState>(GetWorld()->GetGameState());
 	if (IsValid(GameState))
 	{
-		GameState->MusicActor = this;
+		GameState->MusicActors.Add(this);
 	}
 
 	FOnTimelineFloat TimelineProgress;
@@ -85,16 +85,28 @@ void AIslandSound::SetNewSound()
 	switch (CurrentTimeOfDay)
 	{
 	case ETimeOfDay::Morning:
-		AudioComponent->SetSound(MorningSound);
+		if(IsValid(MorningSound))
+		{
+			AudioComponent->SetSound(MorningSound);
+		}
 		break;
 	case ETimeOfDay::Afternoon:
-		AudioComponent->SetSound(AfternoonSound);
+		if (IsValid(AfternoonSound))
+		{
+			AudioComponent->SetSound(AfternoonSound);
+		}
 		break;
 	case ETimeOfDay::Evening:
-		AudioComponent->SetSound(EveningSound);
+		if (IsValid(EveningSound))
+		{
+			AudioComponent->SetSound(EveningSound);
+		}
 		break;
 	case ETimeOfDay::Night:
-		AudioComponent->SetSound(NightSound);
+		if (IsValid(NightSound))
+		{
+			AudioComponent->SetSound(NightSound);
+		}
 		break;
 	}
 	if(!AudioComponent->IsPlaying())

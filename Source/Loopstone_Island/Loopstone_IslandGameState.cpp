@@ -266,13 +266,12 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 			TargetPointController->MoveIslandersToPosition(NewTimeOfDay);
 		}
 	}
-	if(IsValid(MusicActor))
+	for(auto Actors : MusicActors)
 	{
-		MusicActor->ChangeCurrentTimeOfDay(NewTimeOfDay);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("ERROR: No Music Actor set!"));
+		if(IsValid(Actors))
+		{
+			Actors->ChangeCurrentTimeOfDay(NewTimeOfDay);
+		}
 	}
 }
 

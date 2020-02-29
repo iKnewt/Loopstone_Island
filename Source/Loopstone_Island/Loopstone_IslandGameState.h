@@ -61,7 +61,7 @@ public:
 
 	class AIslanderTargetPointController* TargetPointController = nullptr;
 
-	class AIslandSound* MusicActor;
+	TArray<class AIslandSound*> MusicActors;
 
 	/**
 * Opens Dialogue
@@ -74,6 +74,7 @@ public:
 
 	bool UpdateDialogueBasedOnResponse(int ResponseID);
 
+	UFUNCTION(BlueprintCallable)
 	void ChangeTimeOfDay(ETimeOfDay NewTimeOfDay);
 
 	void ChangeStory(EStory NewStory);
