@@ -5,6 +5,8 @@
 #include "TimerManager.h"
 #include "Components/Button.h"
 #include "WidgetBlueprintLibrary.h"
+#include "Dialogue/Dialogue.h"
+#include "Dialogue/DialogueNode.h"
 
 void UDialogueWidget::SetupButtonStyles()
 {
@@ -223,4 +225,7 @@ void UDialogueWidget::RevealOptions()
 		Options[i]->SetText(FText::FromString(Responses[i]));
 		Buttons[i]->SetVisibility(ESlateVisibility::Visible);
 	}
+
+	GameState->CurrentIslander->ChangeMouthExpression(GameState->CurrentDialogue->CurrentDialogueNode->MouthExpression);
+	
 }
