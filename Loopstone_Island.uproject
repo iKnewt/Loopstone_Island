@@ -19,7 +19,7 @@
 		{
 			"Name": "Loopstone_IslandEditor",
 			"Type": "Editor",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "PostEngineInit"
 		}
 	],
 	"Plugins": [

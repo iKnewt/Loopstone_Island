@@ -7,9 +7,9 @@ public class Loopstone_IslandEditorTarget : TargetRules
 {
 	public Loopstone_IslandEditorTarget( TargetInfo Target) : base(Target)
 	{
-		Type = TargetType.Editor;
+		// Type = TargetType.Editor;
 
-		ExtraModuleNames.AddRange( new string[] { "Loopstone_Island" } );
+		// ExtraModuleNames.AddRange( new string[] { "Loopstone_Island" } );
 
         // Game editor
         ExtraModuleNames.AddRange(new string[] { "Loopstone_IslandEditor" });
