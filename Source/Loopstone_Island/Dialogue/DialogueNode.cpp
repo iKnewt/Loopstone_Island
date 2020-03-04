@@ -16,8 +16,6 @@ UDialogueNode::UDialogueNode()
 #endif
 }
 
-#if WITH_EDITOR
-
 void UDialogueNode::PrintSelfAndChildren()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Node: %s "), *DialogueText.ToString());
@@ -65,6 +63,8 @@ bool UDialogueNode::ConditionsMet(ALoopstone_IslandGameState* GameState)
 	// if all conditions are met
 	return true;
 }
+
+#if WITH_EDITOR
 
 FText UDialogueNode::GetNodeTitle() const
 {

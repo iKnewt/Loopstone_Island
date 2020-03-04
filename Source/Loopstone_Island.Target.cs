@@ -12,15 +12,15 @@ public class Loopstone_IslandTarget : TargetRules
 		ExtraModuleNames.AddRange( new string[] { "Loopstone_Island" } );
 
 
-        //if (bBuildEditor) //this will include UnrealEd and will throw errors when packaging
-        //        if (Target.Type == TargetType.Editor)//4.16+
-        //      {
-        //        ExtraModuleNames.AddRange(
-        //          new string[]
-        //        {
-        //          "Loopstone_IslandEditor"
-        //    });
-        //}
+        if (bBuildEditor) //this will include UnrealEd and will throw errors when packaging
+               // if (Target.Type == TargetType.Editor)//4.16+
+              {
+                ExtraModuleNames.AddRange(
+                  new string[]
+                {
+                  "Loopstone_IslandEditor"
+            });
+        }
 
     }
 }

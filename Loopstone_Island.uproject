@@ -11,7 +11,7 @@
 			"AdditionalDependencies": [
 				"Engine",
 				"UMG",
-				"GenericGraphEditor",
+				"GenericGraphRuntime",
 				"Paper2D",
 				"CoreUObject"
 			]
