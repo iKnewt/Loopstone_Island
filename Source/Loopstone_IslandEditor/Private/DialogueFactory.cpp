@@ -1,5 +1,5 @@
 #include "DialogueFactory.h"
-#include "Dialogue.h"
+#include "Dialogue/Dialogue.h"
 
 #define LOCTEXT_NAMESPACE "DialogueFactory"
 

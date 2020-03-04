@@ -2,18 +2,16 @@
 
 
 #include "Loopstone_IslandGameState.h"
-#include "DialogueWidget.h"
-#include "Dialogue.h"
-#include "DialogueEdge.h"
-#include "DialogueNode.h"
-#include "SunSky.h"
-#include "InteractableObjectBase.h"
-#include "InventoryWidget.h"
+#include "GUI/DialogueWidget.h"
+#include "Dialogue/Dialogue.h"
+#include "Dialogue/DialogueNode.h"
+#include "Objects/SunSky.h"
+#include "Objects/InteractableObjectBase.h"
+#include "GUI/InventoryWidget.h"
 #include "Kismet/GameplayStatics.h"
-#include "IslanderTargetPointController.h"
-#include "Sound/SoundWave.h"
-#include "Kismet/GameplayStatics.h"
+#include "Objects/IslanderTargetPointController.h"
 #include "WidgetBlueprintLibrary.h"
+#include "Objects/IslandSound.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
@@ -103,6 +101,7 @@ bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* Int
 		// if any element doesn't match the library it shouldn't display
 		if (Element.Value != this->bEventHasBeenTriggered[static_cast<int>(Element.Key)])
 		{
+			InteractableObject->DoNotInteract();
 			return false;
 		}
 	}
@@ -111,6 +110,7 @@ bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* Int
 		// if any element doesn't match the library it shouldn't display
 		if (Element.Value != this->bTopicHasBeenRevealed[static_cast<int>(Element.Key)])
 		{
+			InteractableObject->DoNotInteract();
 			return false;
 		}
 	}
@@ -118,11 +118,13 @@ bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* Int
 	if (InteractableObject->TimeOfDayCondition != ETimeOfDay::None &&
 		InteractableObject->TimeOfDayCondition != this->CurrentTimeOfDay)
 	{
+		InteractableObject->DoNotInteract();
 		return false;
 	}
 	if (InteractableObject->ActiveStoryCondition != EStory::None &&
 		InteractableObject->ActiveStoryCondition != this->CurrentStory)
 	{
+		InteractableObject->DoNotInteract();
 		return false;
 	}
 
@@ -174,7 +176,7 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
 		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
 
-		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+		// GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 
 		DialogueWidget->SetSpeakerName(Islander->Name);
@@ -236,7 +238,7 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	DialogueText = CurrentDialogue->CurrentDialogueNode->DialogueText.ToString();
 
 	// Change facial expression on islander
-	CurrentIslander->ChangeMouthExpression(CurrentDialogue->CurrentDialogueNode->MouthExpression);
+	CurrentIslander->ChangeMouthExpression(EMouthExpression::Mouth_Talk);
 	CurrentIslander->ChangeEyeExpression(CurrentDialogue->CurrentDialogueNode->RightEyeExpression, CurrentDialogue->CurrentDialogueNode->LeftEyeExpression);
 	// Change animation??
 
@@ -262,6 +264,13 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 		if(IsValid(TargetPointController))
 		{
 			TargetPointController->MoveIslandersToPosition(NewTimeOfDay);
+		}
+	}
+	for(auto Actors : MusicActors)
+	{
+		if(IsValid(Actors))
+		{
+			Actors->ChangeCurrentTimeOfDay(NewTimeOfDay);
 		}
 	}
 }
