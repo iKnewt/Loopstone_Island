@@ -61,7 +61,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Expression")
 	EEyeExpression LeftEyeExpression = EEyeExpression::Eye_Blinking;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Expression")
-	EMouthExpression MouthExpression = EMouthExpression::Mouth_Talk;
+	EMouthExpression MouthExpression = EMouthExpression::Mouth_Smile;
 
 
 	UFUNCTION()
