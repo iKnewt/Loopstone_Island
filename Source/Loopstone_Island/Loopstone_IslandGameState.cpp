@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Objects/IslanderTargetPointController.h"
 #include "WidgetBlueprintLibrary.h"
+#include "Objects/IslandSound.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
@@ -237,7 +238,7 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	DialogueText = CurrentDialogue->CurrentDialogueNode->DialogueText.ToString();
 
 	// Change facial expression on islander
-	CurrentIslander->ChangeMouthExpression(CurrentDialogue->CurrentDialogueNode->MouthExpression);
+	CurrentIslander->ChangeMouthExpression(EMouthExpression::Mouth_Talk);
 	CurrentIslander->ChangeEyeExpression(CurrentDialogue->CurrentDialogueNode->RightEyeExpression, CurrentDialogue->CurrentDialogueNode->LeftEyeExpression);
 	// Change animation??
 
@@ -263,6 +264,13 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 		if(IsValid(TargetPointController))
 		{
 			TargetPointController->MoveIslandersToPosition(NewTimeOfDay);
+		}
+	}
+	for(auto Actors : MusicActors)
+	{
+		if(IsValid(Actors))
+		{
+			Actors->ChangeCurrentTimeOfDay(NewTimeOfDay);
 		}
 	}
 }

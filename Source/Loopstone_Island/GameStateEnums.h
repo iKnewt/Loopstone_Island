@@ -19,6 +19,7 @@ enum class EStory : uint8
 {
 	PartyPlanner,
 	AssistantChef,
+	Detective,
 	None
 };
 
@@ -28,6 +29,9 @@ enum class EEventType : uint8
 	HasTape,
 	HasRope,
 	HasKnife,
+	HasLighthouseKey,
+	HasMachine,
+	TutorialCompleted,
 	None
 };
 
@@ -38,6 +42,13 @@ enum class ETopic : uint8
 	Tape,
 	Rope,
 	Knife,
+	FarmerTalkedAboutInnkeeper,
+	TalkedToFarmerAboutNoise,
+	TalkedToDoctorAboutNoise,
+	TalkedToMotherAboutNoise,
+	TalkedToChildAboutNoise,
+	TalkedToSBAboutNoise,
+	HeardFarmersOpinionOnDoctor,
 	None
 };
 

@@ -74,6 +74,7 @@ public:
 
 
 #if WITH_EDITOR
+	
 	virtual FText GetNodeTitle() const override;
 
 	virtual void SetNodeTitle(const FText& NewTitle) override;

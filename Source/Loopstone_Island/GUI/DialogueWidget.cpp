@@ -5,6 +5,8 @@
 #include "TimerManager.h"
 #include "Components/Button.h"
 #include "WidgetBlueprintLibrary.h"
+#include "Dialogue/Dialogue.h"
+#include "Dialogue/DialogueNode.h"
 
 void UDialogueWidget::SetupButtonStyles()
 {
@@ -39,6 +41,11 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 		Button->SetVisibility(ESlateVisibility::Hidden);
 	}
 
+	
+	Button_Option000->SetVisibility(ESlateVisibility::Visible);
+	NextOption->SetVisibility(ESlateVisibility::Hidden);
+
+	
 	//font still not set
 	FullDialogue = InDialogue;
 	FullDialogueInChars = FullDialogue.GetCharArray();
@@ -119,7 +126,17 @@ void UDialogueWidget::updateButtonLookOnFocus()
 
 void UDialogueWidget::onOption000Pressed()
 {
-	GameState->UpdateDialogueBasedOnResponse(0);
+	if(bCurrentlyWriting)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(DialogueTimerHandle);
+		GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::AppendDialogueString,
+			0.001f, true);
+	}
+	else
+	{
+		GameState->UpdateDialogueBasedOnResponse(0);
+	}
+
 }
 
 bool UDialogueWidget::Initialize()
@@ -146,7 +163,6 @@ bool UDialogueWidget::Initialize()
 
 void UDialogueWidget::AppendDialogueString()
 {
-	Button_Option000->SetVisibility(ESlateVisibility::Hidden);
 
 	// testing rich text
 	if (FullDialogueInChars[DialogueCharIndex] == '<')
@@ -191,15 +207,16 @@ void UDialogueWidget::RevealOptions()
 {
 	if (Responses.Num() == 0)
 	{
-		Button_Option000->SetVisibility(ESlateVisibility::Visible);
+		NextOption->SetVisibility(ESlateVisibility::Visible);
 		Button_Option000->SetKeyboardFocus();
 		GetWorld()->GetTimerManager().ClearTimer(DialogueTimerHandle);
 	}
 	else
 	{
+		Button_Option000->SetVisibility(ESlateVisibility::Hidden);
 		Button_Option0->SetKeyboardFocus();
 		GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::updateButtonLookOnFocus,
-			0.05f, true);
+			0.005f, true);
 	}
 	
 	for (int i = 0; i < Responses.Num(); i++)
@@ -208,4 +225,7 @@ void UDialogueWidget::RevealOptions()
 		Options[i]->SetText(FText::FromString(Responses[i]));
 		Buttons[i]->SetVisibility(ESlateVisibility::Visible);
 	}
+
+	GameState->CurrentIslander->ChangeMouthExpression(GameState->CurrentDialogue->CurrentDialogueNode->MouthExpression);
+	
 }

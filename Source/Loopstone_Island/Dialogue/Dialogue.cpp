@@ -140,7 +140,7 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 		{
 			CurrentDialogueNode = static_cast<UDialogueNode*>(CurrentAvailableEdges[0]->EndNode);
 			// // // check conditions
-			if (CurrentDialogueNode->ConditionsMet(GameState))
+			 if (CurrentDialogueNode->ConditionsMet(GameState))
 			{
 				// the current node is the one we want, no options needed
 				return true;
@@ -287,5 +287,8 @@ void UDialogue::UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* 
 		}
 	}
 }
+
+
+
 
 #undef LOCTEXT_NAMESPACE

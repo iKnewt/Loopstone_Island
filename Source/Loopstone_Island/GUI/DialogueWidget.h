@@ -169,6 +169,9 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Option_4;
 
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* NextOption;
+
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Speaker_Name;
