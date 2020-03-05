@@ -181,6 +181,7 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 
 		DialogueWidget->SetSpeakerName(Islander->Name);
 		DialogueWidget->SetRichStyleText(Islander->RichTextStyles);
+		DialogueWidget->StartDialogueAnimation(true);
 		UpdateDialogueBasedOnResponse(0);
 	}
 	else
@@ -205,7 +206,7 @@ void ALoopstone_IslandGameState::CloseDialogue()
 		GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(false);
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
 		
-		DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
+		DialogueWidget->StartDialogueAnimation(false);
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 		UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
 	}

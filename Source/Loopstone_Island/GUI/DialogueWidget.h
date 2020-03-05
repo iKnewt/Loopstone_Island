@@ -113,6 +113,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void RevealOptionsAnimation();
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void StartDialogueAnimation(bool Forwards);
+
 protected:
 
 	bool Initialize() override;
