@@ -26,9 +26,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Interact() override;
 
-	UFUNCTION(BlueprintCallable)
-	void VisualizeInteraction(bool bActivate) override;
-
 	void DoNotInteract() override;
 
 
@@ -42,9 +39,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category= "Timeline")
 	UCurveFloat* CurveFloat;
-
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* DoorMesh = nullptr;
 	//door offset = 43
 
 	UFUNCTION()
@@ -52,14 +46,7 @@ protected:
 	UFUNCTION()
 	void UpdateAnimation(float Value);
 
-	void CreateDynamicMaterial();
 
-	UMaterialInstanceDynamic* Material = nullptr;
-
-	bool bGlowing = false;
-
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-	class UAudioComponent* Sound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
 		USoundBase* DoorOpen;
