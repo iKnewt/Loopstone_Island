@@ -48,7 +48,8 @@ void ALoopstone_IslandGameState::BeginPlay()
 	}
 
 	//Spawning target point controllers
-	TargetPointController = Cast<AIslanderTargetPointController>(GetWorld()->SpawnActor(AIslanderTargetPointController::StaticClass()));
+	TargetPointController = Cast<AIslanderTargetPointController>(
+		GetWorld()->SpawnActor(AIslanderTargetPointController::StaticClass()));
 }
 
 bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction)
@@ -58,7 +59,7 @@ bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 	UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(EventType),
 	       (NewBoolValue ? TEXT("true") : TEXT("false")));
 
-	if(!InventoryWidget)
+	if (!InventoryWidget)
 	{
 		return true;
 	}
@@ -68,23 +69,23 @@ bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 		switch (EventType)
 		{
 		case EEventType::HasTape:
-		{
-			InventoryWidget->EditInventoryItem(EItem::Tape, NewBoolValue);
-			break;
-		}
+			{
+				InventoryWidget->EditInventoryItem(EItem::Tape, NewBoolValue);
+				break;
+			}
 		case EEventType::HasRope:
-		{
-			InventoryWidget->EditInventoryItem(EItem::Rope, NewBoolValue);
-			break;
-		}
+			{
+				InventoryWidget->EditInventoryItem(EItem::Rope, NewBoolValue);
+				break;
+			}
 		case EEventType::HasKnife:
-		{
-			InventoryWidget->EditInventoryItem(EItem::Knife, NewBoolValue);
-			break;
-		}
+			{
+				InventoryWidget->EditInventoryItem(EItem::Knife, NewBoolValue);
+				break;
+			}
 		case EEventType::None:
 			break;
-		default:;
+		default: ;
 		}
 	}
 
@@ -172,7 +173,7 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 
 		GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(true);
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Islander, 0.5f);
-		
+
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
 		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
 
@@ -204,8 +205,9 @@ void ALoopstone_IslandGameState::CloseDialogue()
 
 		// swap camera
 		GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(false);
-		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
-		
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(
+			GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
+
 		DialogueWidget->StartDialogueAnimation(false);
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 		UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
@@ -221,7 +223,7 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	}
 	// todo move this check into dialogue system somehow
 
-	while(CurrentDialogue->CurrentDialogueNode->NodeExits == ENodeExits::Condition)
+	while (CurrentDialogue->CurrentDialogueNode->NodeExits == ENodeExits::Condition)
 	{
 		if (!CurrentDialogue->UpdateCurrentNode(ResponseID, this))
 		{
@@ -240,7 +242,8 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 
 	// Change facial expression on islander
 	CurrentIslander->ChangeMouthExpression(EMouthExpression::Mouth_Talk);
-	CurrentIslander->ChangeEyeExpression(CurrentDialogue->CurrentDialogueNode->RightEyeExpression, CurrentDialogue->CurrentDialogueNode->LeftEyeExpression);
+	CurrentIslander->ChangeEyeExpression(CurrentDialogue->CurrentDialogueNode->RightEyeExpression,
+	                                     CurrentDialogue->CurrentDialogueNode->LeftEyeExpression);
 	// Change animation??
 
 	DialogueWidget->SetDialogueWithOptions(0.01f, DialogueText, CurrentDialogue->GetCurrentOptions(this));
@@ -254,22 +257,22 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 	if (SunSky)
 	{
 		SunSky->ChangeTimeOfDay(NewTimeOfDay);
-		
-		if(Music.Num() > static_cast<int>(NewTimeOfDay))
+
+		if (Music.Num() > static_cast<int>(NewTimeOfDay))
 		{
-			if(Music[static_cast<int>(NewTimeOfDay)])
+			if (Music[static_cast<int>(NewTimeOfDay)])
 			{
-				// UGameplayStatics::PlaySound2D(GetWorld(), Music[static_cast<int>(NewTimeOfDay)]);
+				//UGameplayStatics::PlaySound2D(GetWorld(), Music[static_cast<int>(NewTimeOfDay)]);
 			}
 		}
-		if(IsValid(TargetPointController))
+		if (IsValid(TargetPointController))
 		{
 			TargetPointController->MoveIslandersToPosition(NewTimeOfDay);
 		}
 	}
-	for(auto Actors : MusicActors)
+	for (auto Actors : MusicActors)
 	{
-		if(IsValid(Actors))
+		if (IsValid(Actors))
 		{
 			Actors->ChangeCurrentTimeOfDay(NewTimeOfDay);
 		}
