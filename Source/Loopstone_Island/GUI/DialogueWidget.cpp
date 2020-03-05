@@ -227,5 +227,5 @@ void UDialogueWidget::RevealOptions()
 	}
 
 	GameState->CurrentIslander->ChangeMouthExpression(GameState->CurrentDialogue->CurrentDialogueNode->MouthExpression);
-	
+	RevealOptionsAnimation();
 }

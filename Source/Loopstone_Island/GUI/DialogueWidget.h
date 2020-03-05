@@ -110,6 +110,9 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	URichTextBlock* Dialogue_Text;
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void RevealOptionsAnimation();
+
 protected:
 
 	bool Initialize() override;
@@ -135,6 +138,8 @@ private:
 
 	void RevealOptions();
 
+
+		
 
 	// Test invisible button
 	UPROPERTY(meta = (BindWidget))
