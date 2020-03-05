@@ -6,15 +6,12 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Components/AudioComponent.h"
 
+
 // Sets default values
 AInteractableDoor::AInteractableDoor()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("DoorMesh"));
-	RootComponent = CreateDefaultSubobject<USceneComponent>(FName("SceneRoot"));
-	DoorMesh->AttachTo(RootComponent);
-	Sound = CreateDefaultSubobject<UAudioComponent>(FName("Audio"));
 }
 
 void AInteractableDoor::PlayAnimation()
@@ -52,35 +49,17 @@ void AInteractableDoor::PlayAnimation()
 
 void AInteractableDoor::UpdateAnimation(float Value)
 {
-	if (bOpenInwards)
+	float Modifier = 1.f;
+	if(bOpenInwards)
 	{
-		RootComponent->SetRelativeRotation(FRotator(0, Value, 0));
+		Modifier = -1.f;
 	}
-	else
-	{
-		RootComponent->SetRelativeRotation(FRotator(0, Value * -1, 0));
-	}
-}
-
-void AInteractableDoor::CreateDynamicMaterial()
-{
-	Material = UMaterialInstanceDynamic::Create(DoorMesh->GetMaterial(0), this);
-	DoorMesh->SetMaterial(0, Material);
+		RootComponent->SetRelativeRotation(FRotator(0, Value * Modifier, 0));
 }
 
 void AInteractableDoor::Interact()
 {
 	PlayAnimation();
-}
-
-void AInteractableDoor::VisualizeInteraction(bool bActivate)
-{
-	if (!IsValid(Material))
-	{
-		CreateDynamicMaterial();
-	}
-	Material->SetScalarParameterValue("Glow", int(bActivate));
-	bVisualizingInteraction = bActivate;
 }
 
 void AInteractableDoor::DoNotInteract()
