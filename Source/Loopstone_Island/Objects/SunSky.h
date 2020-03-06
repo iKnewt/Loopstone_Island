@@ -11,8 +11,8 @@ UCLASS()
 class LOOPSTONE_ISLAND_API ASunSky : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ASunSky();
 
@@ -20,10 +20,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-		void ChangeTimeOfDay(ETimeOfDay TimeOfDay);
-
+	void ChangeTimeOfDay(ETimeOfDay TimeOfDay);
 };

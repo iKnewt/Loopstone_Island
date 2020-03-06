@@ -218,8 +218,15 @@ void UDialogueWidget::RevealOptions()
 		GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::updateButtonLookOnFocus,
 			0.005f, true);
 	}
+
+	// We have a limit of 5 responses in the GUI, so check to make sure we don't try to access outside available buttons
+	int	NumberOfResponses = Responses.Num();
+	if (NumberOfResponses > 5)
+	{
+		NumberOfResponses = 5;
+	}
 	
-	for (int i = 0; i < Responses.Num(); i++)
+	for (int i = 0; i < NumberOfResponses; i++)
 	{
 		// UE_LOG(LogTemp, Warning, TEXT("SETTING stuff"))
 		Options[i]->SetText(FText::FromString(Responses[i]));
