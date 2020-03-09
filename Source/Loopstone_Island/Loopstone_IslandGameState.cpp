@@ -254,6 +254,7 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 	if (SunSky)
 	{
 		SunSky->ChangeTimeOfDay(NewTimeOfDay);
+		SunSky->ChangeSky(NewTimeOfDay);
 		
 		if(Music.Num() > static_cast<int>(NewTimeOfDay))
 		{

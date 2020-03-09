@@ -26,4 +26,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void ChangeTimeOfDay(ETimeOfDay TimeOfDay);
 
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+		void ChangeSky(ETimeOfDay TimeOfDay);
+	
+
 };
