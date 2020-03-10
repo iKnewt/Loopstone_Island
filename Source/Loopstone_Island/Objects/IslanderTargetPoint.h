@@ -20,6 +20,8 @@ public:
 		ETimeOfDay TimeOfDay;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		EIslanderType Islander;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		EStory Story;
 	
 	
 	

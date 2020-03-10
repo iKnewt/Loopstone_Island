@@ -353,7 +353,7 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 		}
 		if (IsValid(TargetPointController))
 		{
-			TargetPointController->MoveIslandersToPosition(NewTimeOfDay);
+			TargetPointController->MoveIslandersToPosition(NewTimeOfDay,CurrentStory);
 		}
 	}
 	for (auto Actors : MusicActors)

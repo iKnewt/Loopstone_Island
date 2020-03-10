@@ -18,7 +18,7 @@ public:
 	AIslanderTargetPointController();
 
 	UFUNCTION(BlueprintCallable)
-		void MoveIslandersToPosition(ETimeOfDay NewTimeOfDay);
+		void MoveIslandersToPosition(ETimeOfDay NewTimeOfDay, EStory CurrentStory);
 
 protected:
 	// Called when the game starts or when spawned
@@ -29,7 +29,7 @@ protected:
 
 	TArray<class ABaseIslanderCharacter*> Islanders;
 
-	TArray<TArray<class AIslanderTargetPoint*>> Points;
+	TArray<TArray<TArray<class AIslanderTargetPoint*>>> Points;
 
 public:	
 	// Called every frame
