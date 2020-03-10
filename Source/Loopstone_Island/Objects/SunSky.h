@@ -25,7 +25,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void ChangeTimeOfDay(ETimeOfDay TimeOfDay);
-		void ChangeTimeOfDay(ETimeOfDay TimeOfDay);
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void ChangeSky(ETimeOfDay TimeOfDay);

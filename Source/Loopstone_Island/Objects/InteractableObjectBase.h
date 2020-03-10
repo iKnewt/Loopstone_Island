@@ -60,8 +60,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
 	EStory ActiveStoryCondition = EStory::None;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
-		TArray<FConditions> OrConditions;
+	// UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
+	// 	TArray<FConditions> OrConditions;
 	// TArray<UCondition*> OrConditions;
 		// TArray < TArray<UCondition*>> Conditions;
 
