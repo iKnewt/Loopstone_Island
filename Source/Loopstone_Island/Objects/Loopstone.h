@@ -14,7 +14,7 @@ class LOOPSTONE_ISLAND_API ALoopstone : public AInteractableObjectBase
 {
 	GENERATED_BODY()
 public:
-	ALoopstone();
+	ALoopstone(){}
 	void BeginPlay() override;
 	
 };
