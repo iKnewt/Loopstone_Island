@@ -25,6 +25,10 @@ void ALoopstone_IslandGameState::BeginPlay()
 	bTopicHasBeenRevealed.SetNum(static_cast<int>(ETopic::None) + 1);
 	UE_LOG(LogTemp, Warning, TEXT("bTopicHasBeenRevealed contains:  %i"), bTopicHasBeenRevealed.Num());
 
+	bConditionLists.SetNum(static_cast<int>(EConditionListType::None));
+	bConditionLists[static_cast<int>(EConditionListType::Event)].bConditions.SetNum(static_cast<int>(EEventType::None) + 1);
+	bConditionLists[static_cast<int>(EConditionListType::Topic)].bConditions.SetNum(static_cast<int>(ETopic::None) + 1);
+	
 
 	if (BP_DialogueWidget)
 	{
@@ -97,6 +101,7 @@ bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* Int
 	// CHECK CONDITIONS
 
 	// todo make better implementation of condition checking
+	
 	for (auto Element : InteractableObject->EventBoolsConditions)
 	{
 		// if any element doesn't match the library it shouldn't display

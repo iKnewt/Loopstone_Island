@@ -104,6 +104,31 @@ FLinearColor UDialogueNode::GetBackgroundColor() const
 	}
 }
 
+bool UDialogueNode::CanEditChange(const UProperty* InProperty) const
+{
+	const bool ParentVal = Super::CanEditChange(InProperty);
+
+	// // Can we edit flower color?
+	// if (InProperty->GetFName() == GET_MEMBER_NAME_CHECKED(UDialogueNode, FlowerColor))
+	// {
+	// 	return PlantType == EPlantType::Flower;
+	// }
+	//
+	// // Can we edit food amount?
+	// if (InProperty->GetFName() == GET_MEMBER_NAME_CHECKED(UDialogueNode, FoodAmount))
+	// {
+	// 	return PlantType == EPlantType::Food;
+	// }
+	//
+	// // Can we edit poison amount?
+	// if (InProperty->GetFName() == GET_MEMBER_NAME_CHECKED(UDialogueNode, PoisonDamagePerSecond))
+	// {
+	// 	return PlantType == EPlantType::Poison;
+	// }
+	//
+	return ParentVal;
+}
+
 #endif
 
 #undef LOCTEXT_NAMESPACE

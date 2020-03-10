@@ -4,7 +4,6 @@
 #include "Components/SplineComponent.h"
 #include "Components/AudioComponent.h"
 #include "TimerManager.h"
-#include "LoopstonePlayerController.h"
 
 
 // Sets default values

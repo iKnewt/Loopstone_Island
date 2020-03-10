@@ -10,12 +10,6 @@
 
 void UDialogueWidget::SetupButtonStyles()
 {
-	// NormalButtonStyle = FButtonStyle(Button_Option0->WidgetStyle);	
-	// *NormalButtonStyle = Button_Option0->WidgetStyle;
-	// *FocusedButtonStyle = Button_Option1->WidgetStyle;
-	// *MouseButtonStyle = Button_Option2->WidgetStyle;
-	//
-	// Button_Option0->SetStyle(Button_Option1->WidgetStyle);
 }
 
 void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue, TArray<FString> InResponses,
@@ -41,10 +35,8 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 		Button->SetVisibility(ESlateVisibility::Hidden);
 	}
 
-	
 	Button_Option000->SetVisibility(ESlateVisibility::Visible);
 	NextOption->SetVisibility(ESlateVisibility::Hidden);
-
 	
 	//font still not set
 	FullDialogue = InDialogue;
@@ -71,57 +63,26 @@ void UDialogueWidget::SetSpeakerName(FString Name) const
 void UDialogueWidget::SetRichStyleText(UDataTable* RichStyleTable) const
 {
 	Dialogue_Text->SetTextStyleSet(RichStyleTable);
-	// Speaker_Name->SetText(FText::FromString(Name));
 }
 
 void UDialogueWidget::updateButtonLookOnFocus()
 {
-	// todo fix this I wanna die ouf
+	for(auto Button : Buttons)
+	{
+		if(Button->HasAnyUserFocus())
+		{
+			Button->SetStyle(Button_FocusedStyle->WidgetStyle);
+		}
+		else
+		{
+			Button->SetStyle(Button_NormalStyle->WidgetStyle);
+		}
+	}
+}
 
-	if(Button_Option0->HasAnyUserFocus())
-	{
-		Button_Option0->SetStyle(Button_FocusedStyle->WidgetStyle);
-	}
-	else
-	{
-		Button_Option0->SetStyle(Button_NormalStyle->WidgetStyle);
-	}
-	
-	if (Button_Option1->HasAnyUserFocus())
-	{
-		Button_Option1->SetStyle(Button_FocusedStyle->WidgetStyle);
-	}
-	else
-	{
-		Button_Option1->SetStyle(Button_NormalStyle->WidgetStyle);
-	}
-	
-	if (Button_Option2->HasAnyUserFocus())
-	{
-		Button_Option2->SetStyle(Button_FocusedStyle->WidgetStyle);
-	}
-	else
-	{
-		Button_Option2->SetStyle(Button_NormalStyle->WidgetStyle);
-	}
-	
-	if (Button_Option3->HasAnyUserFocus())
-	{
-		Button_Option3->SetStyle(Button_FocusedStyle->WidgetStyle);
-	}
-	else
-	{
-		Button_Option3->SetStyle(Button_NormalStyle->WidgetStyle);
-	}
-	
-	if (Button_Option4->HasAnyUserFocus())
-	{
-		Button_Option4->SetStyle(Button_FocusedStyle->WidgetStyle);
-	}
-	else
-	{
-		Button_Option4->SetStyle(Button_NormalStyle->WidgetStyle);
-	}
+void UDialogueWidget::FocusOnOptions()
+{
+	Button_Option0->SetKeyboardFocus();
 }
 
 void UDialogueWidget::onOption000Pressed()
@@ -137,6 +98,36 @@ void UDialogueWidget::onOption000Pressed()
 		GameState->UpdateDialogueBasedOnResponse(0);
 	}
 
+}
+
+void UDialogueWidget::onOption0Pressed()
+{
+	GameState->UpdateDialogueBasedOnResponse(1);
+	Button_Option000->SetKeyboardFocus();
+}
+
+void UDialogueWidget::onOption1Pressed()
+{
+	GameState->UpdateDialogueBasedOnResponse(2);
+	Button_Option000->SetKeyboardFocus();
+}
+
+void UDialogueWidget::onOption2Pressed()
+{
+	GameState->UpdateDialogueBasedOnResponse(3);
+	Button_Option000->SetKeyboardFocus();
+}
+
+void UDialogueWidget::onOption3Pressed()
+{
+	GameState->UpdateDialogueBasedOnResponse(4);
+	Button_Option000->SetKeyboardFocus();
+}
+
+void UDialogueWidget::onOption4Pressed()
+{
+	GameState->UpdateDialogueBasedOnResponse(5);
+	Button_Option000->SetKeyboardFocus();
 }
 
 bool UDialogueWidget::Initialize()
@@ -214,7 +205,8 @@ void UDialogueWidget::RevealOptions()
 	else
 	{
 		Button_Option000->SetVisibility(ESlateVisibility::Hidden);
-		Button_Option0->SetKeyboardFocus();
+		// Button_Option0->SetKeyboardFocus();
+		Button_MouseStyle->SetKeyboardFocus();
 		GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::updateButtonLookOnFocus,
 			0.005f, true);
 	}

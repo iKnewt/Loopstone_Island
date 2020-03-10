@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "GameStateEnums.h"
+#include "Condition.h"
 #include "InteractableObjectBase.generated.h"
 
 
@@ -45,10 +45,25 @@ public:
 	TMap<EEventType, bool> EventBoolsConditions;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
 	TMap<ETopic, bool> TopicBoolsConditions;
+
+	UPROPERTY(EditAnywhere, Category = "Condition")
+		EConditionListType ConditionList = EConditionListType::None;
+
+	UPROPERTY(EditAnywhere, Category = "Condition", meta = (EditCondition = "ConditionList ==  EConditionListType::Event"))
+		EEventType Event = EEventType::None;
+
+	UPROPERTY(EditAnywhere, Category = "Condition", meta = (EditCondition = "ConditionList ==  EConditionListType::Topic"))
+		ETopic Topic = ETopic::None;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
 	ETimeOfDay TimeOfDayCondition = ETimeOfDay::None;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
 	EStory ActiveStoryCondition = EStory::None;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
+		TArray<FConditions> OrConditions;
+	// TArray<UCondition*> OrConditions;
+		// TArray < TArray<UCondition*>> Conditions;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
 	TMap<ETopic, bool> TopicBoolsToChange;

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GenericGraphNode.h"
 #include "Loopstone_IslandGameState.h"
+#include "Condition.h"
 #include "DialogueNode.generated.h"
 
 UENUM(BlueprintType)
@@ -19,6 +20,14 @@ enum class ENodeExits : uint8
 	None
 };
 
+UENUM()
+enum class EPlantType
+{
+	Flower,
+	Food,
+	Poison
+};
+
 /**
  * 
  */
@@ -30,6 +39,9 @@ class LOOPSTONE_ISLAND_API UDialogueNode : public UGenericGraphNode
 public:
 	UDialogueNode();
 
+	UPROPERTY(EditDefaultsOnly)
+		bool bHasFlowers = false;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
 	FText DialogueText;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
@@ -64,6 +76,16 @@ public:
 	EMouthExpression MouthExpression = EMouthExpression::Mouth_Smile;
 
 
+	// Origin within SourceImage, prior to atlasing
+	UPROPERTY(Category = Sprite, EditAnywhere, AdvancedDisplay, meta = (EditCondition = "bTrimmedInSourceImage"))
+		FVector2D OriginInSourceImageBeforeTrimming;
+
+	// This texture is trimmed, consider the values above
+	UPROPERTY(Category = Sprite, EditAnywhere, AdvancedDisplay)
+		bool bTrimmedInSourceImage = true;
+	
+
+
 	UFUNCTION()
 	void PrintSelfAndChildren();
 
@@ -80,5 +102,8 @@ public:
 	virtual void SetNodeTitle(const FText& NewTitle) override;
 
 	virtual FLinearColor GetBackgroundColor() const override;
+
+	virtual bool CanEditChange(const UProperty* InProperty) const override;
+
 #endif
 };
