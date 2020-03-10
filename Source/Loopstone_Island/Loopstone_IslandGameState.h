@@ -81,6 +81,8 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
 		TArray<bool> bCollectedLoopstones;
 
+	class ALoopstoneMachine* Machine = nullptr;
+
 	/**
 * Opens Dialogue
 */
