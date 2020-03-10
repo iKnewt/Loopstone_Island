@@ -16,13 +16,6 @@ class LOOPSTONE_ISLAND_API ALoopstoneMachine : public AInteractableObjectBase
 public:
 		ALoopstoneMachine();
 	virtual void BeginPlay() override;
-
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-		UChildActorComponent* LoopstoneOne = nullptr;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		UChildActorComponent* LoopstoneTwo = nullptr;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		UChildActorComponent* LoopstoneThree = nullptr;
 	
 	
 	
