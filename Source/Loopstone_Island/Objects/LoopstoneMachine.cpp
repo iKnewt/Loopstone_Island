@@ -6,9 +6,6 @@
 
 ALoopstoneMachine::ALoopstoneMachine()
 {
-	LoopstoneOne = CreateDefaultSubobject<UActorComponent>(TEXT("Loopstone 1"));
-	LoopstoneTwo = CreateDefaultSubobject<UActorComponent>(TEXT("Loopstone 2"));
-	LoopstoneThree = CreateDefaultSubobject<UActorComponent>(TEXT("Loopstone 3"));
 }
 
 void ALoopstoneMachine::BeginPlay()

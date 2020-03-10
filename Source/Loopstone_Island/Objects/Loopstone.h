@@ -4,19 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Objects/InteractableObjectBase.h"
-#include "LoopstoneMachine.generated.h"
+#include "Loopstone.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class LOOPSTONE_ISLAND_API ALoopstoneMachine : public AInteractableObjectBase
+class LOOPSTONE_ISLAND_API ALoopstone : public AInteractableObjectBase
 {
 	GENERATED_BODY()
 public:
-		ALoopstoneMachine();
-	virtual void BeginPlay() override;
-	
-	
+	ALoopstone();
+	void BeginPlay() override;
 	
 };
