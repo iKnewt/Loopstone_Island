@@ -74,6 +74,13 @@ public:
 
 	TArray<class AIslandSound*> MusicActors;
 
+	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
+		FString PlayerName;
+
+	// size reflects number of possible loopstones, 0 is the actual loopstone machine
+	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
+		TArray<bool> bCollectedLoopstones;
+
 	/**
 * Opens Dialogue
 */
@@ -89,4 +96,14 @@ public:
 	void ChangeTimeOfDay(ETimeOfDay NewTimeOfDay);
 
 	void ChangeStory(EStory NewStory);
+
+	UFUNCTION(BlueprintCallable)
+	void SaveGame();
+	UFUNCTION(BlueprintCallable)
+	void LoadGame();
+
+	UFUNCTION(BlueprintCallable)
+	void CollectLoopstone(EStory StoryOwningLoopstone);
+	UFUNCTION(BlueprintCallable)
+	void GoToBed();
 };

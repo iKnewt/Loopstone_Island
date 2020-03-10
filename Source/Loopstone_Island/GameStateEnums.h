@@ -17,9 +17,9 @@ enum class ETimeOfDay : uint8
 UENUM(BlueprintType)
 enum class EStory : uint8
 {
+	Detective,
 	PartyPlanner,
 	AssistantChef,
-	Detective,
 	None
 };
 

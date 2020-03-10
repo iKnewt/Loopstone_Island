@@ -103,31 +103,26 @@ void UDialogueWidget::onOption000Pressed()
 void UDialogueWidget::onOption0Pressed()
 {
 	GameState->UpdateDialogueBasedOnResponse(1);
-	Button_Option000->SetKeyboardFocus();
 }
 
 void UDialogueWidget::onOption1Pressed()
 {
 	GameState->UpdateDialogueBasedOnResponse(2);
-	Button_Option000->SetKeyboardFocus();
 }
 
 void UDialogueWidget::onOption2Pressed()
 {
 	GameState->UpdateDialogueBasedOnResponse(3);
-	Button_Option000->SetKeyboardFocus();
 }
 
 void UDialogueWidget::onOption3Pressed()
 {
 	GameState->UpdateDialogueBasedOnResponse(4);
-	Button_Option000->SetKeyboardFocus();
 }
 
 void UDialogueWidget::onOption4Pressed()
 {
 	GameState->UpdateDialogueBasedOnResponse(5);
-	Button_Option000->SetKeyboardFocus();
 }
 
 bool UDialogueWidget::Initialize()
