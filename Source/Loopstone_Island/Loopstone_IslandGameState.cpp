@@ -127,12 +127,6 @@ void ALoopstone_IslandGameState::CollectLoopstone(EStory StoryOwningLoopstone)
 	}
 }
 
-void ALoopstone_IslandGameState::GoToBed()
-{
-	// do connected animation?
-	UGameplayStatics::OpenLevel(this, "Fullday");
-}
-
 bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction)
 {
 	bEventHasBeenTriggered[static_cast<int>(EventType)] = NewBoolValue;

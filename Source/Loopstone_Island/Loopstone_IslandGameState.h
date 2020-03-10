@@ -104,6 +104,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void CollectLoopstone(EStory StoryOwningLoopstone);
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void GoToBed();
 };
