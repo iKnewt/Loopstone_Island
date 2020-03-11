@@ -3,6 +3,7 @@
 
 #include "LoopstoneMachine.h"
 #include "Loopstone_IslandGameState.h"
+#include "Condition.h"
 
 ALoopstoneMachine::ALoopstoneMachine()
 {
@@ -14,5 +15,9 @@ void ALoopstoneMachine::BeginPlay()
 	if (IsValid(GameState))
 	{
 		GameState->Machine = this;
+	}
+	if(GameState->bEventHasBeenTriggered[static_cast<int32>(EEventType::TutorialCompleted)])
+	{
+		this->Destroy();
 	}
 }
