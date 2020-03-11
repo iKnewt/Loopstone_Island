@@ -16,6 +16,8 @@ class LOOPSTONE_ISLAND_API ALoopstoneMachine : public AInteractableObjectBase
 public:
 		ALoopstoneMachine();
 	virtual void BeginPlay() override;
+
+	void CheckTutorialSettings();
 	
 	
 	
