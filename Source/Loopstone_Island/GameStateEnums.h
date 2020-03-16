@@ -17,51 +17,40 @@ enum class ETimeOfDay : uint8
 UENUM(BlueprintType)
 enum class EStory : uint8
 {
+	Detective,
 	PartyPlanner,
 	AssistantChef,
-	Detective,
 	None
 };
 
-UENUM(BlueprintType)
-enum class EEventType : uint8
-{
-	HasTape,
-	HasRope,
-	HasKnife,
-	HasLighthouseKey,
-	HasMachine,
-	TutorialCompleted,
-	None
-};
-
-UENUM(BlueprintType)
-enum class ETopic : uint8
-{
-	PartyPlanner,
-	Tape,
-	Rope,
-	Knife,
-	FarmerTalkedAboutInnkeeper,
-	TalkedToFarmerAboutNoise,
-	TalkedToDoctorAboutNoise,
-	TalkedToMotherAboutNoise,
-	TalkedToChildAboutNoise,
-	TalkedToSBAboutNoise,
-	HeardFarmersOpinionOnDoctor,
-	None
-};
-
-UENUM(BlueprintType)
-enum class EBackgroundColor : uint8
-{
-	Color1,
-	Color2,
-	Color3,
-	Color4,
-	Color5,
-	Color6
-};
+// UENUM(BlueprintType)
+// enum class EEventType : uint8
+// {
+// 	HasTape,
+// 	HasRope,
+// 	HasKnife,
+// 	HasLighthouseKey,
+// 	HasMachine,
+// 	TutorialCompleted,
+// 	None
+// };
+//
+// UENUM(BlueprintType)
+// enum class ETopic : uint8
+// {
+// 	PartyPlanner,
+// 	Tape,
+// 	Rope,
+// 	Knife,
+// 	FarmerTalkedAboutInnkeeper,
+// 	TalkedToFarmerAboutNoise,
+// 	TalkedToDoctorAboutNoise,
+// 	TalkedToMotherAboutNoise,
+// 	TalkedToChildAboutNoise,
+// 	TalkedToSBAboutNoise,
+// 	HeardFarmersOpinionOnDoctor,
+// 	None
+// };
 
 UENUM(BlueprintType)
 enum class EIslanderType : uint8

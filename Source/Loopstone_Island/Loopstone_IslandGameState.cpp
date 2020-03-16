@@ -12,18 +12,31 @@
 #include "Objects/IslanderTargetPointController.h"
 #include "WidgetBlueprintLibrary.h"
 #include "Objects/IslandSound.h"
+#include "Loopstone_Island_SaveGame.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
 	Super::BeginPlay();
 
+	UE_LOG(LogTemp, Warning, TEXT("Besinning play"));
+
 	ChangeTimeOfDay(ETimeOfDay::Morning);
+
+	UE_LOG(LogTemp, Warning, TEXT("morning started"));
 
 	bEventHasBeenTriggered.SetNum(static_cast<int>(EEventType::None) + 1);
 	UE_LOG(LogTemp, Warning, TEXT("bEventHasBeenTriggered contains:  %i"), bEventHasBeenTriggered.Num());
 
 	bTopicHasBeenRevealed.SetNum(static_cast<int>(ETopic::None) + 1);
 	UE_LOG(LogTemp, Warning, TEXT("bTopicHasBeenRevealed contains:  %i"), bTopicHasBeenRevealed.Num());
+
+	bCollectedLoopstones.SetNum(static_cast<int>(EStory::None));
+
+
+	bConditionLists.SetNum(static_cast<int>(EConditionListType::None));
+	bConditionLists[static_cast<int>(EConditionListType::Event)].bConditions.SetNum(
+		static_cast<int>(EEventType::None) + 1);
+	bConditionLists[static_cast<int>(EConditionListType::Topic)].bConditions.SetNum(static_cast<int>(ETopic::None) + 1);
 
 
 	if (BP_DialogueWidget)
@@ -48,7 +61,70 @@ void ALoopstone_IslandGameState::BeginPlay()
 	}
 
 	//Spawning target point controllers
-	TargetPointController = Cast<AIslanderTargetPointController>(GetWorld()->SpawnActor(AIslanderTargetPointController::StaticClass()));
+	TargetPointController = Cast<AIslanderTargetPointController>(
+		GetWorld()->SpawnActor(AIslanderTargetPointController::StaticClass()));
+
+	UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
+	
+	LoadGame();
+
+	if (!bCollectedLoopstones[static_cast<int>(EStory::Detective)])
+	{
+		// possibly spawn sound for tutorial part?
+	}
+}
+
+void ALoopstone_IslandGameState::SaveGame()
+{
+	if (ULoopstone_Island_SaveGame* SaveGameInstance = Cast<ULoopstone_Island_SaveGame>(
+		UGameplayStatics::CreateSaveGameObject(ULoopstone_Island_SaveGame::StaticClass())))
+	{
+		// Set data on the savegame object.
+		SaveGameInstance->PlayerName = TEXT("PlayerOne");
+		SaveGameInstance->bCollectedLoopstones = bCollectedLoopstones;
+
+		// Save the data immediately.
+		if (UGameplayStatics::SaveGameToSlot(SaveGameInstance, "TestSave", 0))
+		{
+			// Save succeeded.
+		}
+	}
+}
+
+void ALoopstone_IslandGameState::LoadGame()
+{
+	// GetWorld()->GetAuthGameMode()->ResetLevel();
+	// Retrieve and cast the USaveGame object to UMySaveGame.
+	if (ULoopstone_Island_SaveGame* LoadedGame = Cast<ULoopstone_Island_SaveGame>(
+		UGameplayStatics::LoadGameFromSlot("TestSave", 0)))
+	{
+		// The operation was successful, so LoadedGame now contains the data we saved earlier.
+		UE_LOG(LogTemp, Warning, TEXT("LOADED: %s"), *LoadedGame->PlayerName);
+		bCollectedLoopstones = LoadedGame->bCollectedLoopstones;
+		bEventHasBeenTriggered[static_cast<int>(EEventType::TutorialCompleted)] = bCollectedLoopstones[static_cast<int>(
+			EStory::Detective)];
+	}
+}
+
+void ALoopstone_IslandGameState::CollectLoopstone(EStory StoryOwningLoopstone)
+{
+	bCollectedLoopstones[static_cast<int>(StoryOwningLoopstone)] = true;
+	SaveGame();
+
+	// check if all loopstones are collected
+	// if they are do the thing where you play the rest of the story
+
+	if (StoryOwningLoopstone == EStory::Detective)
+	{
+		// maybe something should happen with the machine??
+		// will probably happen in the interactive object and not here though
+	}
+	else
+	{
+		// do stuff to show collected loopstone?
+		// should probably be in the actual loopstone object
+		UGameplayStatics::OpenLevel(this, "Fullday");
+	}
 }
 
 bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction)
@@ -58,7 +134,7 @@ bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 	UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(EventType),
 	       (NewBoolValue ? TEXT("true") : TEXT("false")));
 
-	if(!InventoryWidget)
+	if (!InventoryWidget)
 	{
 		return true;
 	}
@@ -68,23 +144,31 @@ bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 		switch (EventType)
 		{
 		case EEventType::HasTape:
-		{
-			InventoryWidget->EditInventoryItem(EItem::Tape, NewBoolValue);
-			break;
-		}
+			{
+				InventoryWidget->EditInventoryItem(EItem::Tape, NewBoolValue);
+				break;
+			}
 		case EEventType::HasRope:
-		{
-			InventoryWidget->EditInventoryItem(EItem::Rope, NewBoolValue);
-			break;
-		}
+			{
+				InventoryWidget->EditInventoryItem(EItem::Rope, NewBoolValue);
+				break;
+			}
 		case EEventType::HasKnife:
-		{
-			InventoryWidget->EditInventoryItem(EItem::Knife, NewBoolValue);
-			break;
-		}
-		case EEventType::None:
-			break;
-		default:;
+			{
+				InventoryWidget->EditInventoryItem(EItem::Knife, NewBoolValue);
+				break;
+			}
+		case EEventType::TutorialCompleted:
+			{
+				// CollectLoopstone(EStory::Detective);
+				break;
+			}
+		case EEventType::HasMachine:
+			{
+			CollectLoopstone(EStory::Detective);
+				break;
+			}
+		default: ;
 		}
 	}
 
@@ -96,6 +180,7 @@ bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* Int
 	// CHECK CONDITIONS
 
 	// todo make better implementation of condition checking
+
 	for (auto Element : InteractableObject->EventBoolsConditions)
 	{
 		// if any element doesn't match the library it shouldn't display
@@ -172,7 +257,7 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 
 		GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(true);
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Islander, 0.5f);
-		
+
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
 		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
 
@@ -181,6 +266,7 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 
 		DialogueWidget->SetSpeakerName(Islander->Name);
 		DialogueWidget->SetRichStyleText(Islander->RichTextStyles);
+		DialogueWidget->StartDialogueAnimation(true);
 		UpdateDialogueBasedOnResponse(0);
 	}
 	else
@@ -203,9 +289,10 @@ void ALoopstone_IslandGameState::CloseDialogue()
 
 		// swap camera
 		GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(false);
-		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
-		
-		DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(
+			GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
+
+		DialogueWidget->StartDialogueAnimation(false);
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 		UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
 	}
@@ -220,7 +307,7 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	}
 	// todo move this check into dialogue system somehow
 
-	while(CurrentDialogue->CurrentDialogueNode->NodeExits == ENodeExits::Condition)
+	while (CurrentDialogue->CurrentDialogueNode->NodeExits == ENodeExits::Condition)
 	{
 		if (!CurrentDialogue->UpdateCurrentNode(ResponseID, this))
 		{
@@ -239,7 +326,8 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 
 	// Change facial expression on islander
 	CurrentIslander->ChangeMouthExpression(EMouthExpression::Mouth_Talk);
-	CurrentIslander->ChangeEyeExpression(CurrentDialogue->CurrentDialogueNode->RightEyeExpression, CurrentDialogue->CurrentDialogueNode->LeftEyeExpression);
+	CurrentIslander->ChangeEyeExpression(CurrentDialogue->CurrentDialogueNode->RightEyeExpression,
+	                                     CurrentDialogue->CurrentDialogueNode->LeftEyeExpression);
 	// Change animation??
 
 	DialogueWidget->SetDialogueWithOptions(0.01f, DialogueText, CurrentDialogue->GetCurrentOptions(this));
@@ -253,22 +341,24 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 	if (SunSky)
 	{
 		SunSky->ChangeTimeOfDay(NewTimeOfDay);
-		
-		if(Music.Num() > static_cast<int>(NewTimeOfDay))
+
+		SunSky->ChangeSky(NewTimeOfDay);
+
+		if (Music.Num() > static_cast<int>(NewTimeOfDay))
 		{
-			if(Music[static_cast<int>(NewTimeOfDay)])
+			if (Music[static_cast<int>(NewTimeOfDay)])
 			{
-				// UGameplayStatics::PlaySound2D(GetWorld(), Music[static_cast<int>(NewTimeOfDay)]);
+				//UGameplayStatics::PlaySound2D(GetWorld(), Music[static_cast<int>(NewTimeOfDay)]);
 			}
 		}
-		if(IsValid(TargetPointController))
+		if (IsValid(TargetPointController))
 		{
-			TargetPointController->MoveIslandersToPosition(NewTimeOfDay);
+			TargetPointController->MoveIslandersToPosition(NewTimeOfDay,CurrentStory);
 		}
 	}
-	for(auto Actors : MusicActors)
+	for (auto Actors : MusicActors)
 	{
-		if(IsValid(Actors))
+		if (IsValid(Actors))
 		{
 			Actors->ChangeCurrentTimeOfDay(NewTimeOfDay);
 		}

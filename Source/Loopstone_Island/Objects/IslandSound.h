@@ -13,27 +13,31 @@ UCLASS()
 class LOOPSTONE_ISLAND_API AIslandSound : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AIslandSound();
 	UPROPERTY(Category = "Sound Selection", EditAnywhere)
-		uint32 bDynamicAudioBasedOnTimeOfDay : 1;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Selection", meta = (EditCondition = "bDynamicAudioBasedOnTimeOfDay"))
-		USoundBase* MorningSound;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Selection", meta = (EditCondition = "bDynamicAudioBasedOnTimeOfDay"))
-		USoundBase* AfternoonSound;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Selection", meta = (EditCondition = "bDynamicAudioBasedOnTimeOfDay"))
-		USoundBase* EveningSound;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Selection", meta = (EditCondition = "bDynamicAudioBasedOnTimeOfDay"))
-		USoundBase* NightSound;
+	uint32 bDynamicAudioBasedOnTimeOfDay : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Selection", meta = (EditCondition =
+		"bDynamicAudioBasedOnTimeOfDay"))
+	USoundBase* MorningSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Selection", meta = (EditCondition =
+		"bDynamicAudioBasedOnTimeOfDay"))
+	USoundBase* AfternoonSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Selection", meta = (EditCondition =
+		"bDynamicAudioBasedOnTimeOfDay"))
+	USoundBase* EveningSound;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Selection", meta = (EditCondition =
+		"bDynamicAudioBasedOnTimeOfDay"))
+	USoundBase* NightSound;
 
 
 	UPROPERTY(Category = "Timeline", EditAnywhere)
-		uint32 bTransition : 1;
+	uint32 bTransition : 1;
 	UPROPERTY(EditAnywhere, Category = "Timeline", meta = (EditCondition = "bTransition"))
-		UCurveFloat* CurveFloat;
+	UCurveFloat* CurveFloat;
 	FTimeline GainTimeline;
 	FTimeline DownTimeline;
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category= "Audio Component")
@@ -43,7 +47,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -54,11 +58,7 @@ public:
 	void EndSoundTransition();
 
 	UFUNCTION()
-		void UpdateSoundVolume(float Value);
+	void UpdateSoundVolume(float Value);
 	UFUNCTION()
-		void SetNewSound();
-
-
-
-
+	void SetNewSound();
 };

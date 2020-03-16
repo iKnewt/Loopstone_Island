@@ -33,22 +33,6 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_FocusedStyle;
 
-	// virtual void
-	// UPROPERTY(EditAnywhere)
-	// FButtonStyle* NormalButtonStyle;
-	// UPROPERTY(EditAnywhere)
-	// FButtonStyle* FocusedButtonStyle;
-	// UPROPERTY(EditAnywhere)
-	// FButtonStyle* MouseButtonStyle;
-	//
-	// UFUNCTION(BlueprintCallable)
-	// void SetupButtonStyles(FButtonStyle& NormalStyle, FButtonStyle& FocusedStyle, FButtonStyle& MouseStyle)
-	// {
-	// *NormalButtonStyle = NormalStyle;
-	// *FocusedButtonStyle = FocusedStyle;
-	// *MouseButtonStyle = MouseStyle;
-	// }
-	// UFUNCTION(BlueprintCallable)
 	void SetupButtonStyles();
 
 	UPROPERTY()
@@ -72,43 +56,31 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void updateButtonLookOnFocus();
 
+	UFUNCTION(BlueprintCallable)
+	void FocusOnOptions();
+
 	UFUNCTION()
 	void onOption000Pressed();
-
-
 	UFUNCTION()
-	void onOption0Pressed()
-	{
-		GameState->UpdateDialogueBasedOnResponse(1);
-	}
-
+	void onOption0Pressed();
 	UFUNCTION()
-	void onOption1Pressed()
-	{
-		GameState->UpdateDialogueBasedOnResponse(2);
-	}
-
+	void onOption1Pressed();
 	UFUNCTION()
-	void onOption2Pressed()
-	{
-		GameState->UpdateDialogueBasedOnResponse(3);
-	}
-
+	void onOption2Pressed();
 	UFUNCTION()
-	void onOption3Pressed()
-	{
-		GameState->UpdateDialogueBasedOnResponse(4);
-	}
-
+	void onOption3Pressed();
 	UFUNCTION()
-	void onOption4Pressed()
-	{
-		GameState->UpdateDialogueBasedOnResponse(5);
-	}
+	void onOption4Pressed();
 
 	//Dialogue Text
 	UPROPERTY(meta = (BindWidget))
 	URichTextBlock* Dialogue_Text;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void RevealOptionsAnimation();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartDialogueAnimation(bool Forwards);
 
 protected:
 
@@ -134,7 +106,6 @@ private:
 	void AppendDialogueString();
 
 	void RevealOptions();
-
 
 	// Test invisible button
 	UPROPERTY(meta = (BindWidget))
@@ -170,7 +141,7 @@ private:
 	UTextBlock* Option_4;
 
 	UPROPERTY(meta = (BindWidget))
-		UTextBlock* NextOption;
+	UTextBlock* NextOption;
 
 
 	UPROPERTY(meta = (BindWidget))

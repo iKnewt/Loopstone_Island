@@ -8,10 +8,9 @@
 // Sets default values
 AIslandSound::AIslandSound()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
-
 }
 
 // Called when the game starts or when spawned
@@ -33,7 +32,6 @@ void AIslandSound::BeginPlay()
 	DownTimeline.AddInterpFloat(CurveFloat, TimelineProgress);
 
 	CurrentTimeOfDay = ETimeOfDay::Morning;
-	
 }
 
 // Called every frame
@@ -51,7 +49,6 @@ void AIslandSound::ChangeCurrentTimeOfDay(ETimeOfDay TimeOfDay)
 		CurrentTimeOfDay = TimeOfDay;
 		StartSoundTransition();
 	}
-
 }
 
 void AIslandSound::StartSoundTransition()
@@ -59,7 +56,7 @@ void AIslandSound::StartSoundTransition()
 	UE_LOG(LogTemp, Warning, TEXT("STARTING SOUND TRANSITION"));
 	if (bTransition)
 	{
-			GainTimeline.PlayFromStart();
+		GainTimeline.PlayFromStart();
 	}
 	else
 	{
@@ -71,7 +68,6 @@ void AIslandSound::EndSoundTransition()
 {
 	UE_LOG(LogTemp, Warning, TEXT("ENDING SOUND TRANSITION"));
 	DownTimeline.ReverseFromEnd();
-
 }
 
 void AIslandSound::UpdateSoundVolume(float Value)
@@ -81,11 +77,10 @@ void AIslandSound::UpdateSoundVolume(float Value)
 
 void AIslandSound::SetNewSound()
 {
-	
 	switch (CurrentTimeOfDay)
 	{
 	case ETimeOfDay::Morning:
-		if(IsValid(MorningSound))
+		if (IsValid(MorningSound))
 		{
 			AudioComponent->SetSound(MorningSound);
 		}
@@ -109,7 +104,7 @@ void AIslandSound::SetNewSound()
 		}
 		break;
 	}
-	if(!AudioComponent->IsPlaying())
+	if (!AudioComponent->IsPlaying())
 	{
 		AudioComponent->Play();
 		AudioComponent->SetVolumeMultiplier(0.f);
