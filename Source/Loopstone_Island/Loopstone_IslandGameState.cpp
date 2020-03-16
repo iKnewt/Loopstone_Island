@@ -13,6 +13,7 @@
 #include "WidgetBlueprintLibrary.h"
 #include "Objects/IslandSound.h"
 #include "Loopstone_Island_SaveGame.h"
+#include "Objects/LoopstoneMachine.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
@@ -68,9 +69,13 @@ void ALoopstone_IslandGameState::BeginPlay()
 	
 	LoadGame();
 
-	if (!bCollectedLoopstones[static_cast<int>(EStory::Detective)])
+
+	// LOOPSTONE MACHINE SPAWN TEST
+	if (LoopstoneMachineBP)
 	{
-		// possibly spawn sound for tutorial part?
+		FActorSpawnParameters SpawnParameters;
+		SpawnParameters.Owner = this;
+		GetWorld()->SpawnActor<ALoopstoneMachine>(LoopstoneMachineBP, SpawnParameters);
 	}
 }
 

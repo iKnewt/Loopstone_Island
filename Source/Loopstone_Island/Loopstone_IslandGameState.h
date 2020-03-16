@@ -14,8 +14,8 @@ struct FCurrentConditions
 {
 	GENERATED_BODY()
 
-		UPROPERTY()
-		TArray<bool> bConditions;
+	UPROPERTY()
+	TArray<bool> bConditions;
 };
 
 /**
@@ -30,12 +30,17 @@ class LOOPSTONE_ISLAND_API ALoopstone_IslandGameState : public AGameStateBase
 	void EditInventory(bool NewBoolValue);
 
 public:
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ALoopstoneMachine> LoopstoneMachineBP;
+
+
 	UPROPERTY()
 	TArray<bool> bEventHasBeenTriggered;
 	TArray<bool> bTopicHasBeenRevealed;
 
 	TArray<FCurrentConditions> bConditionLists;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category = "Current Conditions")
 	ETimeOfDay CurrentTimeOfDay = ETimeOfDay::Morning;
 
@@ -75,11 +80,11 @@ public:
 	TArray<class AIslandSound*> MusicActors;
 
 	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
-		FString PlayerName;
+	FString PlayerName;
 
 	// size reflects number of possible loopstones, 0 is the actual loopstone machine
 	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
-		TArray<bool> bCollectedLoopstones;
+	TArray<bool> bCollectedLoopstones;
 
 	class ALoopstoneMachine* Machine = nullptr;
 

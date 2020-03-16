@@ -18,7 +18,11 @@ public:
 	virtual void BeginPlay() override;
 
 	void CheckTutorialSettings();
-	
-	
-	
+
+	void Interact() override;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void PlayLoopstoneSound();
+	UFUNCTION(BlueprintImplementableEvent)
+	void DisplayLoopstone(EStory story, bool HideStone = false);	
 };
