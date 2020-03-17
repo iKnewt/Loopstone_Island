@@ -15,7 +15,6 @@ ALoopstoneMachine::ALoopstoneMachine()
 void ALoopstoneMachine::BeginPlay()
 {
 	Super::BeginPlay();
-	this->Sound->Stop();
 	ALoopstone_IslandGameState* GameState = Cast<ALoopstone_IslandGameState>(GetWorld()->GetGameState());
 	if (IsValid(GameState))
 	{
