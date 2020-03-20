@@ -356,7 +356,7 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	                                     CurrentDialogue->CurrentDialogueNode->LeftEyeExpression);
 	// Change animation??
 
-	DialogueWidget->SetDialogueWithOptions(0.01f, DialogueText, CurrentDialogue->GetCurrentOptions(this));
+	DialogueWidget->SetDialogueWithOptions(0.03f, DialogueText, CurrentDialogue->GetCurrentOptions(this));
 
 	return true;
 }
