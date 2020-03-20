@@ -75,7 +75,7 @@ void UDialogueWidget::updateButtonLookOnFocus()
 		}
 		else
 		{
-			Button->SetStyle(Button_UnFocusedStyle->WidgetStyle);
+			Button->SetStyle(Button_MouseStyle->WidgetStyle);
 		}
 	}
 }
@@ -199,16 +199,16 @@ void UDialogueWidget::RevealOptions()
 	{
 		Button_Option000->SetVisibility(ESlateVisibility::Hidden);
 
-		if (GameState->bUsingController)
-		{
+		// if (GameState->bUsingController)
+		// {
 			Button_MouseStyle->SetKeyboardFocus();
 			GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::updateButtonLookOnFocus,
 			                                       0.005f, true);
-		}
-		else
-		{
-			Button_Option0->SetKeyboardFocus();
-		}
+		// }
+		// else
+		// {
+		// 	Button_Option0->SetKeyboardFocus();
+		// }
 	}
 
 	// We have a limit of 5 responses in the GUI, so check to make sure we don't try to access outside available buttons

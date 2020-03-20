@@ -274,12 +274,12 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
 		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
-		if (!bUsingController)
-		{
+		// if (!bUsingController)
+		// {
 			// todo set mouse position to centre of screen or to where options spawn
-			GetWorld()->GetFirstPlayerController()->SetMouseLocation(500, 500);
+			GetWorld()->GetFirstPlayerController()->SetMouseLocation(0, 0);
 			GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-		}
+		// }
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 
 		DialogueWidget->SetSpeakerName(Islander->Name);
