@@ -75,7 +75,7 @@ void ALoopstone_IslandGameState::BeginPlay()
 	{
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.Owner = this;
-		GetWorld()->SpawnActor<ALoopstoneMachine>(LoopstoneMachineBP, SpawnParameters);
+		Machine = GetWorld()->SpawnActor<ALoopstoneMachine>(LoopstoneMachineBP, SpawnParameters);
 	}
 }
 
@@ -125,6 +125,10 @@ void ALoopstone_IslandGameState::CollectLoopstone(EStory StoryOwningLoopstone)
 	{
 		// maybe something should happen with the machine??
 		// will probably happen in the interactive object and not here though
+	}
+	if (StoryOwningLoopstone == EStory::PartyPlanner)
+	{
+		Machine->DisplayLoopstone(EStory::PartyPlanner);
 	}
 	else
 	{

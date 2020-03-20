@@ -31,6 +31,8 @@ class LOOPSTONE_ISLAND_API ALoopstone_IslandGameState : public AGameStateBase
 
 public:
 
+	class ALoopstoneMachine* Machine;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bUsingController = false;
 	bool bTeleportAtTheEndOfConvo = false;
