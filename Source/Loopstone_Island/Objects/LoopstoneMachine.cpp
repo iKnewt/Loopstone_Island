@@ -18,7 +18,7 @@ void ALoopstoneMachine::BeginPlay()
 	ALoopstone_IslandGameState* GameState = Cast<ALoopstone_IslandGameState>(GetWorld()->GetGameState());
 	if (IsValid(GameState))
 	{
-		GameState->Machine = this;
+		// GameState->Machine = this;
 
 		FRotator Rotator;
 		FVector Location;

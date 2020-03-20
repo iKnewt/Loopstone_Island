@@ -37,7 +37,7 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 
 	Button_Option000->SetVisibility(ESlateVisibility::Visible);
 	NextOption->SetVisibility(ESlateVisibility::Hidden);
-	
+
 	//font still not set
 	FullDialogue = InDialogue;
 	FullDialogueInChars = FullDialogue.GetCharArray();
@@ -67,15 +67,15 @@ void UDialogueWidget::SetRichStyleText(UDataTable* RichStyleTable) const
 
 void UDialogueWidget::updateButtonLookOnFocus()
 {
-	for(auto Button : Buttons)
+	for (auto Button : Buttons)
 	{
-		if(Button->HasAnyUserFocus())
+		if (Button->HasAnyUserFocus())
 		{
 			Button->SetStyle(Button_FocusedStyle->WidgetStyle);
 		}
 		else
 		{
-			Button->SetStyle(Button_NormalStyle->WidgetStyle);
+			Button->SetStyle(Button_UnFocusedStyle->WidgetStyle);
 		}
 	}
 }
@@ -87,17 +87,16 @@ void UDialogueWidget::FocusOnOptions()
 
 void UDialogueWidget::onOption000Pressed()
 {
-	if(bCurrentlyWriting)
+	if (bCurrentlyWriting)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(DialogueTimerHandle);
 		GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::AppendDialogueString,
-			0.001f, true);
+		                                       0.001f, true);
 	}
 	else
 	{
 		GameState->UpdateDialogueBasedOnResponse(0);
 	}
-
 }
 
 void UDialogueWidget::onOption0Pressed()
@@ -149,7 +148,6 @@ bool UDialogueWidget::Initialize()
 
 void UDialogueWidget::AppendDialogueString()
 {
-
 	// testing rich text
 	if (FullDialogueInChars[DialogueCharIndex] == '<')
 	{
@@ -200,19 +198,26 @@ void UDialogueWidget::RevealOptions()
 	else
 	{
 		Button_Option000->SetVisibility(ESlateVisibility::Hidden);
-		// Button_Option0->SetKeyboardFocus();
-		Button_MouseStyle->SetKeyboardFocus();
-		GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::updateButtonLookOnFocus,
-			0.005f, true);
+
+		if (GameState->bUsingController)
+		{
+			Button_MouseStyle->SetKeyboardFocus();
+			GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::updateButtonLookOnFocus,
+			                                       0.005f, true);
+		}
+		else
+		{
+			Button_Option0->SetKeyboardFocus();
+		}
 	}
 
 	// We have a limit of 5 responses in the GUI, so check to make sure we don't try to access outside available buttons
-	int	NumberOfResponses = Responses.Num();
+	int NumberOfResponses = Responses.Num();
 	if (NumberOfResponses > 5)
 	{
 		NumberOfResponses = 5;
 	}
-	
+
 	for (int i = 0; i < NumberOfResponses; i++)
 	{
 		// UE_LOG(LogTemp, Warning, TEXT("SETTING stuff"))

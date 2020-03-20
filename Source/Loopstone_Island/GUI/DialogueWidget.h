@@ -29,7 +29,7 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_MouseStyle;
 	UPROPERTY(meta = (BindWidget))
-	UButton* Button_NormalStyle;
+	UButton* Button_UnFocusedStyle;
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_FocusedStyle;
 

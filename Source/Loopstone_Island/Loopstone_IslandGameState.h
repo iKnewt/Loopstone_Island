@@ -31,37 +31,38 @@ class LOOPSTONE_ISLAND_API ALoopstone_IslandGameState : public AGameStateBase
 
 public:
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bUsingController = false;
+	bool bTeleportAtTheEndOfConvo = false;
+
+	// BP of loopstone machine which is spawned when waking up
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ALoopstoneMachine> LoopstoneMachineBP;
 
-
+	// Currently used condition lists
 	UPROPERTY()
 	TArray<bool> bEventHasBeenTriggered;
 	TArray<bool> bTopicHasBeenRevealed;
 
 	TArray<FCurrentConditions> bConditionLists;
 
+	// Current place in day and story
 	UPROPERTY(EditDefaultsOnly, Category = "Current Conditions")
 	ETimeOfDay CurrentTimeOfDay = ETimeOfDay::Morning;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Current Conditions")
 	EStory CurrentStory = EStory::None;
 
+	// Connected to dialogue
 	UPROPERTY()
 	ABaseIslanderCharacter* CurrentIslander = nullptr;
-
 	UPROPERTY()
 	class UDialogue* CurrentDialogue = nullptr;
 
 	UFUNCTION()
 	bool TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction = true);
 
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
 	TSubclassOf<class UDialogueWidget> BP_DialogueWidget;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Music")
-	TArray<USoundBase*> Music;
 
 	class UDialogueWidget* DialogueWidget = nullptr;
 
@@ -79,29 +80,23 @@ public:
 
 	TArray<class AIslandSound*> MusicActors;
 
+
 	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
 	FString PlayerName;
-
 	// size reflects number of possible loopstones, 0 is the actual loopstone machine
 	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
 	TArray<bool> bCollectedLoopstones;
 
-	class ALoopstoneMachine* Machine = nullptr;
+	// class ALoopstoneMachine* Machine = nullptr;
 
-	/**
-* Opens Dialogue
-*/
 	bool InteractWithObject(class AInteractableObjectBase* InteractableObject);
 
 	bool StartDialogue(ABaseIslanderCharacter* Islander);
-
 	void CloseDialogue();
-
 	bool UpdateDialogueBasedOnResponse(int ResponseID);
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeTimeOfDay(ETimeOfDay NewTimeOfDay);
-
 	void ChangeStory(EStory NewStory);
 
 	UFUNCTION(BlueprintCallable)
