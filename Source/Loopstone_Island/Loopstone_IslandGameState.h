@@ -58,6 +58,9 @@ public:
 	UPROPERTY()
 	class UDialogue* CurrentDialogue = nullptr;
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void TeleportDoctor(ABaseIslanderCharacter* Doc);
+
 	UFUNCTION()
 	bool TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction = true);
 

@@ -165,16 +165,13 @@ bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 				InventoryWidget->EditInventoryItem(EItem::Knife, NewBoolValue);
 				break;
 			}
-		case EEventType::HasLighthouseKey: // move doctor and end convo
+		case EEventType::DoctorWalkingAway: // move doctor and end convo
 			{
-			if (CurrentIslander)
-			{
-				bTeleportAtTheEndOfConvo = true;
-				// UpdateDialogueBasedOnResponse(0);
-				// CurrentIslander->SetActorTransform(FTransform(FRotator(0), ));
-				// CloseDialogue();
-			}
-				// CollectLoopstone(EStory::Detective);
+				if(IsValid(CurrentIslander))
+				{
+					TeleportDoctor(CurrentIslander);
+				}
+
 				break;
 			}
 		case EEventType::HasMachine:
