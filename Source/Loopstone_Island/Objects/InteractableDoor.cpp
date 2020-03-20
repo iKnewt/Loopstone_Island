@@ -3,8 +3,8 @@
 
 #include "InteractableDoor.h"
 #include "Components/StaticMeshComponent.h"
-#include "Materials/MaterialInstanceDynamic.h"
 #include "Components/AudioComponent.h"
+#include "TimerManager.h"
 
 
 // Sets default values
@@ -28,7 +28,7 @@ void AInteractableDoor::PlayAnimation()
 			{
 				Sound->SetSound(DoorOpen);
 			}
-
+			GetWorldTimerManager().SetTimer(DoorTimer, this, &AInteractableDoor::PlayAnimation, 7, false);
 		}
 		else
 		{
@@ -36,6 +36,11 @@ void AInteractableDoor::PlayAnimation()
 			if (IsValid(DoorClose))
 			{
 				Sound->SetSound(DoorClose);
+
+			}
+			if (GetWorldTimerManager().IsTimerActive(DoorTimer))
+			{
+				GetWorldTimerManager().ClearTimer(DoorTimer);
 			}
 		}
 		bOpened = !bOpened;

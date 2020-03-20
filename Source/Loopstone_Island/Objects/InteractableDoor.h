@@ -35,6 +35,8 @@ protected:
 
 	FTimeline CurveTimeline;
 
+	FTimerHandle DoorTimer;
+
 	bool bOpened = false;
 
 	UPROPERTY(EditAnywhere, Category= "Timeline")
@@ -45,8 +47,6 @@ protected:
 	void PlayAnimation();
 	UFUNCTION()
 	void UpdateAnimation(float Value);
-
-
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
 		USoundBase* DoorOpen;
