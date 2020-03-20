@@ -24,6 +24,7 @@ enum class EEventType : uint8
 	HasLighthouseKey,
 	HasMachine,
 	TutorialCompleted,
+	DoctorWalkingAway,
 	None
 };
 

@@ -19,6 +19,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void MoveIslandersToPosition(ETimeOfDay NewTimeOfDay, EStory CurrentStory);
+	TArray<class ABaseIslanderCharacter*> Islanders;
 
 protected:
 	// Called when the game starts or when spawned
@@ -27,7 +28,7 @@ protected:
 
 	void SetupIslandPositions();
 
-	TArray<class ABaseIslanderCharacter*> Islanders;
+
 
 	TArray<TArray<TArray<class AIslanderTargetPoint*>>> Points;
 
