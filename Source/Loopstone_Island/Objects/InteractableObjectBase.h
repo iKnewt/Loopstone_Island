@@ -20,25 +20,27 @@ public:
 	// UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	virtual void Interact();
 
-	virtual void DoNotInteract(){}
+	virtual void DoNotInteract()
+	{
+	}
 
 	virtual void VisualizeInteraction(bool bActivate);
 
 	bool bVisualizingInteraction = false;
 
 
-	 UPROPERTY(VisibleAnywhere)
-	 	UStaticMeshComponent* Mesh = nullptr;
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* Mesh = nullptr;
 
 	//The sound it makes whenever you interact with the object
-	 UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		 class UAudioComponent* Sound;
-	
-	 void CreateDynamicMaterial();
-	
-	 UMaterialInstanceDynamic* Material = nullptr;
-	
-	 bool bGlowing = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	class UAudioComponent* Sound;
+
+	void CreateDynamicMaterial();
+
+	UMaterialInstanceDynamic* Material = nullptr;
+
+	bool bGlowing = false;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
@@ -47,14 +49,16 @@ public:
 	TMap<ETopic, bool> TopicBoolsConditions;
 
 	UPROPERTY(EditAnywhere, Category = "Condition")
-		EConditionListType ConditionList = EConditionListType::None;
+	EConditionListType ConditionList = EConditionListType::None;
 
-	UPROPERTY(EditAnywhere, Category = "Condition", meta = (EditCondition = "ConditionList ==  EConditionListType::Event"))
-		EEventType Event = EEventType::None;
+	UPROPERTY(EditAnywhere, Category = "Condition", meta = (EditCondition =
+		"ConditionList ==  EConditionListType::Event"))
+	EEventType Event = EEventType::None;
 
-	UPROPERTY(EditAnywhere, Category = "Condition", meta = (EditCondition = "ConditionList ==  EConditionListType::Topic"))
-		ETopic Topic = ETopic::None;
-	
+	UPROPERTY(EditAnywhere, Category = "Condition", meta = (EditCondition =
+		"ConditionList ==  EConditionListType::Topic"))
+	ETopic Topic = ETopic::None;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
 	ETimeOfDay TimeOfDayCondition = ETimeOfDay::None;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
@@ -63,7 +67,7 @@ public:
 	// UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
 	// 	TArray<FConditions> OrConditions;
 	// TArray<UCondition*> OrConditions;
-		// TArray < TArray<UCondition*>> Conditions;
+	// TArray < TArray<UCondition*>> Conditions;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
 	TMap<ETopic, bool> TopicBoolsToChange;

@@ -21,6 +21,7 @@ enum class EEventType : uint8
 	HasTape,
 	HasRope,
 	HasKnife,
+	HasBoathouseKey,
 	HasLighthouseKey,
 	HasMachine,
 	TutorialCompleted,
@@ -49,6 +50,7 @@ enum class ETopic : uint8
 	TalkedToFarmerAboutSBDeath,
 	TalkedToInnkeeperAboutSBDeath,
 	TalkedToDoctorABoutSBDeath,
+	PartyReady,
 	None
 };
 

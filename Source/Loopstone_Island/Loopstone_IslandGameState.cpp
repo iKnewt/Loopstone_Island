@@ -14,6 +14,7 @@
 #include "Objects/IslandSound.h"
 #include "Loopstone_Island_SaveGame.h"
 #include "Objects/LoopstoneMachine.h"
+#include "Button.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
@@ -169,6 +170,11 @@ bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 				InventoryWidget->EditInventoryItem(EItem::Knife, NewBoolValue);
 				break;
 			}
+		case EEventType::HasLighthouseKey: case EEventType::HasBoathouseKey:
+		{
+			InventoryWidget->EditInventoryItem(EItem::Key, NewBoolValue);
+			break;
+		}
 		case EEventType::DoctorWalkingAway: // move doctor and end convo
 			{
 				if(IsValid(CurrentIslander))
@@ -278,7 +284,7 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		// if (!bUsingController)
 		// {
 			// todo set mouse position to centre of screen or to where options spawn
-			GetWorld()->GetFirstPlayerController()->SetMouseLocation(0, 0);
+			GetWorld()->GetFirstPlayerController()->SetMouseLocation(50, 50);
 			GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 		// }
 		CurrentDialogue->CurrentDialogueNode = nullptr;
@@ -303,19 +309,15 @@ void ALoopstone_IslandGameState::CloseDialogue()
 	GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(
 	GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
 	
-	if(bTeleportAtTheEndOfConvo)
-	{
-		CurrentIslander->AddActorWorldTransform(FTransform(FRotator(), FVector(0, 0, 1000)));
-		bTeleportAtTheEndOfConvo = false;
-	}
-	
 	if (DialogueWidget)
 	{
-		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
+		// UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
 		CurrentIslander = nullptr;
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 		CurrentDialogue = nullptr;
 
+		//todo figure out if this can be done differently
+		DialogueWidget->Button_Option000->SetVisibility(ESlateVisibility::Hidden);
 		DialogueWidget->Dialogue_Text->SetText(FText::FromString(" "));
 
 		DialogueWidget->StartDialogueAnimation(false);

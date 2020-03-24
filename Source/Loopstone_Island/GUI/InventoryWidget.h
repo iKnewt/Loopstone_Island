@@ -13,7 +13,8 @@ enum class EItem : uint8
 {
 	Knife,
 	Rope,
-	Tape
+	Tape,
+	Key
 };
 
 /**
@@ -27,7 +28,11 @@ class LOOPSTONE_ISLAND_API UInventoryWidget : public UUserWidget
 public:
 	void EditInventoryItem(EItem Item, bool TrueToAddFalseToRemove);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USoundBase* ItemSound;
+
 private:
+
 	UFUNCTION(BlueprintCallable)
 	void AddItem(EItem Item);
 
@@ -42,4 +47,7 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_Knife;
+
+	UPROPERTY(meta = (BindWidget))
+	UImage* Image_Key;
 };

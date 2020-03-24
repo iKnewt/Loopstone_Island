@@ -51,7 +51,6 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 		TextSpeedChecker = 0.03f;
 	}
 	bCurrentlyWriting = true;
-	Button_Option000->SetKeyboardFocus();
 	GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::AppendDialogueString,
 	                                       TextSpeedChecker, true);
 }
@@ -102,32 +101,32 @@ void UDialogueWidget::onOption000Pressed()
 
 void UDialogueWidget::onOption0Pressed()
 {
-	Button_Option000->SetKeyboardFocus();
+	// Button_Option000->SetKeyboardFocus();
 	GameState->UpdateDialogueBasedOnResponse(1);
 }
 
 void UDialogueWidget::onOption1Pressed()
 {
 
-	Button_Option000->SetKeyboardFocus();
+	// Button_Option000->SetKeyboardFocus();
 	GameState->UpdateDialogueBasedOnResponse(2);
 }
 
 void UDialogueWidget::onOption2Pressed()
 {
-	Button_Option000->SetKeyboardFocus();
+	// Button_Option000->SetKeyboardFocus();
 	GameState->UpdateDialogueBasedOnResponse(3);
 }
 
 void UDialogueWidget::onOption3Pressed()
 {
-	Button_Option000->SetKeyboardFocus();
+	// Button_Option000->SetKeyboardFocus();
 	GameState->UpdateDialogueBasedOnResponse(4);
 }
 
 void UDialogueWidget::onOption4Pressed()
 {
-	Button_Option000->SetKeyboardFocus();
+	// Button_Option000->SetKeyboardFocus();
 	GameState->UpdateDialogueBasedOnResponse(5);
 }
 
@@ -155,6 +154,7 @@ bool UDialogueWidget::Initialize()
 
 void UDialogueWidget::AppendDialogueString()
 {
+	Button_Option000->SetKeyboardFocus();
 	// testing rich text
 	if (FullDialogueInChars[DialogueCharIndex] == '<')
 	{

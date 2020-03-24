@@ -25,6 +25,10 @@ class LOOPSTONE_ISLAND_API UDialogueWidget : public UUserWidget
 
 public:
 
+	// Test invisible button
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Option000;
+
 	// todo MAKE THIS BETTER BECAUSE I HATE THIS SO MUCH
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_MouseStyle;
@@ -107,9 +111,9 @@ private:
 
 	void RevealOptions();
 
-	// Test invisible button
-	UPROPERTY(meta = (BindWidget))
-	UButton* Button_Option000;
+	// // Test invisible button
+	// UPROPERTY(meta = (BindWidget))
+	// UButton* Button_Option000;
 
 	//Buttons
 	UPROPERTY(meta = (BindWidget))
