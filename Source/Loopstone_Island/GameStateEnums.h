@@ -63,3 +63,18 @@ enum class EIslanderType : uint8
 	Doctor,
 	None
 };
+UENUM(BlueprintType)
+enum class EAnimations : uint8
+{
+	HandsBehindBack,
+	HandsTogether,
+	Happy,
+	HeadTilt,
+	Lazy,
+	Ready,
+	Sad,
+	Shocked,
+	Thinking,
+	Idle,
+	Angry
+};
