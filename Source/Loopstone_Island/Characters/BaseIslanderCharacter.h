@@ -71,9 +71,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EIslanderType IslanderType;
 
-	UFUNCTION(BlueprintCallable)
-	void ChangeMouthExpression(EMouthExpression MouthExpression);
-
 	UPROPERTY(VisibleAnywhere)
 	UPaperFlipbookComponent* LeftEye = nullptr;
 	UPROPERTY(VisibleAnywhere)
@@ -99,5 +96,11 @@ public:
 	UPaperFlipbook* Mouth_Smile = nullptr;
 
 	UFUNCTION(BlueprintCallable)
+	void ChangeMouthExpression(EMouthExpression MouthExpression);
+
+	UFUNCTION(BlueprintCallable)
 	void ChangeEyeExpression(EEyeExpression RightEyeExpression, EEyeExpression LeftEyeExpression);
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeAnimation(EAnimations Animation);
 };

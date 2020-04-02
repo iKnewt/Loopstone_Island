@@ -126,3 +126,8 @@ void ABaseIslanderCharacter::ChangeEyeExpression(EEyeExpression RightEyeExpressi
 	LeftEye->PlayFromStart();
 	*/
 }
+
+void ABaseIslanderCharacter::ChangeAnimation(EAnimations Animation)
+{
+	
+}

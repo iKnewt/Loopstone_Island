@@ -353,6 +353,7 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	DialogueText = CurrentDialogue->CurrentDialogueNode->DialogueText.ToString();
 
 	// Change facial expression on islander
+	CurrentIslander->ChangeAnimation(CurrentDialogue->CurrentDialogueNode->Animation);
 	CurrentIslander->ChangeMouthExpression(EMouthExpression::Mouth_Talk);
 	CurrentIslander->ChangeEyeExpression(CurrentDialogue->CurrentDialogueNode->RightEyeExpression,
 	                                     CurrentDialogue->CurrentDialogueNode->LeftEyeExpression);

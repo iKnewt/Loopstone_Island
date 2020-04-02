@@ -40,8 +40,8 @@ public:
 	UDialogueNode();
 
 	UPROPERTY(EditDefaultsOnly)
-		bool bHasFlowers = false;
-	
+	bool bHasFlowers = false;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
 	FText DialogueText;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
@@ -67,7 +67,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
 	EStory ActiveStoryChange = EStory::None;
 
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Expression")
+	EAnimations Animation = EAnimations::Idle;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Expression")
 	EEyeExpression RightEyeExpression = EEyeExpression::Eye_Blinking;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Expression")
@@ -78,12 +79,11 @@ public:
 
 	// Origin within SourceImage, prior to atlasing
 	UPROPERTY(Category = Sprite, EditAnywhere, AdvancedDisplay, meta = (EditCondition = "bTrimmedInSourceImage"))
-		FVector2D OriginInSourceImageBeforeTrimming;
+	FVector2D OriginInSourceImageBeforeTrimming;
 
 	// This texture is trimmed, consider the values above
 	UPROPERTY(Category = Sprite, EditAnywhere, AdvancedDisplay)
-		bool bTrimmedInSourceImage = true;
-	
+	bool bTrimmedInSourceImage = true;
 
 
 	UFUNCTION()
@@ -96,7 +96,7 @@ public:
 
 
 #if WITH_EDITOR
-	
+
 	virtual FText GetNodeTitle() const override;
 
 	virtual void SetNodeTitle(const FText& NewTitle) override;
