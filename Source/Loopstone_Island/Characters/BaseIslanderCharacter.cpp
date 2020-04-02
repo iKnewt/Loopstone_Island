@@ -5,6 +5,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 
 // Sets default values
 ABaseIslanderCharacter::ABaseIslanderCharacter()
@@ -25,7 +26,12 @@ ABaseIslanderCharacter::ABaseIslanderCharacter()
 
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());	
+	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
+
+	//Set up Sphere for LookAt-Function
+	LookAtCollision = CreateDefaultSubobject<USphereComponent>(TEXT("LookAtSphere"));
+	LookAtCollision->SetupAttachment(GetRootComponent());
+	LookAtCollision->SetSphereRadius(500);
 }
 
 // Called when the game starts or when spawned
@@ -38,6 +44,8 @@ void ABaseIslanderCharacter::BeginPlay()
 
 	EyeExpressions.SetNum(static_cast<int>(EEyeExpression::None) + 1);
 	MouthExpressions.SetNum(static_cast<int>(EMouthExpression::None) + 1);
+	LookAtCollision->OnComponentBeginOverlap.AddDynamic(this, &ABaseIslanderCharacter::OnLookAtBeginOverlap);
+	LookAtCollision->OnComponentEndOverlap.AddDynamic(this, &ABaseIslanderCharacter::OnLookAtEndOverlap);
 }
 
 // Called every frame
@@ -125,4 +133,28 @@ void ABaseIslanderCharacter::ChangeEyeExpression(EEyeExpression RightEyeExpressi
 	RightEye->PlayFromStart();
 	LeftEye->PlayFromStart();
 	*/
+}
+
+void ABaseIslanderCharacter::OnLookAtBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(IsValid(OtherActor))
+	{
+		if (OtherActor->ActorHasTag("Player"))
+		{
+			LookAtPlayer(true);
+		}
+	}
+}
+
+void ABaseIslanderCharacter::OnLookAtEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (IsValid(OtherActor))
+	{
+		if (OtherActor->ActorHasTag("Player"))
+		{
+			LookAtPlayer(false);
+		}
+	}
 }
