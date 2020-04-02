@@ -66,6 +66,7 @@ enum class EIslanderType : uint8
 UENUM(BlueprintType)
 enum class EAnimations : uint8
 {
+	Idle,
 	HandsBehindBack,
 	HandsTogether,
 	Happy,
@@ -75,6 +76,19 @@ enum class EAnimations : uint8
 	Sad,
 	Shocked,
 	Thinking,
-	Idle,
-	Angry
+	Angry,
+	CustomIdle1,
+	CustomIdle2,
+	Walk,
+	CustomAnimation1,
+	CustomAnimation2,
+	CustomAnimation3,
+	CustomAnimation4,
+	CustomAnimation5,
+	CustomAnimation6,
+	CustomAnimation7,
+	CustomAnimation8,
+	CustomAnimation9,
+	CustomAnimation10
+
 };
