@@ -101,6 +101,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ChangeEyeExpression(EEyeExpression RightEyeExpression, EEyeExpression LeftEyeExpression);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintImplementableEvent)
 	void ChangeAnimation(EAnimations Animation);
 };
