@@ -14,15 +14,13 @@ class LOOPSTONE_ISLAND_API ALoopstoneMachine : public AInteractableObjectBase
 {
 	GENERATED_BODY()
 public:
-		ALoopstoneMachine();
+	ALoopstoneMachine();
 	virtual void BeginPlay() override;
-
-	void CheckTutorialSettings();
 
 	void Interact() override;
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void PlayLoopstoneSound();
 	UFUNCTION(BlueprintImplementableEvent)
-	void DisplayLoopstone(EStory story, bool HideStone = false);	
+	void DisplayLoopstone(EStory story, bool HideStone = false);
 };
