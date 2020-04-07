@@ -27,6 +27,8 @@ void AIslanderTargetPointController::MoveIslandersToPosition(ETimeOfDay NewTimeO
 						Points[static_cast<int32>(CurrentStory)][i][static_cast<int32>(NewTimeOfDay)]->GetActorLocation());
 					Islanders[i]->SetActorRotation(
 						Points[static_cast<int32>(CurrentStory)][i][static_cast<int32>(NewTimeOfDay)]->GetActorRotation());
+					Islanders[i]->LookAtPlayer(true);
+					Islanders[i]->LookAtPlayer(false);
 				}
 			}
 		}
