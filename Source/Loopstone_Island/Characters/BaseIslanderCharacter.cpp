@@ -150,6 +150,7 @@ void ABaseIslanderCharacter::ResetView()
 	UIslanderAnimationInstance* AnimationInstance = Cast<UIslanderAnimationInstance>(GetMesh()->GetAnimInstance());
 	if (IsValid(AnimationInstance))
 	{
+		AnimationInstance->ResetLocationVectors();
 		AnimationInstance->LookAt(false);
 	}
 }

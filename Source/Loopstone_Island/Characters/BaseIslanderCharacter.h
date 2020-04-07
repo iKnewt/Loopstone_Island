@@ -112,8 +112,5 @@ public:
 	
 	UFUNCTION()
 		void OnLookAtEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-	
-	UFUNCTION(BlueprintImplementableEvent)
-		void LookAtPlayer(bool Activate);
 
 };

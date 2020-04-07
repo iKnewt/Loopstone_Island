@@ -4,7 +4,7 @@
 #include "IslanderAnimationInstance.h"
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
-#include "PlayerCharacter.h"
+#include "BaseIslanderCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 
 
@@ -59,7 +59,16 @@ void UIslanderAnimationInstance::UpdateLookAt(float DeltaTime)
 
 void UIslanderAnimationInstance::ResetLocationVectors()
 {
-	SelfLocation = TryGetPawnOwner()->GetActorLocation();
+	auto owner =Cast<ABaseIslanderCharacter>(TryGetPawnOwner());
+	if(IsValid(owner))
+	{
+		SelfLocation = owner->GetMesh()->GetSocketLocation("Head");
+	}
+	else
+	{
+		SelfLocation = TryGetPawnOwner()->GetActorLocation();
+	}
+
 	LookLocation = SelfLocation + (TryGetPawnOwner()->GetActorForwardVector() * 200);
 	ZRotation = TryGetPawnOwner()->GetActorRotation().Yaw;
 }
@@ -67,8 +76,4 @@ void UIslanderAnimationInstance::ResetLocationVectors()
 void UIslanderAnimationInstance::LookAt(bool Activate)
 {
 	bLookAt = Activate;
-	if(bLookAt)
-	{
-		ZRotation = TryGetPawnOwner()->GetActorRotation().Yaw;
-	}
 }

@@ -19,7 +19,7 @@ protected:
 	virtual void NativeUpdateAnimation(float DeltaTime) override;
 	void UpdateLookAt(float DeltaTime);
 	bool bLookAt = false;
-	void ResetLocationVectors();
+
 	FVector SelfLocation;
 	FVector LookLocation;
 
@@ -34,4 +34,5 @@ public:
 		float TurnAmount = 70.f;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 		EAnimations CurrentAnimation = EAnimations::Idle;
+	void ResetLocationVectors();
 };
