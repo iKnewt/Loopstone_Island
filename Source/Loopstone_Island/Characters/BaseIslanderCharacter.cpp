@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
+#include "IslanderAnimationInstance.h"
 
 // Sets default values
 ABaseIslanderCharacter::ABaseIslanderCharacter()
@@ -135,14 +136,36 @@ void ABaseIslanderCharacter::ChangeEyeExpression(EEyeExpression RightEyeExpressi
 	*/
 }
 
+void ABaseIslanderCharacter::ChangeAnimation(EAnimations Animation)
+{
+	UIslanderAnimationInstance* AnimationInstance = Cast<UIslanderAnimationInstance>(GetMesh()->GetAnimInstance());
+	if (IsValid(AnimationInstance))
+	{
+		AnimationInstance->CurrentAnimation = Animation;
+	}
+}
+
+void ABaseIslanderCharacter::ResetView()
+{
+	UIslanderAnimationInstance* AnimationInstance = Cast<UIslanderAnimationInstance>(GetMesh()->GetAnimInstance());
+	if (IsValid(AnimationInstance))
+	{
+		AnimationInstance->LookAt(false);
+	}
+}
+
 void ABaseIslanderCharacter::OnLookAtBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if(IsValid(OtherActor))
 	{
 		if (OtherActor->ActorHasTag("Player"))
 		{
-			LookAtPlayer(true);
+			UIslanderAnimationInstance* AnimationInstance = Cast<UIslanderAnimationInstance>(GetMesh()->GetAnimInstance());
+			if(IsValid(AnimationInstance))
+			{
+				AnimationInstance->LookAt(true);
+			}
 		}
 	}
 }
@@ -154,7 +177,11 @@ void ABaseIslanderCharacter::OnLookAtEndOverlap(UPrimitiveComponent* OverlappedC
 	{
 		if (OtherActor->ActorHasTag("Player"))
 		{
-			LookAtPlayer(false);
+			UIslanderAnimationInstance* AnimationInstance = Cast<UIslanderAnimationInstance>(GetMesh()->GetAnimInstance());
+			if (IsValid(AnimationInstance))
+			{
+				AnimationInstance->LookAt(false);
+			}
 		}
 	}
 }
