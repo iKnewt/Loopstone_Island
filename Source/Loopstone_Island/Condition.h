@@ -26,6 +26,7 @@ enum class EEventType : uint8
 	HasMachine,
 	TutorialCompleted,
 	DoctorWalkingAway,
+	PartyPlannerCompleted,
 	None
 };
 
