@@ -26,6 +26,7 @@ enum class EEventType : uint8
 	HasMachine,
 	TutorialCompleted,
 	DoctorWalkingAway,
+	PartyPlannerCompleted,
 	None
 };
 
@@ -51,6 +52,11 @@ enum class ETopic : uint8
 	TalkedToInnkeeperAboutSBDeath,
 	TalkedToDoctorABoutSBDeath,
 	PartyReady,
+	TalkedToDoctorAboutFeast,
+	TalkedToFarmerAboutFeast,
+	HelpedFarmerWithFeast,
+	TalkedToMotherAboutFeast,
+	HelpedMotherWithFest,
 	None
 };
 

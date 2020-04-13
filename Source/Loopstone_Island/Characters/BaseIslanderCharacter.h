@@ -77,6 +77,8 @@ public:
 	UPaperFlipbookComponent* RightEye = nullptr;
 	UPROPERTY(VisibleAnywhere)
 	UPaperFlipbookComponent* Mouth = nullptr;
+	UPROPERTY(VisibleAnywhere)
+		class USphereComponent* LookAtCollision;
 
 
 	UPROPERTY(EditAnywhere)
@@ -100,7 +102,15 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeEyeExpression(EEyeExpression RightEyeExpression, EEyeExpression LeftEyeExpression);
-
-	UFUNCTION(BlueprintImplementableEvent)
+	
 	void ChangeAnimation(EAnimations Animation);
+
+	void ResetView();
+
+	UFUNCTION()
+		void OnLookAtBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
+	UFUNCTION()
+		void OnLookAtEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 };

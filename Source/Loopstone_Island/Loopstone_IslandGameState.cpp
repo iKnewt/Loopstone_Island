@@ -275,6 +275,7 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 
 		CurrentIslander = Islander;
 		CurrentDialogue = Islander->Dialogue;
+		Islander->ResetView();
 
 		GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(true);
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Islander, 0.5f);
