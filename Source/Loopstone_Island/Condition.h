@@ -54,9 +54,11 @@ enum class ETopic : uint8
 	PartyReady,
 	TalkedToDoctorAboutFeast,
 	TalkedToFarmerAboutFeast,
+	CollectedItemForFarmer,
 	HelpedFarmerWithFeast,
 	TalkedToMotherAboutFeast,
-	HelpedMotherWithFest,
+	CollectedItemForMother,
+	HelpedMotherWithFeast,
 	None
 };
 
