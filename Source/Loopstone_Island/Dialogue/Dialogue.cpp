@@ -14,23 +14,16 @@ UDialogue::UDialogue()
 	NodeType = UDialogueNode::StaticClass();
 	EdgeType = UDialogueEdge::StaticClass();
 
-	Color1 = FLinearColor::Red;
-	Color2 = FLinearColor::Blue;
-	Color3 = FLinearColor::Green;
-	Color4 = FLinearColor(0.0f, 1.0f, 1.0f);
-	Color5 = FLinearColor(1.0f, 1.0f, 0.0f);
-	Color6 = FLinearColor(1.0f, 0.0f, 1.0f);
-
 	Name = "Dialogue";
 }
 
-void UDialogue::PrintAllDialogue()
+void UDialogue::ResetDialogue()
 {
 	for (int i = 0; i < AllNodes.Num(); i++)
 	{
 		auto dialogueNode = static_cast<UDialogueNode*>(AllNodes[i]);
-
-		UE_LOG(LogTemp, Warning, TEXT("%i Node: %s "), i, *dialogueNode->DialogueText.ToString());
+		dialogueNode->bHasBeenVisited = false;
+		// 	// UE_LOG(LogTemp, Warning, TEXT("%i Node: %s "), i, *dialogueNode->DialogueText.ToString());
 	}
 }
 
@@ -140,7 +133,7 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 		{
 			CurrentDialogueNode = static_cast<UDialogueNode*>(CurrentAvailableEdges[0]->EndNode);
 			// // // check conditions
-			 if (CurrentDialogueNode->ConditionsMet(GameState))
+			if (CurrentDialogueNode->ConditionsMet(GameState))
 			{
 				// the current node is the one we want, no options needed
 				return true;
@@ -287,8 +280,6 @@ void UDialogue::UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* 
 		}
 	}
 }
-
-
 
 
 #undef LOCTEXT_NAMESPACE

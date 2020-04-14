@@ -96,7 +96,7 @@ FLinearColor UDialogueNode::GetBackgroundColor() const
 	case ENodeExits::Options:
 		return FLinearColor(1, 1, 0);
 	case ENodeExits::Condition:
-		return FLinearColor(0.13,1,0.4);
+		return FLinearColor(0.13, 1, 0.4);
 	case ENodeExits::ReturnToRoot:
 		return FLinearColor::Blue;
 	default:

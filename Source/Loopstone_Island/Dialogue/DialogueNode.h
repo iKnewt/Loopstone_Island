@@ -20,14 +20,6 @@ enum class ENodeExits : uint8
 	None
 };
 
-UENUM()
-enum class EPlantType
-{
-	Flower,
-	Food,
-	Poison
-};
-
 /**
  * 
  */
@@ -46,6 +38,8 @@ public:
 	FText DialogueText;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
 	ENodeExits NodeExits = ENodeExits::NoOptions;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
+	FText DialogueTextOnRevisit;
 
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")

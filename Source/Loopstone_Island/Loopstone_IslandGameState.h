@@ -32,7 +32,7 @@ class LOOPSTONE_ISLAND_API ALoopstone_IslandGameState : public AGameStateBase
 public:
 
 	class ALoopstoneMachine* Machine;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bUsingController = false;
 	bool bTeleportAtTheEndOfConvo = false;
@@ -61,7 +61,7 @@ public:
 	class UDialogue* CurrentDialogue = nullptr;
 
 	UFUNCTION(BlueprintImplementableEvent)
-		void TeleportDoctor(ABaseIslanderCharacter* Doc);
+	void TeleportDoctor(ABaseIslanderCharacter* Doc);
 
 	UFUNCTION()
 	bool TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction = true);

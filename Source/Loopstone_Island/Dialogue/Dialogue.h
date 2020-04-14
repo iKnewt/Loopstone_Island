@@ -16,6 +16,7 @@ class LOOPSTONE_ISLAND_API UDialogue : public UGenericGraph
 public:
 	UDialogue();
 
+
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class UDialogueNode* CurrentDialogueNode = nullptr;
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
@@ -30,22 +31,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class UDialogueNode* LastConditionNode = nullptr;
 
-	// UPROPERTY()
-	// class ALoopstone_IslandGameState* GameState = nullptr;
-
-
-	UPROPERTY(EditDefaultsOnly, Category = "Color")
-	FLinearColor Color1;
-	UPROPERTY(EditDefaultsOnly, Category = "Color")
-	FLinearColor Color2;
-	UPROPERTY(EditDefaultsOnly, Category = "Color")
-	FLinearColor Color3;
-	UPROPERTY(EditDefaultsOnly, Category = "Color")
-	FLinearColor Color4;
-	UPROPERTY(EditDefaultsOnly, Category = "Color")
-	FLinearColor Color5;
-	UPROPERTY(EditDefaultsOnly, Category = "Color")
-	FLinearColor Color6;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	TArray<bool> Conditions;
@@ -54,7 +39,7 @@ public:
 	TMap<FName, bool> NamedConditions;
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
-	void PrintAllDialogue();
+	void ResetDialogue();
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
 	void UpdateCurrentOptions(class ALoopstone_IslandGameState* GameState);

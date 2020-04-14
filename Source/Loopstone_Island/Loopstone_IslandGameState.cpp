@@ -89,7 +89,7 @@ void ALoopstone_IslandGameState::SaveGame()
 		SaveGameInstance->PlayerName = TEXT("PlayerOne");
 		SaveGameInstance->bCollectedLoopstones = bCollectedLoopstones;
 		SaveGameInstance->bIsUsingController = bUsingController;
-		
+
 		// Save the data immediately.
 		if (UGameplayStatics::SaveGameToSlot(SaveGameInstance, "TestSave", 0))
 		{
@@ -171,13 +171,13 @@ bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 				break;
 			}
 		case EEventType::HasLighthouseKey: case EEventType::HasBoathouseKey:
-		{
-			InventoryWidget->EditInventoryItem(EItem::Key, NewBoolValue);
-			break;
-		}
+			{
+				InventoryWidget->EditInventoryItem(EItem::Key, NewBoolValue);
+				break;
+			}
 		case EEventType::DoctorWalkingAway: // move doctor and end convo
 			{
-				if(IsValid(CurrentIslander))
+				if (IsValid(CurrentIslander))
 				{
 					TeleportDoctor(CurrentIslander);
 				}
@@ -284,9 +284,9 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
 		// if (!bUsingController)
 		// {
-			// todo set mouse position to centre of screen or to where options spawn
-			GetWorld()->GetFirstPlayerController()->SetMouseLocation(50, 50);
-			GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+		// todo set mouse position to centre of screen or to where options spawn
+		GetWorld()->GetFirstPlayerController()->SetMouseLocation(50, 50);
+		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 		// }
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 
@@ -304,12 +304,11 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 
 void ALoopstone_IslandGameState::CloseDialogue()
 {
-
 	// swap camera
 	GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(false);
 	GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(
-	GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
-	
+		GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
+
 	if (DialogueWidget)
 	{
 		// UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
@@ -351,8 +350,16 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	FString DialogueText = "Oh hello....";
 
 	// update the dialogue widget
-	DialogueText = CurrentDialogue->CurrentDialogueNode->DialogueText.ToString();
-
+	if (CurrentDialogue->CurrentDialogueNode->bHasBeenVisited &&
+		!CurrentDialogue->CurrentDialogueNode->DialogueTextOnRevisit.IsEmptyOrWhitespace())
+	{
+		DialogueText = CurrentDialogue->CurrentDialogueNode->DialogueTextOnRevisit.ToString();
+	}
+	else
+	{
+		DialogueText = CurrentDialogue->CurrentDialogueNode->DialogueText.ToString();
+	}
+	CurrentDialogue->CurrentDialogueNode->bHasBeenVisited = true;
 	// Change facial expression on islander
 	CurrentIslander->ChangeAnimation(CurrentDialogue->CurrentDialogueNode->Animation);
 	CurrentIslander->ChangeMouthExpression(EMouthExpression::Mouth_Talk);

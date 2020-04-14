@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "IslanderAnimationInstance.h"
+#include "Dialogue/Dialogue.h"
 
 // Sets default values
 ABaseIslanderCharacter::ABaseIslanderCharacter()
@@ -47,6 +48,11 @@ void ABaseIslanderCharacter::BeginPlay()
 	MouthExpressions.SetNum(static_cast<int>(EMouthExpression::None) + 1);
 	LookAtCollision->OnComponentBeginOverlap.AddDynamic(this, &ABaseIslanderCharacter::OnLookAtBeginOverlap);
 	LookAtCollision->OnComponentEndOverlap.AddDynamic(this, &ABaseIslanderCharacter::OnLookAtEndOverlap);
+
+	if (Dialogue)
+	{
+		Dialogue->ResetDialogue();
+	}
 }
 
 // Called every frame
@@ -66,8 +72,9 @@ void ABaseIslanderCharacter::ChangeMouthExpression(const EMouthExpression MouthE
 	// testing arrayed
 	UE_LOG(LogTemp, Warning, TEXT("Mouth set to %s"), *UEnum::GetValueAsString(MouthExpression));
 
-	UE_LOG(LogTemp, Warning, TEXT("Mouth %i | Array size %i"), static_cast<int>(MouthExpression), MouthExpressions.Num());
-	
+	UE_LOG(LogTemp, Warning, TEXT("Mouth %i | Array size %i"), static_cast<int>(MouthExpression),
+	       MouthExpressions.Num());
+
 	auto NewMouth = MouthExpressions[static_cast<int>(MouthExpression)];
 	if (NewMouth)
 	{
@@ -93,7 +100,7 @@ void ABaseIslanderCharacter::ChangeEyeExpression(EEyeExpression RightEyeExpressi
 {
 	UE_LOG(LogTemp, Warning, TEXT("Right Eye set to %s"), *UEnum::GetValueAsString(RightEyeExpression));
 	UE_LOG(LogTemp, Warning, TEXT("Left Eye set to %s"), *UEnum::GetValueAsString(LeftEyeExpression));
-	
+
 	const auto NewRightEye = EyeExpressions[static_cast<int>(RightEyeExpression)];
 	if (NewRightEye)
 	{
@@ -156,14 +163,16 @@ void ABaseIslanderCharacter::ResetView()
 }
 
 void ABaseIslanderCharacter::OnLookAtBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-                                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                                  const FHitResult& SweepResult)
 {
-	if(IsValid(OtherActor))
+	if (IsValid(OtherActor))
 	{
 		if (OtherActor->ActorHasTag("Player"))
 		{
-			UIslanderAnimationInstance* AnimationInstance = Cast<UIslanderAnimationInstance>(GetMesh()->GetAnimInstance());
-			if(IsValid(AnimationInstance))
+			UIslanderAnimationInstance* AnimationInstance = Cast<UIslanderAnimationInstance>(
+				GetMesh()->GetAnimInstance());
+			if (IsValid(AnimationInstance))
 			{
 				AnimationInstance->LookAt(true);
 			}
@@ -172,13 +181,14 @@ void ABaseIslanderCharacter::OnLookAtBeginOverlap(UPrimitiveComponent* Overlappe
 }
 
 void ABaseIslanderCharacter::OnLookAtEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+                                                UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (IsValid(OtherActor))
 	{
 		if (OtherActor->ActorHasTag("Player"))
 		{
-			UIslanderAnimationInstance* AnimationInstance = Cast<UIslanderAnimationInstance>(GetMesh()->GetAnimInstance());
+			UIslanderAnimationInstance* AnimationInstance = Cast<UIslanderAnimationInstance>(
+				GetMesh()->GetAnimInstance());
 			if (IsValid(AnimationInstance))
 			{
 				AnimationInstance->LookAt(false);

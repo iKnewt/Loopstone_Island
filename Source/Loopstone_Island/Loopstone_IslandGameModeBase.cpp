@@ -19,7 +19,7 @@ ALoopstone_IslandGameModeBase::ALoopstone_IslandGameModeBase()
 	//
 	//
 
-	//GameDialogue->PrintAllDialogue();
+	//GameDialogue->ResetDialogue();
 
 	// bEventHasBeenTriggered.SetNum(static_cast<int>(EEventType::None) + 1);
 	// UE_LOG(LogTemp, Warning, TEXT("bEventHasBeenTriggered contains:  %i"), bEventHasBeenTriggered.Num());
