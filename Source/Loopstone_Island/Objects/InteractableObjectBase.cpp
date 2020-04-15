@@ -28,8 +28,12 @@
 
  void AInteractableObjectBase::CreateDynamicMaterial()
  {
- 	Material = UMaterialInstanceDynamic::Create(Mesh->GetMaterial(0), this);
- 	Mesh->SetMaterial(0, Material);
+     Material = UMaterialInstanceDynamic::Create(Mesh->GetMaterial(0), this);
+ 	for(int i = 0; i < Mesh->GetNumMaterials(); i++)
+ 	{
+        Mesh->SetMaterial(i, Material);
+ 	}
+
  }
 
 void AInteractableObjectBase::Interact()
