@@ -28,7 +28,7 @@ void UIslanderAnimationInstance::UpdateLookAt(float DeltaTime)
 	if(bLookAt)
 	{
 		PlayerLocation = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
-		UE_LOG(LogTemp, Warning, TEXT("CURRENTLY LOOKING AT"));
+		// UE_LOG(LogTemp, Warning, TEXT("CURRENTLY LOOKING AT"));
 	}
 	else
 	{

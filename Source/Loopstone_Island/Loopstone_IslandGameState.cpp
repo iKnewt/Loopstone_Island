@@ -46,6 +46,7 @@ void ALoopstone_IslandGameState::BeginPlay()
 		DialogueWidget = CreateWidget<UDialogueWidget>(GetWorld()->GetFirstPlayerController(), BP_DialogueWidget);
 		DialogueWidget->AddToViewport();
 		DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
+		DialogueWidget->GameState = this;
 	}
 	if (!DialogueWidget)
 	{
@@ -78,6 +79,11 @@ void ALoopstone_IslandGameState::BeginPlay()
 		SpawnParameters.Owner = this;
 		Machine = GetWorld()->SpawnActor<ALoopstoneMachine>(LoopstoneMachineBP, SpawnParameters);
 	}
+
+
+	UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController());
+	UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
+	
 }
 
 void ALoopstone_IslandGameState::SaveGame()
@@ -281,12 +287,22 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Islander, 0.5f);
 
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
-		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
+		UWidgetBlueprintLibrary::SetInputMode_UIOnly(GetWorld()->GetFirstPlayerController());
+		// UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
 		// if (!bUsingController)
 		// {
 		// todo set mouse position to centre of screen or to where options spawn
-		GetWorld()->GetFirstPlayerController()->SetMouseLocation(50, 50);
-		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+		//
+		if(bUsingController)
+		{
+			DialogueWidget->Button_MouseBlocker->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			DialogueWidget->Button_MouseBlocker->SetVisibility(ESlateVisibility::Hidden);
+			GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+			GetWorld()->GetFirstPlayerController()->SetMouseLocation(500, 500);
+		}
 		// }
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 
@@ -307,7 +323,7 @@ void ALoopstone_IslandGameState::CloseDialogue()
 	// swap camera
 	GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(false);
 	GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(
-		GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
+	GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
 
 	if (DialogueWidget)
 	{
@@ -321,6 +337,7 @@ void ALoopstone_IslandGameState::CloseDialogue()
 		DialogueWidget->Dialogue_Text->SetText(FText::FromString(" "));
 
 		DialogueWidget->StartDialogueAnimation(false);
+		DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 		UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
 	}

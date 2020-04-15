@@ -37,6 +37,10 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_FocusedStyle;
 
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_MouseBlocker;
+	UButton* LastFocused;
+
 	void SetupButtonStyles();
 
 	UPROPERTY()
@@ -75,6 +79,9 @@ public:
 	void onOption3Pressed();
 	UFUNCTION()
 	void onOption4Pressed();
+
+	UFUNCTION()
+	void onMouseBlockerPressed();
 
 	//Dialogue Text
 	UPROPERTY(meta = (BindWidget))

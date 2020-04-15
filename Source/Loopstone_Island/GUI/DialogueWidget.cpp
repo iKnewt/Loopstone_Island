@@ -72,6 +72,7 @@ void UDialogueWidget::updateButtonLookOnFocus()
 		if (Button->HasAnyUserFocus())
 		{
 			Button->SetStyle(Button_FocusedStyle->WidgetStyle);
+			LastFocused = Button;
 		}
 		else
 		{
@@ -83,6 +84,18 @@ void UDialogueWidget::updateButtonLookOnFocus()
 void UDialogueWidget::FocusOnOptions()
 {
 	Button_Option0->SetKeyboardFocus();
+}
+
+void UDialogueWidget::onMouseBlockerPressed()
+{
+	if (LastFocused)
+	{
+		LastFocused->SetKeyboardFocus();
+	}
+	else
+	{
+		Button_Option0->SetKeyboardFocus();
+	}
 }
 
 void UDialogueWidget::onOption000Pressed()
@@ -107,7 +120,6 @@ void UDialogueWidget::onOption0Pressed()
 
 void UDialogueWidget::onOption1Pressed()
 {
-
 	// Button_Option000->SetKeyboardFocus();
 	GameState->UpdateDialogueBasedOnResponse(2);
 }
@@ -133,6 +145,8 @@ void UDialogueWidget::onOption4Pressed()
 bool UDialogueWidget::Initialize()
 {
 	bool init = Super::Initialize();
+
+	Button_MouseBlocker->OnClicked.AddDynamic(this, &UDialogueWidget::onMouseBlockerPressed);
 
 	Button_Option000->OnClicked.AddDynamic(this, &UDialogueWidget::onOption000Pressed);
 
@@ -206,16 +220,13 @@ void UDialogueWidget::RevealOptions()
 	{
 		Button_Option000->SetVisibility(ESlateVisibility::Hidden);
 
-		// if (GameState->bUsingController)
-		// {
+		if (GameState->bUsingController)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("it was true"));
 			Button_MouseStyle->SetKeyboardFocus();
 			GetWorld()->GetTimerManager().SetTimer(DialogueTimerHandle, this, &UDialogueWidget::updateButtonLookOnFocus,
 			                                       0.005f, true);
-		// }
-		// else
-		// {
-		// 	Button_Option0->SetKeyboardFocus();
-		// }
+		}
 	}
 
 	// We have a limit of 5 responses in the GUI, so check to make sure we don't try to access outside available buttons
