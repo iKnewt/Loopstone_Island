@@ -20,6 +20,8 @@ void ALoopstone_IslandGameState::BeginPlay()
 {
 	Super::BeginPlay();
 
+	TimeLastDialogueClosed = UGameplayStatics::GetTimeSeconds(GetWorld());
+
 	UE_LOG(LogTemp, Warning, TEXT("Besinning play"));
 
 	ChangeTimeOfDay(ETimeOfDay::Morning);
@@ -83,7 +85,6 @@ void ALoopstone_IslandGameState::BeginPlay()
 
 	UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController());
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
-	
 }
 
 void ALoopstone_IslandGameState::SaveGame()
@@ -270,7 +271,8 @@ bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* Int
 
 bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 {
-	if (!Islander || !DialogueWidget)
+	float SecondsSinceLastDialogueClosed = UGameplayStatics::GetTimeSeconds(GetWorld()) - TimeLastDialogueClosed;
+	if (!Islander || !DialogueWidget || SecondsSinceLastDialogueClosed < SecondsBeforeYouCanTalkToIslanderAgain)
 	{
 		return false;
 	}
@@ -293,7 +295,7 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		// {
 		// todo set mouse position to centre of screen or to where options spawn
 		//
-		if(bUsingController)
+		if (bUsingController)
 		{
 			DialogueWidget->Button_MouseBlocker->SetVisibility(ESlateVisibility::Visible);
 		}
@@ -323,7 +325,7 @@ void ALoopstone_IslandGameState::CloseDialogue()
 	// swap camera
 	GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(false);
 	GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(
-	GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
+		GetWorld()->GetFirstPlayerController()->GetPawn(), 0.5f);
 
 	if (DialogueWidget)
 	{
@@ -340,6 +342,8 @@ void ALoopstone_IslandGameState::CloseDialogue()
 		DialogueWidget->SetVisibility(ESlateVisibility::Hidden);
 		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 		UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
+
+		TimeLastDialogueClosed = UGameplayStatics::GetTimeSeconds(GetWorld());
 	}
 }
 

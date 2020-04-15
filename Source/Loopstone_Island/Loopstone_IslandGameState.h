@@ -37,6 +37,9 @@ public:
 	bool bUsingController = false;
 	bool bTeleportAtTheEndOfConvo = false;
 
+	float TimeLastDialogueClosed = 0;
+	float SecondsBeforeYouCanTalkToIslanderAgain = 1;
+
 	// BP of loopstone machine which is spawned when waking up
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ALoopstoneMachine> LoopstoneMachineBP;
