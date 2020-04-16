@@ -28,42 +28,6 @@ void UDialogueNode::PrintSelfAndChildren()
 	}
 }
 
-bool UDialogueNode::ConditionsMet(ALoopstone_IslandGameState* GameState)
-{
-	for (auto Element : EventBoolsConditions)
-	{
-		// if any element doesn't match the library it shouldn't display
-		if (Element.Value != GameState->bEventHasBeenTriggered[static_cast<int>(Element.Key)])
-		{
-			return false;
-		}
-	}
-	for (auto Element : TopicBoolsConditions)
-	{
-		// if any element doesn't match the library it shouldn't display
-		if (Element.Value != GameState->bTopicHasBeenRevealed[static_cast<int>(Element.Key)])
-		{
-			return false;
-		}
-	}
-
-	// if the time of day doesn't match condition
-	if (TimeOfDayCondition != ETimeOfDay::None &&
-		TimeOfDayCondition != GameState->CurrentTimeOfDay)
-	{
-		return false;
-	}
-	if (ActiveStoryCondition != EStory::None &&
-		ActiveStoryCondition != GameState->CurrentStory)
-	{
-		return false;
-	}
-
-
-	// if all conditions are met
-	return true;
-}
-
 #if WITH_EDITOR
 
 FText UDialogueNode::GetNodeTitle() const
@@ -102,31 +66,6 @@ FLinearColor UDialogueNode::GetBackgroundColor() const
 	default:
 		return FLinearColor::White;
 	}
-}
-
-bool UDialogueNode::CanEditChange(const UProperty* InProperty) const
-{
-	const bool ParentVal = Super::CanEditChange(InProperty);
-
-	// // Can we edit flower color?
-	// if (InProperty->GetFName() == GET_MEMBER_NAME_CHECKED(UDialogueNode, FlowerColor))
-	// {
-	// 	return PlantType == EPlantType::Flower;
-	// }
-	//
-	// // Can we edit food amount?
-	// if (InProperty->GetFName() == GET_MEMBER_NAME_CHECKED(UDialogueNode, FoodAmount))
-	// {
-	// 	return PlantType == EPlantType::Food;
-	// }
-	//
-	// // Can we edit poison amount?
-	// if (InProperty->GetFName() == GET_MEMBER_NAME_CHECKED(UDialogueNode, PoisonDamagePerSecond))
-	// {
-	// 	return PlantType == EPlantType::Poison;
-	// }
-	//
-	return ParentVal;
 }
 
 #endif

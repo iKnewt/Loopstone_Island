@@ -16,6 +16,20 @@ enum class EConditionListType : uint8
 };
 
 UENUM(BlueprintType)
+enum class EInventoryItem : uint8
+{
+	Knife,
+	Rope,
+	Tape,
+	Key,
+	KeyLighthouse,
+	KeyBoathouse,
+	Mushroom,
+	Carrot,
+	None
+};
+
+UENUM(BlueprintType)
 enum class EEventType : uint8
 {
 	HasTape,

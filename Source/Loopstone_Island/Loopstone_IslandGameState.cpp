@@ -20,28 +20,23 @@ void ALoopstone_IslandGameState::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// setting up conditions
+
 	TimeLastDialogueClosed = UGameplayStatics::GetTimeSeconds(GetWorld());
-
 	UE_LOG(LogTemp, Warning, TEXT("Besinning play"));
-
 	ChangeTimeOfDay(ETimeOfDay::Morning);
-
 	UE_LOG(LogTemp, Warning, TEXT("morning started"));
 
 	bEventHasBeenTriggered.SetNum(static_cast<int>(EEventType::None) + 1);
 	UE_LOG(LogTemp, Warning, TEXT("bEventHasBeenTriggered contains:  %i"), bEventHasBeenTriggered.Num());
-
 	bTopicHasBeenRevealed.SetNum(static_cast<int>(ETopic::None) + 1);
 	UE_LOG(LogTemp, Warning, TEXT("bTopicHasBeenRevealed contains:  %i"), bTopicHasBeenRevealed.Num());
+	bInventoryItemsCollected.SetNum(static_cast<int>(EInventoryItem::None) + 1);
+	UE_LOG(LogTemp, Warning, TEXT("bInventoryItemsCollected contains:  %i"), bInventoryItemsCollected.Num());
 
 	bCollectedLoopstones.SetNum(static_cast<int>(EStory::None));
 
-
-	bConditionLists.SetNum(static_cast<int>(EConditionListType::None));
-	bConditionLists[static_cast<int>(EConditionListType::Event)].bConditions.SetNum(
-		static_cast<int>(EEventType::None) + 1);
-	bConditionLists[static_cast<int>(EConditionListType::Topic)].bConditions.SetNum(static_cast<int>(ETopic::None) + 1);
-
+	// setting up widgets
 
 	if (BP_DialogueWidget)
 	{
@@ -73,7 +68,6 @@ void ALoopstone_IslandGameState::BeginPlay()
 
 	LoadGame();
 
-
 	// LOOPSTONE MACHINE SPAWN TEST
 	if (LoopstoneMachineBP)
 	{
@@ -83,6 +77,7 @@ void ALoopstone_IslandGameState::BeginPlay()
 	}
 
 
+	// test done to try to remove mouse cursor when UI only
 	UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController());
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(GetWorld()->GetFirstPlayerController());
 }
@@ -146,42 +141,92 @@ void ALoopstone_IslandGameState::CollectLoopstone(EStory StoryOwningLoopstone)
 	}
 }
 
-bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction)
+bool ALoopstone_IslandGameState::ConditionsMet(TMap<ETopic, bool> TopicBoolsConditions,
+                                               TMap<EEventType, bool> EventBoolsConditions,
+                                               TMap<EInventoryItem, bool> IventoryBoolsConditions,
+                                               ETimeOfDay TimeOfDayCondition, EStory ActiveStoryCondition)
+{
+	for (auto Element : TopicBoolsConditions)
+	{
+		// if any element doesn't match the library it shouldn't display
+		if (Element.Value != bTopicHasBeenRevealed[static_cast<int>(Element.Key)])
+		{
+			return false;
+		}
+	}
+	for (auto Element : EventBoolsConditions)
+	{
+		// if any element doesn't match the library it shouldn't display
+		if (Element.Value != bEventHasBeenTriggered[static_cast<int>(Element.Key)])
+		{
+			return false;
+		}
+	}
+	for (auto Element : IventoryBoolsConditions)
+	{
+		// if any element doesn't match the library it shouldn't display
+		if (Element.Value != bInventoryItemsCollected[static_cast<int>(Element.Key)])
+		{
+			return false;
+		}
+	}
+
+	// if the time of day doesn't match condition
+	if (TimeOfDayCondition != ETimeOfDay::None &&
+		TimeOfDayCondition != CurrentTimeOfDay)
+	{
+		return false;
+	}
+	if (ActiveStoryCondition != EStory::None &&
+		ActiveStoryCondition != CurrentStory)
+	{
+		return false;
+	}
+
+	// if all conditions are met
+	return true;
+}
+
+void ALoopstone_IslandGameState::ChangeConditions(TMap<ETopic, bool> TopicBoolsToChange,
+                                                  TMap<EEventType, bool> EventBoolsToChange,
+                                                  TMap<EInventoryItem, bool> IventoryBoolsChange,
+                                                  ETimeOfDay TimeOfDayChange, EStory ActiveStoryChange)
+{
+	for (auto Element : TopicBoolsToChange)
+	{
+		bTopicHasBeenRevealed[static_cast<int>(Element.Key)] = Element.Value;
+		UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(Element.Key),
+			(Element.Value ? TEXT("true") : TEXT("false")));
+	}
+	for (const auto Element : EventBoolsToChange)
+	{
+		TriggerEvent(Element.Key, Element.Value);
+	}
+	for (const auto Element : IventoryBoolsChange)
+	{
+		EditInventoryItem(Element.Key, Element.Value);
+	}
+
+	if (TimeOfDayChange != ETimeOfDay::None)
+	{
+		ChangeTimeOfDay(TimeOfDayChange);
+	}
+	if (ActiveStoryChange != EStory::None)
+	{
+		ChangeStory(ActiveStoryChange);
+	}
+}
+
+void ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction)
 {
 	bEventHasBeenTriggered[static_cast<int>(EventType)] = NewBoolValue;
-
 	UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(EventType),
 	       (NewBoolValue ? TEXT("true") : TEXT("false")));
-
-	if (!InventoryWidget)
-	{
-		return true;
-	}
 
 	if (RunFunction)
 	{
 		switch (EventType)
 		{
-		case EEventType::HasTape:
-			{
-				InventoryWidget->EditInventoryItem(EItem::Tape, NewBoolValue);
-				break;
-			}
-		case EEventType::HasRope:
-			{
-				InventoryWidget->EditInventoryItem(EItem::Rope, NewBoolValue);
-				break;
-			}
-		case EEventType::HasKnife:
-			{
-				InventoryWidget->EditInventoryItem(EItem::Knife, NewBoolValue);
-				break;
-			}
-		case EEventType::HasLighthouseKey: case EEventType::HasBoathouseKey:
-			{
-				InventoryWidget->EditInventoryItem(EItem::Key, NewBoolValue);
-				break;
-			}
 		case EEventType::DoctorWalkingAway: // move doctor and end convo
 			{
 				if (IsValid(CurrentIslander))
@@ -199,74 +244,41 @@ bool ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 		default: ;
 		}
 	}
+}
 
-	return true;
+void ALoopstone_IslandGameState::EditInventoryItem(EInventoryItem Item, bool TrueToAddFalseToRemove)
+{
+	bInventoryItemsCollected[static_cast<int>(Item)] = TrueToAddFalseToRemove;
+	UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(Item),
+	       (TrueToAddFalseToRemove ? TEXT("true") : TEXT("false")));
+
+	if (InventoryWidget)
+	{
+		InventoryWidget->EditInventoryItem(Item, TrueToAddFalseToRemove);
+	}
 }
 
 bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* InteractableObject)
 {
-	// CHECK CONDITIONS
-
-	// todo make better implementation of condition checking
-
-	for (auto Element : InteractableObject->EventBoolsConditions)
+	if (ConditionsMet(InteractableObject->TopicBoolsConditions,
+	                  InteractableObject->EventBoolsConditions,
+	                  InteractableObject->InventoryBoolsConditions,
+	                  InteractableObject->TimeOfDayCondition,
+	                  InteractableObject->ActiveStoryCondition))
 	{
-		// if any element doesn't match the library it shouldn't display
-		if (Element.Value != this->bEventHasBeenTriggered[static_cast<int>(Element.Key)])
-		{
-			InteractableObject->DoNotInteract();
-			return false;
-		}
+		InteractableObject->Interact();
+		ChangeConditions(InteractableObject->TopicBoolsToChange,
+		                 InteractableObject->EventBoolsToChange,
+		                 InteractableObject->InventoryBoolsChange,
+		                 InteractableObject->TimeOfDayChange,
+		                 InteractableObject->ActiveStoryChange);
+		return true;
 	}
-	for (auto Element : InteractableObject->TopicBoolsConditions)
-	{
-		// if any element doesn't match the library it shouldn't display
-		if (Element.Value != this->bTopicHasBeenRevealed[static_cast<int>(Element.Key)])
-		{
-			InteractableObject->DoNotInteract();
-			return false;
-		}
-	}
-
-	if (InteractableObject->TimeOfDayCondition != ETimeOfDay::None &&
-		InteractableObject->TimeOfDayCondition != this->CurrentTimeOfDay)
+	else
 	{
 		InteractableObject->DoNotInteract();
 		return false;
 	}
-	if (InteractableObject->ActiveStoryCondition != EStory::None &&
-		InteractableObject->ActiveStoryCondition != this->CurrentStory)
-	{
-		InteractableObject->DoNotInteract();
-		return false;
-	}
-
-
-	// if all conditions pass
-
-	// do any local changes to the object
-	InteractableObject->Interact();
-
-	// CHECK GLOBAL EVENT TRIGGER
-	// todo make better implementation for event trigger
-	for (auto Element : InteractableObject->EventBoolsToChange)
-	{
-		this->TriggerEvent(Element.Key, Element.Value);
-	}
-	for (auto Element2 : InteractableObject->TopicBoolsToChange)
-	{
-		this->bTopicHasBeenRevealed[static_cast<int>(Element2.Key)] = Element2.Value;
-	}
-
-	if (InteractableObject->TimeOfDayChange != ETimeOfDay::None)
-	{
-		this->ChangeTimeOfDay(InteractableObject->TimeOfDayChange);
-	}
-	if (InteractableObject->ActiveStoryChange != EStory::None)
-	{
-		this->ChangeStory(InteractableObject->ActiveStoryChange);
-	}
-	return true;
 }
 
 bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
@@ -365,8 +377,11 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 		}
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("trying to update event library"));
-	CurrentDialogue->UpdateEventLibaryBasedOnCurrentNode(this);
+	ChangeConditions(CurrentDialogue->CurrentDialogueNode->TopicBoolsToChange,
+	                 CurrentDialogue->CurrentDialogueNode->EventBoolsToChange,
+	                 CurrentDialogue->CurrentDialogueNode->InventoryBoolsChange,
+	                 CurrentDialogue->CurrentDialogueNode->TimeOfDayChange,
+	                 CurrentDialogue->CurrentDialogueNode->ActiveStoryChange);
 
 	FString DialogueText = "Oh hello....";
 

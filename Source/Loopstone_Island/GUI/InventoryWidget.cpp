@@ -6,7 +6,7 @@
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
 
-void UInventoryWidget::EditInventoryItem(EItem Item, bool TrueToAddFalseToRemove)
+void UInventoryWidget::EditInventoryItem(EInventoryItem Item, bool TrueToAddFalseToRemove)
 {
 	if(ItemSound)
 	{
@@ -29,40 +29,40 @@ void UInventoryWidget::EditInventoryItem(EItem Item, bool TrueToAddFalseToRemove
 	}
 }
 
-void UInventoryWidget::AddItem(EItem Item)
+void UInventoryWidget::AddItem(EInventoryItem Item)
 {
 	switch(Item)
 	{
-	case EItem::Knife:
+	case EInventoryItem::Knife:
 		Image_Knife->SetVisibility(ESlateVisibility::Visible);
 		break;
-	case EItem::Rope:
+	case EInventoryItem::Rope:
 		Image_Rope->SetVisibility(ESlateVisibility::Visible);
 		break;
-	case EItem::Tape:
+	case EInventoryItem::Tape:
 		Image_Tape->SetVisibility(ESlateVisibility::Visible);
 		break;
-	case EItem::Key:
+	case EInventoryItem::Key:
 		Image_Key->SetVisibility(ESlateVisibility::Visible);
 		break;
 	default: ;
 	}
 }
 
-void UInventoryWidget::RemoveItem(EItem Item)
+void UInventoryWidget::RemoveItem(EInventoryItem Item)
 {
 	switch (Item)
 	{
-	case EItem::Knife:
+	case EInventoryItem::Knife:
 		Image_Knife->SetVisibility(ESlateVisibility::Hidden);
 		break;
-	case EItem::Rope:
+	case EInventoryItem::Rope:
 		Image_Rope->SetVisibility(ESlateVisibility::Hidden);
 		break;
-	case EItem::Tape:
+	case EInventoryItem::Tape:
 		Image_Tape->SetVisibility(ESlateVisibility::Hidden);
 		break;
-	case EItem::Key:
+	case EInventoryItem::Key:
 		Image_Key->SetVisibility(ESlateVisibility::Hidden);
 		break;
 	default:;

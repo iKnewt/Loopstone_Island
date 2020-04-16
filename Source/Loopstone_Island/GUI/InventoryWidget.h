@@ -4,18 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Condition.h"
 
 #include "InventoryWidget.generated.h"
 
 class UImage;
-UENUM(BlueprintType)
-enum class EItem : uint8
-{
-	Knife,
-	Rope,
-	Tape,
-	Key
-};
 
 /**
  * 
@@ -26,7 +19,7 @@ class LOOPSTONE_ISLAND_API UInventoryWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	void EditInventoryItem(EItem Item, bool TrueToAddFalseToRemove);
+	void EditInventoryItem(EInventoryItem Item, bool TrueToAddFalseToRemove);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USoundBase* ItemSound;
@@ -34,10 +27,10 @@ public:
 private:
 
 	UFUNCTION(BlueprintCallable)
-	void AddItem(EItem Item);
+	void AddItem(EInventoryItem Item);
 
 	UFUNCTION(BlueprintCallable)
-	void RemoveItem(EItem Item);
+	void RemoveItem(EInventoryItem Item);
 
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_Tape;

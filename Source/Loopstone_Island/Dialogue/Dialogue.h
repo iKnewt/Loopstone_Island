@@ -16,40 +16,29 @@ class LOOPSTONE_ISLAND_API UDialogue : public UGenericGraph
 public:
 	UDialogue();
 
-
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class UDialogueNode* CurrentDialogueNode = nullptr;
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	TArray<class UDialogueEdge*> CurrentAvailableEdges;
-
-	// TArray<class UDialogueEdge*> CurrentEdgesToPrint;
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class ABaseIslanderCharacter* CurrentIslander = nullptr;
-
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class UDialogueNode* LastMenuNode = nullptr;
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class UDialogueNode* LastConditionNode = nullptr;
 
-
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	TArray<bool> Conditions;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	TMap<FName, bool> NamedConditions;
-
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
 	void ResetDialogue();
-
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
 	void UpdateCurrentOptions(class ALoopstone_IslandGameState* GameState);
-
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
 	TArray<FString> GetCurrentOptions(ALoopstone_IslandGameState* GameState);
-
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
 	bool UpdateCurrentNode(int ResponseID, class ALoopstone_IslandGameState* GameState);
 
-	UFUNCTION(BlueprintCallable, Category = "Dialogue")
-	void UpdateEventLibaryBasedOnCurrentNode(ALoopstone_IslandGameState* GameState);
+	bool CurrentDialogueNodeConditionsMet(ALoopstone_IslandGameState* GameState);
 };
