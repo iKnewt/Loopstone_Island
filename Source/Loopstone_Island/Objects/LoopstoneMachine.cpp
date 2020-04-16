@@ -6,6 +6,7 @@
 #include "Condition.h"
 #include "TimerManager.h"
 #include "Components/AudioComponent.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 ALoopstoneMachine::ALoopstoneMachine() : AInteractableObjectBase()
 {
@@ -60,4 +61,14 @@ void ALoopstoneMachine::Interact()
 	// todo make this more dynamic
 	this->SetActorTransform(FTransform(FRotator(0, 50, 0), FVector(-3975, 480, 392), FVector(1)));
 	DisplayLoopstone(EStory::Detective, true);
+}
+
+void ALoopstoneMachine::VisualizeInteraction(bool bActivate)
+{
+	if (!IsValid(Material))
+	{
+		CreateDynamicMaterial();
+	}
+	Material->SetScalarParameterValue("Glow", int(bActivate));
+	bVisualizingInteraction = bActivate;
 }
