@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "Condition.h"
 
+#include "Components/HorizontalBox.h"
+
 #include "InventoryWidget.generated.h"
 
 class UImage;
@@ -24,6 +26,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USoundBase* ItemSound;
 
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void AddItemToInventoryWidget(EInventoryItem Item, UTexture2D* Icon);
+
 private:
 
 	UFUNCTION(BlueprintCallable)
@@ -32,15 +37,30 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void RemoveItem(EInventoryItem Item);
 
-	UPROPERTY(meta = (BindWidget))
-	UImage* Image_Tape;
+	UPROPERTY()
+	TArray<UImage*> Images;
 
 	UPROPERTY(meta = (BindWidget))
-	UImage* Image_Rope;
+	UHorizontalBox* HorizontalBox_InventoryItems;
+	UPROPERTY(meta = (BindWidget))
+	UHorizontalBox* HorizontalBox_Items_1;
 
 	UPROPERTY(meta = (BindWidget))
-	UImage* Image_Knife;
-
+	UImage* Image_0;
 	UPROPERTY(meta = (BindWidget))
-	UImage* Image_Key;
+	UImage* Image_1;
+	UPROPERTY(meta = (BindWidget))
+	UImage* Image_2;
+	UPROPERTY(meta = (BindWidget))
+	UImage* Image_3;
+	UPROPERTY(meta = (BindWidget))
+	UImage* Image_4;
+	UPROPERTY(meta = (BindWidget))
+	UImage* Image_5;
+	UPROPERTY(meta = (BindWidget))
+	UImage* Image_6;
+	UPROPERTY(meta = (BindWidget))
+	UImage* Image_7;
+	UPROPERTY(meta = (BindWidget))
+	UImage* Image_8;
 };

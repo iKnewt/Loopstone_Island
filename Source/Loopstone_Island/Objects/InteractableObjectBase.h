@@ -43,6 +43,9 @@ public:
 
 	bool bGlowing = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTexture2D* InventoryIcon = nullptr;
+
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
 	TMap<ETopic, bool> TopicBoolsConditions;
