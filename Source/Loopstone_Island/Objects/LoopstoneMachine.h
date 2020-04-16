@@ -19,6 +19,7 @@ public:
 
 	void Interact() override;
 
+	void VisualizeInteraction(bool bActivate) override;
 	UFUNCTION(BlueprintImplementableEvent)
 	void PlayLoopstoneSound();
 	UFUNCTION(BlueprintImplementableEvent)
