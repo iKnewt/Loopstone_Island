@@ -44,6 +44,9 @@ protected:
 	//door offset = 43
 
 	UFUNCTION()
+	void CloseDoorSound();
+
+	UFUNCTION()
 	void PlayAnimation();
 	UFUNCTION()
 	void UpdateAnimation(float Value);
@@ -54,6 +57,8 @@ protected:
 		USoundBase* DoorClose;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
 		USoundBase* DoorLocked;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+		USoundBase* DoorSlam;
 	
 
 public:
