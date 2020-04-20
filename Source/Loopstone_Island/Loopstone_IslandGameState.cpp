@@ -141,6 +141,17 @@ void ALoopstone_IslandGameState::CollectLoopstone(EStory StoryOwningLoopstone)
 	}
 }
 
+void ALoopstone_IslandGameState::StopAllMusic()
+{
+	for (auto Actors : MusicActors)
+	{
+		if (IsValid(Actors))
+		{
+			Actors->StopAudio();
+		}
+	}
+}
+
 bool ALoopstone_IslandGameState::ConditionsMet(TMap<ETopic, bool> TopicBoolsConditions,
                                                TMap<EEventType, bool> EventBoolsConditions,
                                                TMap<EInventoryItem, bool> IventoryBoolsConditions,
