@@ -45,7 +45,10 @@ void AInteractableDoor::PlayAnimation()
 			{
 				Sound->SetSound(DoorOpen);
 			}
-			GetWorldTimerManager().SetTimer(DoorTimer, this, &AInteractableDoor::PlayAnimation, 7, false);
+			if(bAutoClose)
+			{
+				GetWorldTimerManager().SetTimer(DoorTimer, this, &AInteractableDoor::PlayAnimation, 7, false);
+			}
 		}
 		else
 		{

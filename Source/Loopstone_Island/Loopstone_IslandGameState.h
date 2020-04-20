@@ -37,7 +37,7 @@ public:
 	// Current place in day and story
 	UPROPERTY(EditDefaultsOnly, Category = "Current Conditions")
 	ETimeOfDay CurrentTimeOfDay = ETimeOfDay::Morning;
-	UPROPERTY(EditDefaultsOnly, Category = "Current Conditions")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Current Conditions")
 	EStory CurrentStory = EStory::None;
 
 	// Currently used condition lists
@@ -104,6 +104,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void CollectLoopstone(EStory StoryOwningLoopstone);
+
+	UFUNCTION(BlueprintCallable)
+		void StopAllMusic();
+	
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void GoToBed();
 

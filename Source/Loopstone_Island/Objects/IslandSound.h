@@ -43,6 +43,8 @@ public:
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite, Category= "Audio Component")
 	class UAudioComponent* AudioComponent;
 
+	void StopAudio();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

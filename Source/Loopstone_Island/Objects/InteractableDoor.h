@@ -39,6 +39,9 @@ protected:
 
 	bool bOpened = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timeline")
+	bool bAutoClose = true;
+
 	UPROPERTY(EditAnywhere, Category= "Timeline")
 	UCurveFloat* CurveFloat;
 	//door offset = 43
