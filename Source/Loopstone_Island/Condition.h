@@ -32,11 +32,6 @@ enum class EInventoryItem : uint8
 UENUM(BlueprintType)
 enum class EEventType : uint8
 {
-	HasTape,
-	HasRope,
-	HasKnife,
-	HasBoathouseKey,
-	HasLighthouseKey,
 	HasMachine,
 	TutorialCompleted,
 	DoctorWalkingAway,
@@ -68,66 +63,60 @@ enum class ETopic : uint8
 	PartyReady,
 	TalkedToDoctorAboutFeast,
 	TalkedToFarmerAboutFeast,
-	CollectedItemForFarmer,
-	HelpedFarmerWithFeast,
 	TalkedToMotherAboutFeast,
-	CollectedItemForMother,
-	HelpedMotherWithFeast,
 	None
-};
-
-USTRUCT()
-struct FConditions
-{
-	GENERATED_BODY()
-
-		// UPROPERTY()
-		// TArray<UCondition*> AndConditions;
-
-	UPROPERTY(EditAnywhere)
-		EConditionListType ConditionList = EConditionListType::None;
-
-	UPROPERTY(EditAnywhere)
-		bool bConditionShouldBeTrueOrFalse = true;
-
-	UPROPERTY(EditAnywhere, meta = (EditCondition = "ConditionList ==  EConditionListType::Event"))
-		EEventType Event = EEventType::None;
-
-	UPROPERTY(EditAnywhere, meta = (EditCondition = "ConditionList ==  EConditionListType::Topic"))
-		ETopic Topic = ETopic::None;
-	
-};
-
-/**
- * 
- */
-UCLASS()
-class LOOPSTONE_ISLAND_API UCondition : public UObject
-{
-	GENERATED_BODY()
-
-		// UPROPERTY()
-		// TArray<FConditions> AndConditions;
-	
-	UPROPERTY(EditAnywhere)
-		EConditionListType ConditionList = EConditionListType::None;
-	
-	UPROPERTY(EditAnywhere)
-		bool bConditionShouldBeTrueOrFalse = true;
-	
-	UPROPERTY(EditAnywhere, meta = (EditCondition = "ConditionList ==  EConditionListType::Event"))
-		EEventType Event = EEventType::None;
-	
-	UPROPERTY(EditAnywhere, meta = (EditCondition = "ConditionList ==  EConditionListType::Topic"))
-		ETopic Topic = ETopic::None;
-	
 };
 
 // USTRUCT()
 // struct FConditions
 // {
 // 	GENERATED_BODY()
-
-		// UPROPERTY()
-		// TArray<UCondition*> AndConditions;
+//
+// 	// UPROPERTY()
+// 	// TArray<UCondition*> AndConditions;
+//
+// 	UPROPERTY(EditAnywhere)
+// 	EConditionListType ConditionList = EConditionListType::None;
+//
+// 	UPROPERTY(EditAnywhere)
+// 	bool bConditionShouldBeTrueOrFalse = true;
+//
+// 	UPROPERTY(EditAnywhere, meta = (EditCondition = "ConditionList ==  EConditionListType::Event"))
+// 	EEventType Event = EEventType::None;
+//
+// 	UPROPERTY(EditAnywhere, meta = (EditCondition = "ConditionList ==  EConditionListType::Topic"))
+// 	ETopic Topic = ETopic::None;
 // };
+//
+// /**
+//  * 
+//  */
+// UCLASS()
+// class LOOPSTONE_ISLAND_API UCondition : public UObject
+// {
+// 	GENERATED_BODY()
+//
+// 	// UPROPERTY()
+// 	// TArray<FConditions> AndConditions;
+//
+// 	UPROPERTY(EditAnywhere)
+// 	EConditionListType ConditionList = EConditionListType::None;
+//
+// 	UPROPERTY(EditAnywhere)
+// 	bool bConditionShouldBeTrueOrFalse = true;
+//
+// 	UPROPERTY(EditAnywhere, meta = (EditCondition = "ConditionList ==  EConditionListType::Event"))
+// 	EEventType Event = EEventType::None;
+//
+// 	UPROPERTY(EditAnywhere, meta = (EditCondition = "ConditionList ==  EConditionListType::Topic"))
+// 	ETopic Topic = ETopic::None;
+// };
+//
+// // USTRUCT()
+// // struct FConditions
+// // {
+// // 	GENERATED_BODY()
+//
+// // UPROPERTY()
+// // TArray<UCondition*> AndConditions;
+// // };
