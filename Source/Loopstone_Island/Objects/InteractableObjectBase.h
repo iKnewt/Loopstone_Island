@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Condition.h"
+#include "Loopstone_IslandGameState.h"
 #include "InteractableObjectBase.generated.h"
 
 
@@ -42,41 +43,32 @@ public:
 
 	bool bGlowing = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTexture2D* InventoryIcon = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
-	TMap<EEventType, bool> EventBoolsConditions;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
 	TMap<ETopic, bool> TopicBoolsConditions;
-
-	UPROPERTY(EditAnywhere, Category = "Condition")
-	EConditionListType ConditionList = EConditionListType::None;
-
-	UPROPERTY(EditAnywhere, Category = "Condition", meta = (EditCondition =
-		"ConditionList ==  EConditionListType::Event"))
-	EEventType Event = EEventType::None;
-
-	UPROPERTY(EditAnywhere, Category = "Condition", meta = (EditCondition =
-		"ConditionList ==  EConditionListType::Topic"))
-	ETopic Topic = ETopic::None;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
+	TMap<EEventType, bool> EventBoolsConditions;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
+	TMap<EInventoryItem, bool> InventoryBoolsConditions;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
 	ETimeOfDay TimeOfDayCondition = ETimeOfDay::None;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
 	EStory ActiveStoryCondition = EStory::None;
 
-	// UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
-	// 	TArray<FConditions> OrConditions;
-	// TArray<UCondition*> OrConditions;
-	// TArray < TArray<UCondition*>> Conditions;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
 	TMap<ETopic, bool> TopicBoolsToChange;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
 	TMap<EEventType, bool> EventBoolsToChange;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
+	TMap<EInventoryItem, bool> InventoryBoolsChange;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
 	ETimeOfDay TimeOfDayChange = ETimeOfDay::None;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Event")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
 	EStory ActiveStoryChange = EStory::None;
+
 
 protected:
 	// Called when the game starts or when spawned

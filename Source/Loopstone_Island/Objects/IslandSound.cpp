@@ -13,6 +13,11 @@ AIslandSound::AIslandSound()
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
 }
 
+void AIslandSound::StopAudio()
+{
+	AudioComponent->Stop();
+}
+
 // Called when the game starts or when spawned
 void AIslandSound::BeginPlay()
 {

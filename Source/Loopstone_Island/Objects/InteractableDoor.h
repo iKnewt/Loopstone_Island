@@ -39,9 +39,15 @@ protected:
 
 	bool bOpened = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timeline")
+	bool bAutoClose = true;
+
 	UPROPERTY(EditAnywhere, Category= "Timeline")
 	UCurveFloat* CurveFloat;
 	//door offset = 43
+
+	UFUNCTION()
+	void CloseDoorSound();
 
 	UFUNCTION()
 	void PlayAnimation();
@@ -54,6 +60,8 @@ protected:
 		USoundBase* DoorClose;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
 		USoundBase* DoorLocked;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+		USoundBase* DoorSlam;
 	
 
 public:

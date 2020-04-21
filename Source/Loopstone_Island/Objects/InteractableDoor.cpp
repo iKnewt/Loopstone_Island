@@ -5,6 +5,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/AudioComponent.h"
 #include "TimerManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/Character.h"
 
 
 // Sets default values
@@ -14,13 +16,28 @@ AInteractableDoor::AInteractableDoor()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+void AInteractableDoor::CloseDoorSound()
+{
+	if(!bOpened)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), DoorSlam, GetActorLocation());
+		Sound->Stop();
+	}
+
+}
+
 void AInteractableDoor::PlayAnimation()
 {
+	
 	if (CurveFloat)
 	{
 		FOnTimelineFloat TimelineProgress;
+		FOnTimelineEventStatic TimelineEnd;
+		TimelineEnd.BindUFunction(this, "CloseDoorSound");
 		TimelineProgress.BindUFunction(this, FName("UpdateAnimation"));
 		CurveTimeline.AddInterpFloat(CurveFloat, TimelineProgress);
+		CurveTimeline.SetTimelineFinishedFunc(TimelineEnd);
+		
 		if (!bOpened)
 		{
 			CurveTimeline.Play();
@@ -28,7 +45,10 @@ void AInteractableDoor::PlayAnimation()
 			{
 				Sound->SetSound(DoorOpen);
 			}
-			GetWorldTimerManager().SetTimer(DoorTimer, this, &AInteractableDoor::PlayAnimation, 7, false);
+			if(bAutoClose)
+			{
+				GetWorldTimerManager().SetTimer(DoorTimer, this, &AInteractableDoor::PlayAnimation, 7, false);
+			}
 		}
 		else
 		{
@@ -64,6 +84,27 @@ void AInteractableDoor::UpdateAnimation(float Value)
 
 void AInteractableDoor::Interact()
 {
+
+	auto Player = UGameplayStatics::GetPlayerCharacter(GetWorld(),0);
+	if(IsValid(Player))
+	{
+		//The front of the door, relative to world, not local object
+		FVector Front = GetActorRightVector();
+		FVector PlayerForwardVector = Player->GetActorForwardVector();
+		float direction = FVector::DotProduct(Front, PlayerForwardVector);
+		//if direction is positive, open inwards
+		if(!CurveTimeline.IsPlaying())
+		{
+			if (direction > 0)
+			{
+				bOpenInwards = true;
+			}
+			else
+			{
+				bOpenInwards = false;
+			}
+		}
+	}
 	PlayAnimation();
 }
 

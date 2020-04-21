@@ -4,8 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GenericGraphNode.h"
-#include "Loopstone_IslandGameState.h"
+// #include "Loopstone_IslandGameState.h"
 #include "Condition.h"
+#include "Characters/BaseIslanderCharacter.h"
 #include "DialogueNode.generated.h"
 
 UENUM(BlueprintType)
@@ -31,9 +32,6 @@ class LOOPSTONE_ISLAND_API UDialogueNode : public UGenericGraphNode
 public:
 	UDialogueNode();
 
-	UPROPERTY(EditDefaultsOnly)
-	bool bHasFlowers = false;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
 	FText DialogueText;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
@@ -43,9 +41,11 @@ public:
 
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
+	TMap<ETopic, bool> TopicBoolsConditions;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
 	TMap<EEventType, bool> EventBoolsConditions;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
-	TMap<ETopic, bool> TopicBoolsConditions;
+	TMap<EInventoryItem, bool> InventoryBoolsConditions;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
 	ETimeOfDay TimeOfDayCondition = ETimeOfDay::None;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
@@ -56,6 +56,8 @@ public:
 	TMap<ETopic, bool> TopicBoolsToChange;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
 	TMap<EEventType, bool> EventBoolsToChange;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
+	TMap<EInventoryItem, bool> InventoryBoolsChange;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
 	ETimeOfDay TimeOfDayChange = ETimeOfDay::None;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
@@ -79,12 +81,8 @@ public:
 	UPROPERTY(Category = Sprite, EditAnywhere, AdvancedDisplay)
 	bool bTrimmedInSourceImage = true;
 
-
 	UFUNCTION()
 	void PrintSelfAndChildren();
-
-	UFUNCTION()
-	bool ConditionsMet(class ALoopstone_IslandGameState* GameState);
 
 	bool bHasBeenVisited = false;
 
@@ -96,8 +94,6 @@ public:
 	virtual void SetNodeTitle(const FText& NewTitle) override;
 
 	virtual FLinearColor GetBackgroundColor() const override;
-
-	virtual bool CanEditChange(const UProperty* InProperty) const override;
 
 #endif
 };
