@@ -121,23 +121,24 @@ void ALoopstone_IslandGameState::CollectLoopstone(EStory StoryOwningLoopstone)
 	bCollectedLoopstones[static_cast<int>(StoryOwningLoopstone)] = true;
 	SaveGame();
 
-	// check if all loopstones are collected
-	// if they are do the thing where you play the rest of the story
+	if (StoryOwningLoopstone != EStory::Detective)
+	{
+		Machine->DisplayLoopstone(StoryOwningLoopstone);
+		bool bAllLoopstonesCollected = true;
 
-	if (StoryOwningLoopstone == EStory::Detective)
-	{
-		// maybe something should happen with the machine??
-		// will probably happen in the interactive object and not here though
-	}
-	else if (StoryOwningLoopstone == EStory::PartyPlanner)
-	{
-		Machine->DisplayLoopstone(EStory::PartyPlanner);
-	}
-	else
-	{
-		// do stuff to show collected loopstone?
-		// should probably be in the actual loopstone object
-		UGameplayStatics::OpenLevel(this, "Fullday");
+		for (bool bLoopstone : bCollectedLoopstones)
+		{
+			if(!bLoopstone)
+			{
+				bAllLoopstonesCollected = false;
+				break;
+			}
+		}
+		
+		if (!bAllLoopstonesCollected)
+		{
+			UGameplayStatics::OpenLevel(this, "Fullday");
+		}
 	}
 }
 
@@ -218,13 +219,13 @@ void ALoopstone_IslandGameState::ChangeConditions(TMap<ETopic, bool> TopicBoolsT
 		EditInventoryItem(Element.Key, Element.Value);
 	}
 
-	if (TimeOfDayChange != ETimeOfDay::None)
-	{
-		ChangeTimeOfDay(TimeOfDayChange);
-	}
 	if (ActiveStoryChange != EStory::None)
 	{
 		ChangeStory(ActiveStoryChange);
+	}
+	if (TimeOfDayChange != ETimeOfDay::None)
+	{
+		ChangeTimeOfDay(TimeOfDayChange);
 	}
 }
 

@@ -20,37 +20,9 @@ enum class EStory : uint8
 	Detective,
 	PartyPlanner,
 	AssistantChef,
+	Psychologist,
 	None
 };
-
-// UENUM(BlueprintType)
-// enum class EEventType : uint8
-// {
-// 	HasTape,
-// 	HasRope,
-// 	HasKnife,
-// 	HasLighthouseKey,
-// 	HasMachine,
-// 	TutorialCompleted,
-// 	None
-// };
-//
-// UENUM(BlueprintType)
-// enum class ETopic : uint8
-// {
-// 	PartyPlanner,
-// 	Tape,
-// 	Rope,
-// 	Knife,
-// 	FarmerTalkedAboutInnkeeper,
-// 	TalkedToFarmerAboutNoise,
-// 	TalkedToDoctorAboutNoise,
-// 	TalkedToMotherAboutNoise,
-// 	TalkedToChildAboutNoise,
-// 	TalkedToSBAboutNoise,
-// 	HeardFarmersOpinionOnDoctor,
-// 	None
-// };
 
 UENUM(BlueprintType)
 enum class EIslanderType : uint8
