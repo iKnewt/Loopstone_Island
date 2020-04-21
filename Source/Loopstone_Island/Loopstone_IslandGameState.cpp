@@ -312,8 +312,8 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Islander, 0.5f);
 
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
-		UWidgetBlueprintLibrary::SetInputMode_UIOnly(GetWorld()->GetFirstPlayerController());
-		// UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
+		// UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController());
+		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
 		// if (!bUsingController)
 		// {
 		// todo set mouse position to centre of screen or to where options spawn

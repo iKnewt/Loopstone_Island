@@ -5,7 +5,7 @@
 #include "Image.h"
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "IDetailTreeNode.h"
+// #include "IDetailTreeNode.h"
 
 
 void UInventoryWidget::EditInventoryItem(EInventoryItem Item, bool TrueToAddFalseToRemove)

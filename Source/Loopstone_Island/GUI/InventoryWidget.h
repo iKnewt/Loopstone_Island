@@ -6,8 +6,6 @@
 #include "Blueprint/UserWidget.h"
 #include "Condition.h"
 
-#include "Components/HorizontalBox.h"
-
 #include "InventoryWidget.generated.h"
 
 class UImage;
@@ -39,11 +37,6 @@ private:
 
 	UPROPERTY()
 	TArray<UImage*> Images;
-
-	UPROPERTY(meta = (BindWidget))
-	UHorizontalBox* HorizontalBox_InventoryItems;
-	UPROPERTY(meta = (BindWidget))
-	UHorizontalBox* HorizontalBox_Items_1;
 
 	UPROPERTY(meta = (BindWidget))
 	UImage* Image_0;
