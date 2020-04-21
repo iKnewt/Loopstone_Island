@@ -216,6 +216,27 @@ void ALoopstone_IslandGameState::ChangeConditions(TMap<ETopic, bool> TopicBoolsT
 	}
 	for (const auto Element : IventoryBoolsChange)
 	{
+		//todo fix better counter and also display in inventory menu 
+		if(Element.Key == EInventoryItem::Carrot)
+		{
+			if(Element.Value)
+			{
+				CarrotCount++;
+			}
+			else
+			{
+				CarrotCount--;
+			}
+			if(CarrotCount >= 5)
+			{
+				bTopicHasBeenRevealed[static_cast<int>(EInventoryItem::Carrot)] = true;
+			}
+			else
+			{
+				bTopicHasBeenRevealed[static_cast<int>(EInventoryItem::Carrot)] = false;
+			}
+		}
+		
 		EditInventoryItem(Element.Key, Element.Value);
 	}
 

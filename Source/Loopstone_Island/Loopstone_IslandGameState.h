@@ -69,6 +69,7 @@ public:
 	UFUNCTION()
 	void EditInventoryItem(EInventoryItem Item, bool TrueToAddFalseToRemove);
 
+	int CarrotCount = 0;
 
 	// Other
 	class ASunSky* SunSky = nullptr;
