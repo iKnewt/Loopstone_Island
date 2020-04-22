@@ -215,28 +215,7 @@ void ALoopstone_IslandGameState::ChangeConditions(TMap<ETopic, bool> TopicBoolsT
 		TriggerEvent(Element.Key, Element.Value);
 	}
 	for (const auto Element : IventoryBoolsChange)
-	{
-		//todo fix better counter and also display in inventory menu 
-		if(Element.Key == EInventoryItem::Carrot)
-		{
-			if(Element.Value)
-			{
-				CarrotCount++;
-			}
-			else
-			{
-				CarrotCount--;
-			}
-			if(CarrotCount >= 5)
-			{
-				bTopicHasBeenRevealed[static_cast<int>(EInventoryItem::Carrot)] = true;
-			}
-			else
-			{
-				bTopicHasBeenRevealed[static_cast<int>(EInventoryItem::Carrot)] = false;
-			}
-		}
-		
+	{	
 		EditInventoryItem(Element.Key, Element.Value);
 	}
 
@@ -284,9 +263,31 @@ void ALoopstone_IslandGameState::EditInventoryItem(EInventoryItem Item, bool Tru
 	bInventoryItemsCollected[static_cast<int>(Item)] = TrueToAddFalseToRemove;
 	UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(Item),
 	       (TrueToAddFalseToRemove ? TEXT("true") : TEXT("false")));
-
+	
 	if (InventoryWidget)
 	{
+		//todo fix better counter and also display in inventory menu 
+		if (Item == EInventoryItem::Carrot)
+		{
+			if (TrueToAddFalseToRemove)
+			{
+				CarrotCount++;
+			}
+			else
+			{
+				CarrotCount--;
+			}
+			if (CarrotCount >= 5)
+			{
+				bInventoryItemsCollected[static_cast<int>(EInventoryItem::Carrot)] = true;
+			}
+			else
+			{
+				bInventoryItemsCollected[static_cast<int>(EInventoryItem::Carrot)] = false;
+			}
+			InventoryWidget->SetCarrotCounter(CarrotCount);
+		}
+		
 		InventoryWidget->EditInventoryItem(Item, TrueToAddFalseToRemove);
 	}
 }

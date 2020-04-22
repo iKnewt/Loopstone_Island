@@ -3,8 +3,10 @@
 
 #include "InventoryWidget.h"
 #include "Image.h"
+#include "TextBlock.h"
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include <string>
 // #include "IDetailTreeNode.h"
 
 
@@ -26,7 +28,7 @@ void UInventoryWidget::EditInventoryItem(EInventoryItem Item, bool TrueToAddFals
 		for (auto image : Images)
 		{
 			image->SetVisibility(ESlateVisibility::Collapsed);
-		}		
+		}
 	}
 
 	int index = static_cast<int>(Item);
@@ -46,73 +48,17 @@ void UInventoryWidget::EditInventoryItem(EInventoryItem Item, bool TrueToAddFals
 			UGameplayStatics::PlaySound2D(GetWorld(), ItemSound);
 		}
 	}
-
-	
-	//
-	// if (TrueToAddFalseToRemove)
-	// {
-	// 	AddItem(Item);
-	// }
-	// else
-	// {
-	// 	RemoveItem(Item);
-	// }
 }
 
-void UInventoryWidget::AddItem(EInventoryItem Item)
+void UInventoryWidget::SetCarrotCounter(int NewAmount)
 {
-	// HorizontalBox_Items->AddChildToHorizontalBox(new UWidget(FObjectInitializer()));
-
-	// auto test = new UImage()
-
-
-	// UMG_API::CreateWidget(this, UImage*, FName("skdjh"));
-
-	// auto test = UMG_API::CreateWidget(this);
-	//
-	// auto test2 = UMG_API::CreateWidget(this);
-
-
-	// UImage::
-
-	// HorizontalBox_Items->AddChildToHorizontalBox(Image_Knife);
-	// HorizontalBox_Items->AddChild()
-
-	// switch(Item)
-	// {
-	// case EInventoryItem::Knife:
-	// 	Image_Knife->SetVisibility(ESlateVisibility::Visible);
-	// 	// Image_Knife->SetBrushFromTexture(UTexture2D)
-	// 	break;
-	// case EInventoryItem::Rope:
-	// 	Image_Rope->SetVisibility(ESlateVisibility::Visible);
-	// 	break;
-	// case EInventoryItem::Tape:
-	// 	Image_Tape->SetVisibility(ESlateVisibility::Visible);
-	// 	break;
-	// case EInventoryItem::Key:
-	// 	Image_Key->SetVisibility(ESlateVisibility::Visible);
-	// 	break;
-	// default: ;
-	// }
-}
-
-void UInventoryWidget::RemoveItem(EInventoryItem Item)
-{
-	// switch (Item)
-	// {
-	// case EInventoryItem::Knife:
-	// 	Image_Knife->SetVisibility(ESlateVisibility::Hidden);
-	// 	break;
-	// case EInventoryItem::Rope:
-	// 	Image_Rope->SetVisibility(ESlateVisibility::Hidden);
-	// 	break;
-	// case EInventoryItem::Tape:
-	// 	Image_Tape->SetVisibility(ESlateVisibility::Hidden);
-	// 	break;
-	// case EInventoryItem::Key:
-	// 	Image_Key->SetVisibility(ESlateVisibility::Hidden);
-	// 	break;
-	// default:;
-	// }
+	if (NewAmount == 0)
+	{
+		CarrotCounter->SetVisibility(ESlateVisibility::Collapsed);
+	}
+	else
+	{
+		CarrotCounter->SetVisibility(ESlateVisibility::Visible);
+		CarrotCounter->SetText(FText::FromString(FString::FromInt(NewAmount)));
+	}
 }

@@ -8,6 +8,7 @@
 
 #include "InventoryWidget.generated.h"
 
+class UTextBlock;
 class UImage;
 
 /**
@@ -27,13 +28,12 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void AddItemToInventoryWidget(EInventoryItem Item, UTexture2D* Icon);
 
+	void SetCarrotCounter(int NewAmount);
+
 private:
 
-	UFUNCTION(BlueprintCallable)
-	void AddItem(EInventoryItem Item);
-
-	UFUNCTION(BlueprintCallable)
-	void RemoveItem(EInventoryItem Item);
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* CarrotCounter;
 
 	UPROPERTY()
 	TArray<UImage*> Images;

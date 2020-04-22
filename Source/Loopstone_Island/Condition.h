@@ -21,7 +21,6 @@ enum class EInventoryItem : uint8
 	Knife,
 	Rope,
 	Tape,
-	Key,
 	KeyLighthouse,
 	KeyBoathouse,
 	Mushroom,
