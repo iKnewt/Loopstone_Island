@@ -14,6 +14,7 @@
 #include "Objects/IslandSound.h"
 #include "Loopstone_Island_SaveGame.h"
 #include "Objects/LoopstoneMachine.h"
+#include "StoryDecor.h"
 #include "Button.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
@@ -275,9 +276,10 @@ void ALoopstone_IslandGameState::EditInventoryItem(EInventoryItem Item, bool Tru
 			}
 			else
 			{
-				CarrotCount--;
+				// CarrotCount--;
+				CarrotCount = 0;
 			}
-			if (CarrotCount >= 5)
+			if (CarrotCount >= 10)
 			{
 				bInventoryItemsCollected[static_cast<int>(EInventoryItem::Carrot)] = true;
 			}
@@ -460,6 +462,13 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 		if (IsValid(Actors))
 		{
 			Actors->ChangeCurrentTimeOfDay(NewTimeOfDay);
+		}
+	}
+	for (auto Actor : StoryDecorActors)
+	{
+		if (Actor)
+		{
+			Actor->UnhideIfConditionsMet(NewTimeOfDay, CurrentStory);
 		}
 	}
 }

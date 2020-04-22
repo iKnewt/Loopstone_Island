@@ -46,6 +46,9 @@ public:
 	TArray<bool> bTopicHasBeenRevealed;
 	TArray<bool> bInventoryItemsCollected;
 
+	UPROPERTY()
+	TArray<class AStoryDecor*> StoryDecorActors;
+
 	// Connected to dialogue
 	UPROPERTY()
 	ABaseIslanderCharacter* CurrentIslander = nullptr;
@@ -107,8 +110,8 @@ public:
 	void CollectLoopstone(EStory StoryOwningLoopstone);
 
 	UFUNCTION(BlueprintCallable)
-		void StopAllMusic();
-	
+	void StopAllMusic();
+
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void GoToBed();
 
