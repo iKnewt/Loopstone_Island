@@ -2,7 +2,7 @@
 
 
 #include "SunSky.h"
-#include "Loopstone_IslandGameModeBase.h"
+// #include "Loopstone_IslandGameModeBase.h"
 
 // Sets default values
 ASunSky::ASunSky()

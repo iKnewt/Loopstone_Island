@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Condition.h"
+#include "GameStateEnums.h"
 
 #include "InventoryWidget.generated.h"
 

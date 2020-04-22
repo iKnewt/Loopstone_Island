@@ -35,6 +35,7 @@ enum class EIslanderType : uint8
 	Doctor,
 	None
 };
+
 UENUM(BlueprintType)
 enum class EAnimations : uint8
 {
@@ -62,5 +63,70 @@ enum class EAnimations : uint8
 	CustomAnimation8,
 	CustomAnimation9,
 	CustomAnimation10
+};
 
+UENUM(BlueprintType)
+enum class EConditionListType : uint8
+{
+	Event,
+	Topic,
+	None
+};
+
+UENUM(BlueprintType)
+enum class EInventoryItem : uint8
+{
+	Knife,
+	Rope,
+	Tape,
+	KeyLighthouse,
+	KeyBoathouse,
+	Mushroom,
+	Carrot,
+	None
+};
+
+UENUM(BlueprintType)
+enum class EEventType : uint8
+{
+	HasMachine,
+	TutorialCompleted,
+	DoctorWalkingAway,
+	PartyPlannerCompleted,
+	None
+};
+
+UENUM(BlueprintType)
+enum class ETopic : uint8
+{
+	PartyPlanner,
+	Tape,
+	Rope,
+	Knife,
+	FarmerTalkedAboutInnkeeper,
+	TalkedToFarmerAboutNoise,
+	TalkedToDoctorAboutNoise,
+	TalkedToMotherAboutNoise,
+	TalkedToChildAboutNoise,
+	TalkedToSBAboutNoise,
+	HeardFarmersOpinionOnDoctor,
+	TalkedToSBAboutRope,
+	AskedChildAboutKey,
+	TalkedToChildAboutSBDeath,
+	TalkedToMotherAboutSBDeath,
+	TalkedToFarmerAboutSBDeath,
+	TalkedToInnkeeperAboutSBDeath,
+	TalkedToDoctorABoutSBDeath,
+	PartyReady,
+	TalkedToDoctorAboutFeast,
+	TalkedToFarmerAboutFeast,
+	TalkedToMotherAboutFeast,
+	TalkedToMotherAboutChildCondition,
+	TalkedToChildAboutChildCondition,
+	TalkedToDoctorAboutChildCondition,
+	TalkedToMotherAboutDoctorOpinion,
+	TalkedToDoctorAboutMotherOpinion,
+	TalkedToSBAboutChildCondition,
+	TalkedToDoctorAboutSBOpinion,
+	None
 };
