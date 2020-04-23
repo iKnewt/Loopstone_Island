@@ -244,9 +244,9 @@ FHitResult APlayerCharacter::RayTrace(float TraceLength, FVector Direction, bool
 
 void APlayerCharacter::PlayFootstepSoundEffect()
 {
-	UE_LOG(LogTemp, Error, TEXT("play step begin"));
+	// UE_LOG(LogTemp, Error, TEXT("play step begin"));
 	FHitResult Hit = RayTrace(200, GetActorUpVector() * -1);
-	UE_LOG(LogTemp, Warning, TEXT("Ground Hit: %s"), *GetDebugName(Hit.GetActor()));
+	// UE_LOG(LogTemp, Warning, TEXT("Ground Hit: %s"), *GetDebugName(Hit.GetActor()));
 
 	if (!Hit.PhysMaterial.IsValid())
 	{

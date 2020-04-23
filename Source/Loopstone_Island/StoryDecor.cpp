@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Loopstone_IslandGameState.h"
 #include "StoryDecor.h"
+
+#include "Loopstone_IslandGameState.h"
 
 // Sets default values
 AStoryDecor::AStoryDecor()

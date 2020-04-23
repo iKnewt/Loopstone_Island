@@ -25,4 +25,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = Basic)
 	bool bIsUsingController;
+
+	UPROPERTY(VisibleAnywhere, Category = Basic)
+	float PlayTimeSeconds;
 };

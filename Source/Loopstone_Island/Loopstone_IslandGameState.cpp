@@ -29,13 +29,18 @@ void ALoopstone_IslandGameState::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("morning started"));
 
 	bEventHasBeenTriggered.SetNum(static_cast<int>(EEventType::None) + 1);
+	SetAllItemsInBoolArray(bEventHasBeenTriggered, false);
 	UE_LOG(LogTemp, Warning, TEXT("bEventHasBeenTriggered contains:  %i"), bEventHasBeenTriggered.Num());
 	bTopicHasBeenRevealed.SetNum(static_cast<int>(ETopic::None) + 1);
+	SetAllItemsInBoolArray(bTopicHasBeenRevealed, false);
 	UE_LOG(LogTemp, Warning, TEXT("bTopicHasBeenRevealed contains:  %i"), bTopicHasBeenRevealed.Num());
 	bInventoryItemsCollected.SetNum(static_cast<int>(EInventoryItem::None) + 1);
+	SetAllItemsInBoolArray(bInventoryItemsCollected, false);
 	UE_LOG(LogTemp, Warning, TEXT("bInventoryItemsCollected contains:  %i"), bInventoryItemsCollected.Num());
 
 	bCollectedLoopstones.SetNum(static_cast<int>(EStory::None));
+	SetAllItemsInBoolArray(bCollectedLoopstones, false);
+	UE_LOG(LogTemp, Warning, TEXT("bCollectedLoopstones contains:  %i"), bCollectedLoopstones.Num());
 
 	// setting up widgets
 
@@ -92,6 +97,7 @@ void ALoopstone_IslandGameState::SaveGame()
 		SaveGameInstance->PlayerName = TEXT("PlayerOne");
 		SaveGameInstance->bCollectedLoopstones = bCollectedLoopstones;
 		SaveGameInstance->bIsUsingController = bUsingController;
+		SaveGameInstance->PlayTimeSeconds = GetSecondsPlayed();
 
 		// Save the data immediately.
 		if (UGameplayStatics::SaveGameToSlot(SaveGameInstance, "TestSave", 0))
@@ -112,6 +118,7 @@ void ALoopstone_IslandGameState::LoadGame()
 		UE_LOG(LogTemp, Warning, TEXT("LOADED: %s"), *LoadedGame->PlayerName);
 		bCollectedLoopstones = LoadedGame->bCollectedLoopstones;
 		bUsingController = LoadedGame->bIsUsingController;
+		PlayTimeSeconds = LoadedGame->PlayTimeSeconds;
 		bEventHasBeenTriggered[static_cast<int>(EEventType::TutorialCompleted)] = bCollectedLoopstones[static_cast<int>(
 			EStory::Detective)];
 	}
@@ -119,6 +126,8 @@ void ALoopstone_IslandGameState::LoadGame()
 
 void ALoopstone_IslandGameState::CollectLoopstone(EStory StoryOwningLoopstone)
 {
+	UE_LOG(LogTemp, Error, TEXT("COLLECT NAO"));
+	
 	bCollectedLoopstones[static_cast<int>(StoryOwningLoopstone)] = true;
 	SaveGame();
 
@@ -151,6 +160,19 @@ void ALoopstone_IslandGameState::StopAllMusic()
 		{
 			Actors->StopAudio();
 		}
+	}
+}
+
+float ALoopstone_IslandGameState::GetSecondsPlayed()
+{	
+	UE_LOG(LogTemp, Warning, TEXT("Map Name: %s"), *GetWorld()->GetMapName());
+	if (GetWorld()->GetMapName().Contains("Fullday"))
+	{
+		return PlayTimeSeconds + GetWorld()->GetTimeSeconds();
+	}
+	else 
+	{
+		return PlayTimeSeconds;
 	}
 }
 

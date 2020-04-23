@@ -37,7 +37,7 @@ public:
 	// Current place in day and story
 	UPROPERTY(EditDefaultsOnly, Category = "Current Conditions")
 	ETimeOfDay CurrentTimeOfDay = ETimeOfDay::Morning;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Current Conditions")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Current Conditions")
 	EStory CurrentStory = EStory::None;
 
 	// Currently used condition lists
@@ -72,6 +72,9 @@ public:
 	UFUNCTION()
 	void EditInventoryItem(EInventoryItem Item, bool TrueToAddFalseToRemove);
 
+	UFUNCTION()
+	void SetAllItemsInBoolArray(TArray<bool> ArrayToChange, bool ValueToSet);
+
 	int CarrotCount = 0;
 
 	// Other
@@ -89,6 +92,8 @@ public:
 	// size reflects number of possible loopstones, 0 is the actual loopstone machine
 	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
 	TArray<bool> bCollectedLoopstones;
+
+	float PlayTimeSeconds = 0;
 
 
 	bool InteractWithObject(class AInteractableObjectBase* InteractableObject);
@@ -115,6 +120,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void GoToBed();
 
+	UFUNCTION(BlueprintCallable)
+	float GetSecondsPlayed();
+
 
 	// testing moving condition checking here
 
@@ -130,3 +138,11 @@ public:
 	                      ETimeOfDay TimeOfDayChange = ETimeOfDay::None,
 	                      EStory ActiveStoryChange = EStory::None);
 };
+
+inline void ALoopstone_IslandGameState::SetAllItemsInBoolArray(TArray<bool> ArrayToChange, bool ValueToSet)
+{
+	for (auto Bool : ArrayToChange)
+	{
+		Bool = ValueToSet;
+	}
+}
