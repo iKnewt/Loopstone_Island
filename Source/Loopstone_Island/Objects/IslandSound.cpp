@@ -15,7 +15,12 @@ AIslandSound::AIslandSound()
 
 void AIslandSound::StopAudio()
 {
-	AudioComponent->Stop();
+	DownTimeline.PlayFromStart();
+}
+
+void AIslandSound::StartAudio()
+{
+	DownTimeline.ReverseFromEnd();
 }
 
 // Called when the game starts or when spawned

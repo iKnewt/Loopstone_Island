@@ -83,6 +83,7 @@ enum class EInventoryItem : uint8
 	KeyBoathouse,
 	Mushroom,
 	Carrot,
+	Foxglove,
 	None
 };
 
@@ -128,5 +129,7 @@ enum class ETopic : uint8
 	TalkedToDoctorAboutMotherOpinion,
 	TalkedToSBAboutChildCondition,
 	TalkedToDoctorAboutSBOpinion,
+	TalkedToMotherAboutHelping,
+	GivenMotherFoxGlove,
 	None
 };
