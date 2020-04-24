@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Loopstone_IslandGameState.h"
+// #include "Loopstone_IslandGameState.h"
+#include "GameStateEnums.h"
 #include "InteractableObjectBase.generated.h"
 
 
