@@ -42,7 +42,7 @@ void UIslanderAnimationInstance::UpdateLookAt(float DeltaTime)
 
 	LookLocation = FMath::VInterpTo(LookLocation, PlayerLocation, DeltaTime, LookAtSpeed);
 	Rotation = UKismetMathLibrary::FindLookAtRotation(SelfLocation, LookLocation);
-	Rotation.Roll = (Rotation.Pitch * -1) + 90;
+	Rotation.Roll = (Rotation.Pitch * -1);
 	Rotation.Pitch = 0;
 	Rotation.Yaw = Rotation.Yaw - ZRotation;
 	Rotation =	Rotation.Clamp();
