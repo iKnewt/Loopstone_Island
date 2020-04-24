@@ -508,6 +508,13 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 			Actor->UnhideIfConditionsMet(NewTimeOfDay, CurrentStory);
 		}
 	}
+
+	if(CurrentStory == EStory::Psychologist && CurrentTimeOfDay == ETimeOfDay::Night)
+	{
+		auto child = TargetPointController->Islanders[uint8(EIslanderType::Child)];
+		child->ChangeAnimation(EAnimations::CustomAnimation1);
+		child->ChangeEyeExpression(EEyeExpression::Eye_Calm, EEyeExpression::Eye_Calm);
+	}
 }
 
 void ALoopstone_IslandGameState::ChangeStory(EStory NewStory)
