@@ -94,6 +94,7 @@ enum class EEventType : uint8
 	TutorialCompleted,
 	DoctorWalkingAway,
 	PartyPlannerCompleted,
+	ChildDied,
 	None
 };
 
@@ -131,5 +132,7 @@ enum class ETopic : uint8
 	TalkedToDoctorAboutSBOpinion,
 	TalkedToMotherAboutHelping,
 	GivenMotherFoxGlove,
+	TalkedToDoctorAboutFoxglove,
+	TalkedToMotherAboutChildBeingDead,
 	None
 };

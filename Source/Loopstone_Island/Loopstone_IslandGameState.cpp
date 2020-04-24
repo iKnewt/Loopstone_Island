@@ -16,6 +16,7 @@
 #include "Objects/LoopstoneMachine.h"
 #include "StoryDecor.h"
 #include "Button.h"
+#include "Characters/BaseIslanderCharacter.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
@@ -275,6 +276,14 @@ void ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 			{
 				CollectLoopstone(EStory::Detective);
 				break;
+			}
+		case EEventType::ChildDied:
+			{
+			auto doctor = TargetPointController->Islanders[uint8(EIslanderType::Doctor)];
+				if(IsValid(doctor))
+				{
+					doctor->SetActorLocation(FVector(-3551.f, -3169.f, 635.f));
+				}
 			}
 		default: ;
 		}
