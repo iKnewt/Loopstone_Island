@@ -2,26 +2,25 @@
 
 
 #include "ConditionalTriggerBox.h"
+#include "Loopstone_IslandGameState.h"
 
 // Sets default values
 AConditionalTriggerBox::AConditionalTriggerBox()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
-// Called when the game starts or when spawned
-void AConditionalTriggerBox::BeginPlay()
+inline bool AConditionalTriggerBox::ConditionsMet()
 {
-	Super::BeginPlay();
-	
+	ALoopstone_IslandGameState* GameState = Cast<ALoopstone_IslandGameState>(GetWorld()->GetGameState());
+	if (IsValid(GameState))
+	{
+		return GameState->ConditionsMet(TopicBoolsConditions,
+		                                EventBoolsConditions,
+		                                InventoryBoolsConditions,
+		                                TimeOfDayCondition,
+		                                ActiveStoryCondition);
+	}
+	return false;
 }
-
-// Called every frame
-void AConditionalTriggerBox::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
