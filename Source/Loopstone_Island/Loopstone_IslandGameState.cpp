@@ -514,6 +514,7 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 		auto child = TargetPointController->Islanders[uint8(EIslanderType::Child)];
 		child->ChangeAnimation(EAnimations::CustomAnimation1);
 		child->ChangeEyeExpression(EEyeExpression::Eye_Calm, EEyeExpression::Eye_Calm);
+		child->bLookAt = false;
 	}
 }
 
