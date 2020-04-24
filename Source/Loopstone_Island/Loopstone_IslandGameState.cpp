@@ -128,7 +128,13 @@ void ALoopstone_IslandGameState::LoadGame()
 void ALoopstone_IslandGameState::CollectLoopstone(EStory StoryOwningLoopstone)
 {
 	UE_LOG(LogTemp, Error, TEXT("COLLECT NAO"));
-	
+
+	if(StoryOwningLoopstone == EStory::None)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Can't collect loopstone when no story is selected"));
+		return;
+	}
+
 	bCollectedLoopstones[static_cast<int>(StoryOwningLoopstone)] = true;
 	SaveGame();
 
