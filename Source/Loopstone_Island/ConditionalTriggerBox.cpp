@@ -11,7 +11,7 @@ AConditionalTriggerBox::AConditionalTriggerBox()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-inline bool AConditionalTriggerBox::ConditionsMet()
+ bool AConditionalTriggerBox::ConditionsMet()
 {
 	ALoopstone_IslandGameState* GameState = Cast<ALoopstone_IslandGameState>(GetWorld()->GetGameState());
 	if (IsValid(GameState))
