@@ -170,6 +170,13 @@ void ALoopstone_IslandGameState::StopAllMusic()
 	}
 }
 
+bool ALoopstone_IslandGameState::CollectedAllLoopstones()
+{
+	return (bCollectedLoopstones[uint8(EStory::PartyPlanner)] && 
+		bCollectedLoopstones[uint8(EStory::AssistantChef)] && 
+		bCollectedLoopstones[uint8(EStory::Psychologist)]);
+}
+
 float ALoopstone_IslandGameState::GetSecondsPlayed()
 {	
 	UE_LOG(LogTemp, Warning, TEXT("Map Name: %s"), *GetWorld()->GetMapName());
