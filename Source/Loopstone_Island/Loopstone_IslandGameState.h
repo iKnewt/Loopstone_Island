@@ -121,6 +121,8 @@ public:
 	void GoToBed();
 
 	UFUNCTION(BlueprintCallable)
+		bool CollectedAllLoopstones();
+	UFUNCTION(BlueprintCallable)
 	float GetSecondsPlayed();
 
 
