@@ -174,7 +174,10 @@ void ABaseIslanderCharacter::OnLookAtBeginOverlap(UPrimitiveComponent* Overlappe
 				GetMesh()->GetAnimInstance());
 			if (IsValid(AnimationInstance))
 			{
-				AnimationInstance->LookAt(true);
+				if(bLookAt)
+				{
+					AnimationInstance->LookAt(true);
+				}
 			}
 		}
 	}

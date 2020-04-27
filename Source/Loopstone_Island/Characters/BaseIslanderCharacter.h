@@ -56,6 +56,8 @@ public:
 	class UDataTable* RichTextStyles;
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	class UDialogue* Dialogue = nullptr;
+	UPROPERTY(BlueprintReadWrite)
+		bool bLookAt = true;
 	// Other things that are specific to an islander??
 
 	/** First person camera */
