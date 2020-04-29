@@ -26,6 +26,7 @@ void ALoopstoneMachine::BeginPlay()
 		//todo make all of this more dynamic
 		if (GameState->bCollectedLoopstones[static_cast<int>(EStory::Detective)])
 		{
+
 			// spawn in room
 			Rotator = FRotator(0, 50, 0);
 			Location = FVector(-3975, 480, 392);
@@ -42,9 +43,13 @@ void ALoopstoneMachine::BeginPlay()
 		}
 		else
 		{
+			/*
+ * (X=-11130.000000,Y=-2400.000000,Z=3260.000000)
+(Pitch=0.000000,Yaw=-170.000183,Roll=0.000000)
+	 */
 			// spawn in lighthouse
 			Rotator = FRotator(0, -160, 0);
-			Location = FVector(-11150.0, -2410.0, 3280.0);
+			Location = FVector(-11130.0, -2400.0, 3260.0);
 			// shows all loopstones
 			DisplayLoopstone(EStory::Detective);
 			PlayLoopstoneSound();
