@@ -84,12 +84,14 @@ void AInteractableDoor::UpdateAnimation(float Value)
 
 void AInteractableDoor::Interact()
 {
-	bDoorLocked = false;
-	if(bDoorLocked)
+	if (bDoorAlwaysLocked)
 	{
 		DoNotInteract();
 	}
-	else {
+	else
+ {
+		bDoorLockedNow = false;
+		
 		auto Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 		if (IsValid(Player))
 		{
@@ -116,7 +118,7 @@ void AInteractableDoor::Interact()
 
 void AInteractableDoor::DoNotInteract()
 {
-	if (bDoorLocked)
+	if (bDoorAlwaysLocked || bDoorLockedNow)
 	{
 		if (IsValid(DoorLocked))
 		{

@@ -22,8 +22,10 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Timeline")
 	bool bOpenInwards = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bDoorLocked = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock")
+	bool bDoorLockedNow = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock")
+	bool bDoorAlwaysLocked = true;
 	
 	UFUNCTION(BlueprintCallable)
 	void Interact() override;
