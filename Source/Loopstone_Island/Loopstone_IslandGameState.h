@@ -6,6 +6,7 @@
 #include "GameFramework/GameStateBase.h"
 #include "Characters/BaseIslanderCharacter.h"
 #include "GameStateEnums.h"
+#include "Objects/InteractableBook.h"
 #include "Loopstone_IslandGameState.generated.h"
 
 
@@ -99,6 +100,7 @@ public:
 	bool InteractWithObject(class AInteractableObjectBase* InteractableObject);
 
 	bool StartDialogue(ABaseIslanderCharacter* Islander);
+	bool StartDialogue(AInteractableBook* Book);
 	void CloseDialogue();
 	bool UpdateDialogueBasedOnResponse(int ResponseID);
 

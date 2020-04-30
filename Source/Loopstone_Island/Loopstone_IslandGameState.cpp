@@ -17,6 +17,7 @@
 #include "StoryDecor.h"
 #include "Button.h"
 #include "Characters/BaseIslanderCharacter.h"
+#include "Objects/InteractableBook.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
 {
@@ -129,7 +130,7 @@ void ALoopstone_IslandGameState::CollectLoopstone(EStory StoryOwningLoopstone)
 {
 	UE_LOG(LogTemp, Error, TEXT("COLLECT NAO"));
 
-	if(StoryOwningLoopstone == EStory::None)
+	if (StoryOwningLoopstone == EStory::None)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Can't collect loopstone when no story is selected"));
 		return;
@@ -145,13 +146,13 @@ void ALoopstone_IslandGameState::CollectLoopstone(EStory StoryOwningLoopstone)
 
 		for (bool bLoopstone : bCollectedLoopstones)
 		{
-			if(!bLoopstone)
+			if (!bLoopstone)
 			{
 				bAllLoopstonesCollected = false;
 				break;
 			}
 		}
-		
+
 		if (!bAllLoopstonesCollected)
 		{
 			UGameplayStatics::OpenLevel(this, "Fullday");
@@ -172,19 +173,19 @@ void ALoopstone_IslandGameState::StopAllMusic()
 
 bool ALoopstone_IslandGameState::CollectedAllLoopstones()
 {
-	return (bCollectedLoopstones[uint8(EStory::PartyPlanner)] && 
-		bCollectedLoopstones[uint8(EStory::AssistantChef)] && 
+	return (bCollectedLoopstones[uint8(EStory::PartyPlanner)] &&
+		bCollectedLoopstones[uint8(EStory::AssistantChef)] &&
 		bCollectedLoopstones[uint8(EStory::Psychologist)]);
 }
 
 float ALoopstone_IslandGameState::GetSecondsPlayed()
-{	
+{
 	UE_LOG(LogTemp, Warning, TEXT("Map Name: %s"), *GetWorld()->GetMapName());
 	if (GetWorld()->GetMapName().Contains("Fullday"))
 	{
 		return PlayTimeSeconds + GetWorld()->GetTimeSeconds();
 	}
-	else 
+	else
 	{
 		return PlayTimeSeconds;
 	}
@@ -245,14 +246,14 @@ void ALoopstone_IslandGameState::ChangeConditions(TMap<ETopic, bool> TopicBoolsT
 	{
 		bTopicHasBeenRevealed[static_cast<int>(Element.Key)] = Element.Value;
 		UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(Element.Key),
-			(Element.Value ? TEXT("true") : TEXT("false")));
+		       (Element.Value ? TEXT("true") : TEXT("false")));
 	}
 	for (const auto Element : EventBoolsToChange)
 	{
 		TriggerEvent(Element.Key, Element.Value);
 	}
 	for (const auto Element : IventoryBoolsChange)
-	{	
+	{
 		EditInventoryItem(Element.Key, Element.Value);
 	}
 
@@ -292,8 +293,8 @@ void ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 			}
 		case EEventType::ChildDied:
 			{
-			auto doctor = TargetPointController->Islanders[uint8(EIslanderType::Doctor)];
-				if(IsValid(doctor))
+				auto doctor = TargetPointController->Islanders[uint8(EIslanderType::Doctor)];
+				if (IsValid(doctor))
 				{
 					doctor->SetActorLocation(FVector(-3551.f, -3169.f, 635.f));
 				}
@@ -308,7 +309,7 @@ void ALoopstone_IslandGameState::EditInventoryItem(EInventoryItem Item, bool Tru
 	bInventoryItemsCollected[static_cast<int>(Item)] = TrueToAddFalseToRemove;
 	UE_LOG(LogTemp, Warning, TEXT("%s set to %s"), *UEnum::GetValueAsString(Item),
 	       (TrueToAddFalseToRemove ? TEXT("true") : TEXT("false")));
-	
+
 	if (InventoryWidget)
 	{
 		//todo fix better counter and also display in inventory menu 
@@ -333,7 +334,7 @@ void ALoopstone_IslandGameState::EditInventoryItem(EInventoryItem Item, bool Tru
 			}
 			InventoryWidget->SetCarrotCounter(CarrotCount);
 		}
-		
+
 		InventoryWidget->EditInventoryItem(Item, TrueToAddFalseToRemove);
 	}
 }
@@ -383,23 +384,8 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
 		// UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController());
 		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
-		// if (!bUsingController)
-		// {
 		// todo set mouse position to centre of screen or to where options spawn
-		//
-		//
 		DialogueWidget->SetupForInput();
-		// if (bUsingController)
-		// {
-		// 	DialogueWidget->Button_MouseBlocker->SetVisibility(ESlateVisibility::Visible);
-		// }
-		// else
-		// {
-		// 	DialogueWidget->Button_MouseBlocker->SetVisibility(ESlateVisibility::Hidden);
-		// 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-		// 	GetWorld()->GetFirstPlayerController()->SetMouseLocation(500, 500);
-		// }
-		// }
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 
 		DialogueWidget->SetSpeakerName(Islander->Name);
@@ -410,6 +396,43 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no dialogue"), *Islander->Name);
+	}
+	return true;
+}
+
+bool ALoopstone_IslandGameState::StartDialogue(AInteractableBook* Book)
+{
+	float SecondsSinceLastDialogueClosed = UGameplayStatics::GetTimeSeconds(GetWorld()) - TimeLastDialogueClosed;
+	if (!Book || !DialogueWidget || SecondsSinceLastDialogueClosed < SecondsBeforeYouCanTalkToIslanderAgain)
+	{
+		return false;
+	}
+
+	if (Book->Dialogue)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Dialogue started with %s"), *Book->Name);
+
+		CurrentIslander = nullptr;
+		CurrentDialogue = Book->Dialogue;
+
+		GetWorld()->GetFirstPlayerController()->SetIgnoreMoveInput(true);
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(Book, 0.5f);
+
+		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
+		// UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController());
+		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), DialogueWidget);
+		// todo set mouse position to centre of screen or to where options spawn
+		DialogueWidget->SetupForInput();
+		CurrentDialogue->CurrentDialogueNode = nullptr;
+
+		DialogueWidget->SetSpeakerName(Book->Name);
+		DialogueWidget->SetRichStyleText(Book->RichTextStyles);
+		DialogueWidget->StartDialogueAnimation(true);
+		UpdateDialogueBasedOnResponse(0);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has no dialogue"), *Book->Name);
 	}
 	return true;
 }
@@ -479,11 +502,13 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	}
 	CurrentDialogue->CurrentDialogueNode->bHasBeenVisited = true;
 	// Change facial expression on islander
-	CurrentIslander->ChangeAnimation(CurrentDialogue->CurrentDialogueNode->Animation);
-	CurrentIslander->ChangeMouthExpression(EMouthExpression::Mouth_Talk);
-	CurrentIslander->ChangeEyeExpression(CurrentDialogue->CurrentDialogueNode->RightEyeExpression,
-	                                     CurrentDialogue->CurrentDialogueNode->LeftEyeExpression);
-	// Change animation??
+	if (CurrentIslander)
+	{
+		CurrentIslander->ChangeAnimation(CurrentDialogue->CurrentDialogueNode->Animation);
+		CurrentIslander->ChangeMouthExpression(EMouthExpression::Mouth_Talk);
+		CurrentIslander->ChangeEyeExpression(CurrentDialogue->CurrentDialogueNode->RightEyeExpression,
+		                                     CurrentDialogue->CurrentDialogueNode->LeftEyeExpression);
+	}
 
 	DialogueWidget->SetDialogueWithOptions(0.03f, DialogueText, CurrentDialogue->GetCurrentOptions(this));
 
@@ -518,7 +543,7 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 		}
 	}
 
-	if(CurrentStory == EStory::Psychologist && CurrentTimeOfDay == ETimeOfDay::Night)
+	if (CurrentStory == EStory::Psychologist && CurrentTimeOfDay == ETimeOfDay::Night)
 	{
 		auto child = TargetPointController->Islanders[uint8(EIslanderType::Child)];
 		child->ChangeAnimation(EAnimations::CustomAnimation1);
