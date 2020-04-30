@@ -15,6 +15,8 @@
  	RootComponent = CreateDefaultSubobject<USceneComponent>(FName("SceneRoot"));
  	Mesh->AttachTo(RootComponent);
     Sound = CreateDefaultSubobject<UAudioComponent>(FName("Audio"));
+    Sound->AttachTo(RootComponent);
+
  }
 
  void AInteractableObjectBase::VisualizeInteraction(bool bActivate)
@@ -48,6 +50,7 @@ void AInteractableObjectBase::Interact()
 void AInteractableObjectBase::BeginPlay()
 {
 	Super::BeginPlay();
+    Sound->SetWorldLocation(GetActorLocation());
 }
 
 // Called every frame
