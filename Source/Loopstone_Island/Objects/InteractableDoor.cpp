@@ -84,36 +84,49 @@ void AInteractableDoor::UpdateAnimation(float Value)
 
 void AInteractableDoor::Interact()
 {
-
-	auto Player = UGameplayStatics::GetPlayerCharacter(GetWorld(),0);
-	if(IsValid(Player))
+	bDoorLocked = false;
+	if(bDoorLocked)
 	{
-		//The front of the door, relative to world, not local object
-		FVector Front = GetActorRightVector();
-		FVector PlayerForwardVector = Player->GetActorForwardVector();
-		float direction = FVector::DotProduct(Front, PlayerForwardVector);
-		//if direction is positive, open inwards
-		if(!CurveTimeline.IsPlaying())
+		DoNotInteract();
+	}
+	else {
+		auto Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+		if (IsValid(Player))
 		{
-			if (direction > 0)
+			//The front of the door, relative to world, not local object
+			FVector Front = GetActorRightVector();
+			FVector PlayerForwardVector = Player->GetActorForwardVector();
+			float direction = FVector::DotProduct(Front, PlayerForwardVector);
+			//if direction is positive, open inwards
+			if (!CurveTimeline.IsPlaying())
 			{
-				bOpenInwards = true;
-			}
-			else
-			{
-				bOpenInwards = false;
+				if (direction > 0)
+				{
+					bOpenInwards = true;
+				}
+				else
+				{
+					bOpenInwards = false;
+				}
 			}
 		}
+		PlayAnimation();
 	}
-	PlayAnimation();
 }
 
 void AInteractableDoor::DoNotInteract()
 {
-	if(IsValid(DoorLocked))
+	if (bDoorLocked)
 	{
-		Sound->SetSound(DoorLocked);
-		Sound->Play();
+		if (IsValid(DoorLocked))
+		{
+			Sound->SetSound(DoorLocked);
+			Sound->Play();
+		}
+	}
+	else
+	{
+		Interact();
 	}
 
 }
