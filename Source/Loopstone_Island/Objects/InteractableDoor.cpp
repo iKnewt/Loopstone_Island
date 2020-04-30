@@ -20,7 +20,7 @@ void AInteractableDoor::CloseDoorSound()
 {
 	if(!bOpened)
 	{
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), DoorSlam, GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), DoorSlam, GetActorLocation(), GetActorRotation(), 1, 1, 0, Sound->AttenuationSettings);
 		Sound->Stop();
 	}
 
