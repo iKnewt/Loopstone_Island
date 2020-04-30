@@ -25,6 +25,9 @@ class LOOPSTONE_ISLAND_API UDialogueWidget : public UUserWidget
 
 public:
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsUsingController = false;
+	
 	// Test invisible button
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Option000;
@@ -92,6 +95,12 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartDialogueAnimation(bool Forwards);
+
+	UFUNCTION()
+		void SetupForInput();
+	UFUNCTION(BlueprintImplementableEvent)
+		void UpdateIsUsingControllerFromGameInstance();
+	
 
 protected:
 

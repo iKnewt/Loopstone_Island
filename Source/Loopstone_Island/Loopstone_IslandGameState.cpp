@@ -97,7 +97,7 @@ void ALoopstone_IslandGameState::SaveGame()
 		// Set data on the savegame object.
 		SaveGameInstance->PlayerName = TEXT("PlayerOne");
 		SaveGameInstance->bCollectedLoopstones = bCollectedLoopstones;
-		SaveGameInstance->bIsUsingController = bUsingController;
+		// SaveGameInstance->bIsUsingController = bUsingController;
 		SaveGameInstance->PlayTimeSeconds = GetSecondsPlayed();
 
 		// Save the data immediately.
@@ -118,7 +118,7 @@ void ALoopstone_IslandGameState::LoadGame()
 		// The operation was successful, so LoadedGame now contains the data we saved earlier.
 		UE_LOG(LogTemp, Warning, TEXT("LOADED: %s"), *LoadedGame->PlayerName);
 		bCollectedLoopstones = LoadedGame->bCollectedLoopstones;
-		bUsingController = LoadedGame->bIsUsingController;
+		// bUsingController = LoadedGame->bIsUsingController;
 		PlayTimeSeconds = LoadedGame->PlayTimeSeconds;
 		bEventHasBeenTriggered[static_cast<int>(EEventType::TutorialCompleted)] = bCollectedLoopstones[static_cast<int>(
 			EStory::Detective)];
@@ -387,16 +387,18 @@ bool ALoopstone_IslandGameState::StartDialogue(ABaseIslanderCharacter* Islander)
 		// {
 		// todo set mouse position to centre of screen or to where options spawn
 		//
-		if (bUsingController)
-		{
-			DialogueWidget->Button_MouseBlocker->SetVisibility(ESlateVisibility::Visible);
-		}
-		else
-		{
-			DialogueWidget->Button_MouseBlocker->SetVisibility(ESlateVisibility::Hidden);
-			GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-			GetWorld()->GetFirstPlayerController()->SetMouseLocation(500, 500);
-		}
+		//
+		DialogueWidget->SetupForInput();
+		// if (bUsingController)
+		// {
+		// 	DialogueWidget->Button_MouseBlocker->SetVisibility(ESlateVisibility::Visible);
+		// }
+		// else
+		// {
+		// 	DialogueWidget->Button_MouseBlocker->SetVisibility(ESlateVisibility::Hidden);
+		// 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+		// 	GetWorld()->GetFirstPlayerController()->SetMouseLocation(500, 500);
+		// }
 		// }
 		CurrentDialogue->CurrentDialogueNode = nullptr;
 

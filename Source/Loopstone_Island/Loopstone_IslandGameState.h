@@ -23,8 +23,8 @@ public:
 
 	class ALoopstoneMachine* Machine;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bUsingController = false;
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	// bool bUsingController = false;
 	bool bTeleportAtTheEndOfConvo = false;
 
 	float TimeLastDialogueClosed = 0;
@@ -121,7 +121,7 @@ public:
 	void GoToBed();
 
 	UFUNCTION(BlueprintCallable)
-		bool CollectedAllLoopstones();
+	bool CollectedAllLoopstones();
 	UFUNCTION(BlueprintCallable)
 	float GetSecondsPlayed();
 

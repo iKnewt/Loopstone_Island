@@ -142,6 +142,21 @@ void UDialogueWidget::onOption4Pressed()
 	GameState->UpdateDialogueBasedOnResponse(5);
 }
 
+void UDialogueWidget::SetupForInput()
+{
+	UpdateIsUsingControllerFromGameInstance();
+	if (bIsUsingController)
+	{
+		Button_MouseBlocker->SetVisibility(ESlateVisibility::Visible);
+	}
+	else
+	{
+		Button_MouseBlocker->SetVisibility(ESlateVisibility::Hidden);
+		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+		GetWorld()->GetFirstPlayerController()->SetMouseLocation(500, 500);
+	}
+}
+
 bool UDialogueWidget::Initialize()
 {
 	bool init = Super::Initialize();
@@ -220,7 +235,8 @@ void UDialogueWidget::RevealOptions()
 	{
 		Button_Option000->SetVisibility(ESlateVisibility::Hidden);
 
-		if (GameState->bUsingController)
+		//if (GameState->bUsingController)
+		if (this->bIsUsingController)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("it was true"));
 			Button_MouseStyle->SetKeyboardFocus();
