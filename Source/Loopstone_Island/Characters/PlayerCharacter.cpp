@@ -78,8 +78,6 @@ void APlayerCharacter::MoveForward(float Val)
 		// add movement in that direction
 		AddMovementInput(GetActorForwardVector(), Val);
 	}
-
-	//	GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(MyShake, 1.0f);
 }
 
 void APlayerCharacter::MoveRight(float Val)

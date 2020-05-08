@@ -23,8 +23,6 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Basic)
 	TArray<bool> bCollectedLoopstones;
 
-	// UPROPERTY(VisibleAnywhere, Category = Basic)
-	// bool bIsUsingController;
 
 	UPROPERTY(VisibleAnywhere, Category = Basic)
 	float PlayTimeSeconds;
