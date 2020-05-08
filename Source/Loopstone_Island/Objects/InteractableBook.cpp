@@ -13,7 +13,7 @@ AInteractableBook::AInteractableBook()
 
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	// FirstPersonCameraComponent->SetupAttachment()
+	FirstPersonCameraComponent->SetupAttachment(this->GetRootComponent());
 
 	// maybe call on begin play
 	// if (Dialogue)

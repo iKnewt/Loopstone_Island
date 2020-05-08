@@ -428,7 +428,9 @@ bool ALoopstone_IslandGameState::StartDialogue(AInteractableBook* Book)
 		DialogueWidget->SetSpeakerName(Book->Name);
 		DialogueWidget->SetRichStyleText(Book->RichTextStyles);
 		DialogueWidget->StartDialogueAnimation(true);
+		UE_LOG(LogTemp, Warning, TEXT("before"));
 		UpdateDialogueBasedOnResponse(0);
+		UE_LOG(LogTemp, Warning, TEXT("after"));
 	}
 	else
 	{

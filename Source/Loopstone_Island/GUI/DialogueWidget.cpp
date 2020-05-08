@@ -259,6 +259,9 @@ void UDialogueWidget::RevealOptions()
 		Buttons[i]->SetVisibility(ESlateVisibility::Visible);
 	}
 
-	GameState->CurrentIslander->ChangeMouthExpression(GameState->CurrentDialogue->CurrentDialogueNode->MouthExpression);
+	if (GameState->CurrentIslander)
+	{
+		GameState->CurrentIslander->ChangeMouthExpression(GameState->CurrentDialogue->CurrentDialogueNode->MouthExpression);
+	}
 	RevealOptionsAnimation();
 }
