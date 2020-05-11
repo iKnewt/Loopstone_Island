@@ -42,9 +42,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void ChangeTimeOfDay(ETimeOfDay TimeOfDay);
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	void ChangeSky(ETimeOfDay TimeOfDay);
-
 	UFUNCTION(BlueprintCallable)
 	float GetNewValue(ETimeOfDay NewTimeOfDay, float Percent, ESkyProperties PropertyToCheck);
 

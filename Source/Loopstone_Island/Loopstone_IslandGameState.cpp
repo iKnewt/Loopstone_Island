@@ -526,21 +526,24 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 {
 	CurrentTimeOfDay = NewTimeOfDay;
+	// Change the sun and sky
 	if (SunSky)
 	{
 		SunSky->ChangeTimeOfDay(NewTimeOfDay);
-
-		SunSky->ChangeSky(NewTimeOfDay);
-		if (IsValid(TargetPointController))
-		{
-			TargetPointController->MoveIslandersToPosition(NewTimeOfDay, CurrentStory);
-		}
 	}
-	for (auto Actors : MusicActors)
+
+	// Move islanders to position
+	if (IsValid(TargetPointController))
 	{
-		if (IsValid(Actors))
+		TargetPointController->MoveIslandersToPosition(NewTimeOfDay, CurrentStory);
+	}
+
+	// Change music 
+	for (auto Actor : MusicActors)
+	{
+		if (IsValid(Actor))
 		{
-			Actors->ChangeCurrentTimeOfDay(NewTimeOfDay);
+			Actor->ChangeCurrentTimeOfDay(NewTimeOfDay);
 		}
 	}
 	for (auto Actor : StoryDecorActors)
