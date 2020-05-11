@@ -171,7 +171,7 @@ void ALoopstone_IslandGameState::StopAllMusic()
 	}
 }
 
-bool ALoopstone_IslandGameState::CollectedAllLoopstones()
+bool ALoopstone_IslandGameState::HasCollectedAllLoopstones()
 {
 	return (bCollectedLoopstones[uint8(EStory::PartyPlanner)] &&
 		bCollectedLoopstones[uint8(EStory::AssistantChef)] &&
@@ -191,7 +191,15 @@ float ALoopstone_IslandGameState::GetSecondsPlayed()
 	}
 }
 
-bool ALoopstone_IslandGameState::ConditionsMet(TMap<ETopic, bool> TopicBoolsConditions,
+void ALoopstone_IslandGameState::SetAllItemsInBoolArray(TArray<bool> ArrayToChange, bool ValueToSet)
+{
+	for (auto Bool : ArrayToChange)
+	{
+		Bool = ValueToSet;
+	}
+}
+
+bool ALoopstone_IslandGameState::AreConditionsMet(TMap<ETopic, bool> TopicBoolsConditions,
                                                TMap<EEventType, bool> EventBoolsConditions,
                                                TMap<EInventoryItem, bool> IventoryBoolsConditions,
                                                ETimeOfDay TimeOfDayCondition, EStory ActiveStoryCondition)
@@ -339,9 +347,9 @@ void ALoopstone_IslandGameState::EditInventoryItem(EInventoryItem Item, bool Tru
 	}
 }
 
-bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* InteractableObject)
+void ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* InteractableObject)
 {
-	if (ConditionsMet(InteractableObject->TopicBoolsConditions,
+	if (AreConditionsMet(InteractableObject->TopicBoolsConditions,
 	                  InteractableObject->EventBoolsConditions,
 	                  InteractableObject->InventoryBoolsConditions,
 	                  InteractableObject->TimeOfDayCondition,
@@ -353,12 +361,10 @@ bool ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* Int
 		                 InteractableObject->InventoryBoolsChange,
 		                 InteractableObject->TimeOfDayChange,
 		                 InteractableObject->ActiveStoryChange);
-		return true;
 	}
 	else
 	{
 		InteractableObject->DoNotInteract();
-		return false;
 	}
 }
 

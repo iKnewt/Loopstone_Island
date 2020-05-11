@@ -22,63 +22,53 @@ class LOOPSTONE_ISLAND_API ALoopstone_IslandGameState : public AGameStateBase
 
 public:
 
-	class ALoopstoneMachine* Machine;
-
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	// bool bUsingController = false;
-	bool bTeleportAtTheEndOfConvo = false;
-
-	float TimeLastDialogueClosed = 0;
-	float SecondsBeforeYouCanTalkToIslanderAgain = 1;
-
-	// BP of loopstone machine which is spawned when waking up
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<class ALoopstoneMachine> LoopstoneMachineBP;
+	//~=============================================================================
+	// Conditions
 
 	// Current place in day and story
 	UPROPERTY(EditDefaultsOnly, Category = "Current Conditions")
 	ETimeOfDay CurrentTimeOfDay = ETimeOfDay::Morning;
+
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Current Conditions")
 	EStory CurrentStory = EStory::None;
 
-	// Currently used condition lists
-	UPROPERTY()
 	TArray<bool> bEventHasBeenTriggered;
+
 	TArray<bool> bTopicHasBeenRevealed;
+
 	TArray<bool> bInventoryItemsCollected;
 
-	UPROPERTY()
-	TArray<class AStoryDecor*> StoryDecorActors;
+	UFUNCTION(BlueprintCallable)
+	void ChangeTimeOfDay(ETimeOfDay NewTimeOfDay);
 
-	// Connected to dialogue
-	UPROPERTY()
-	ABaseIslanderCharacter* CurrentIslander = nullptr;
-	UPROPERTY()
-	class UDialogue* CurrentDialogue = nullptr;
+	void ChangeStory(EStory NewStory);
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void TeleportDoctor(ABaseIslanderCharacter* Doc);
-	UFUNCTION()
-	void TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction = true);
+	bool AreConditionsMet(TMap<ETopic, bool> TopicBoolsConditions,
+	                      TMap<EEventType, bool> EventBoolsConditions,
+	                      TMap<EInventoryItem, bool> IventoryBoolsConditions = TMap<EInventoryItem, bool>(),
+	                      ETimeOfDay TimeOfDayCondition = ETimeOfDay::None,
+	                      EStory ActiveStoryCondition = EStory::None);
 
+	void ChangeConditions(TMap<ETopic, bool> TopicBoolsToChange,
+	                      TMap<EEventType, bool> EventBoolsToChange,
+	                      TMap<EInventoryItem, bool> IventoryBoolsChange,
+	                      ETimeOfDay TimeOfDayChange = ETimeOfDay::None,
+	                      EStory ActiveStoryChange = EStory::None);
 
-	// Widgets
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
-	TSubclassOf<class UDialogueWidget> BP_DialogueWidget;
-	class UDialogueWidget* DialogueWidget = nullptr;
+	UFUNCTION(BlueprintCallable)
+	bool HasCollectedAllLoopstones();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	TSubclassOf<class UInventoryWidget> BP_InventoryWidget;
-	class UInventoryWidget* InventoryWidget = nullptr;
-	UFUNCTION()
-	void EditInventoryItem(EInventoryItem Item, bool TrueToAddFalseToRemove);
+	UFUNCTION(BlueprintCallable)
+	void CollectLoopstone(EStory StoryOwningLoopstone);
 
-	UFUNCTION()
-	void SetAllItemsInBoolArray(TArray<bool> ArrayToChange, bool ValueToSet);
+	//~=============================================================================
+	// Objects on the map
 
-	int CarrotCount = 0;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ALoopstoneMachine> LoopstoneMachineBP;
 
-	// Other
+	class ALoopstoneMachine* Machine;
+
 	class ASunSky* SunSky = nullptr;
 
 	class APlayerCharacter* Player = nullptr;
@@ -87,6 +77,61 @@ public:
 
 	TArray<class AIslandSound*> MusicActors;
 
+	TArray<class AStoryDecor*> StoryDecorActors;
+
+	float PlayTimeSeconds = 0;
+
+	float TimeLastDialogueClosed = 0;
+
+	float SecondsBeforeYouCanTalkToIslanderAgain = 1;
+
+	//~=============================================================================
+	// Dialogue
+
+	UPROPERTY()
+	ABaseIslanderCharacter* CurrentIslander = nullptr;
+
+	UPROPERTY()
+	class UDialogue* CurrentDialogue = nullptr;
+
+	bool bTeleportAtTheEndOfConvo = false;
+	UFUNCTION(BlueprintImplementableEvent)
+
+	void TeleportDoctor(ABaseIslanderCharacter* Doc);
+	UFUNCTION()
+
+	void TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction = true);
+
+	bool StartDialogue(ABaseIslanderCharacter* Islander);
+
+	bool StartDialogue(AInteractableBook* Book);
+
+	void CloseDialogue();
+
+	bool UpdateDialogueBasedOnResponse(int ResponseID);
+
+	//~=============================================================================
+	// Widgets
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
+	TSubclassOf<class UDialogueWidget> BP_DialogueWidget;
+
+	class UDialogueWidget* DialogueWidget = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	TSubclassOf<class UInventoryWidget> BP_InventoryWidget;
+
+	class UInventoryWidget* InventoryWidget = nullptr;
+
+	// inventory stuff
+	int CarrotCount = 0;
+
+	UFUNCTION()
+	void EditInventoryItem(EInventoryItem Item, bool TrueToAddFalseToRemove);
+
+
+	//~=============================================================================
+	// Saving
 
 	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
 	FString PlayerName;
@@ -94,27 +139,16 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
 	TArray<bool> bCollectedLoopstones;
 
-	float PlayTimeSeconds = 0;
-
-
-	bool InteractWithObject(class AInteractableObjectBase* InteractableObject);
-
-	bool StartDialogue(ABaseIslanderCharacter* Islander);
-	bool StartDialogue(AInteractableBook* Book);
-	void CloseDialogue();
-	bool UpdateDialogueBasedOnResponse(int ResponseID);
-
-	UFUNCTION(BlueprintCallable)
-	void ChangeTimeOfDay(ETimeOfDay NewTimeOfDay);
-	void ChangeStory(EStory NewStory);
-
 	UFUNCTION(BlueprintCallable)
 	void SaveGame();
+
 	UFUNCTION(BlueprintCallable)
 	void LoadGame();
 
-	UFUNCTION(BlueprintCallable)
-	void CollectLoopstone(EStory StoryOwningLoopstone);
+	//~=============================================================================
+// Other
+
+	void InteractWithObject(class AInteractableObjectBase* InteractableObject);
 
 	UFUNCTION(BlueprintCallable)
 	void StopAllMusic();
@@ -123,30 +157,8 @@ public:
 	void GoToBed();
 
 	UFUNCTION(BlueprintCallable)
-	bool CollectedAllLoopstones();
-	UFUNCTION(BlueprintCallable)
 	float GetSecondsPlayed();
 
-
-	// testing moving condition checking here
-
-	bool ConditionsMet(TMap<ETopic, bool> TopicBoolsConditions,
-	                   TMap<EEventType, bool> EventBoolsConditions,
-	                   TMap<EInventoryItem, bool> IventoryBoolsConditions = TMap<EInventoryItem, bool>(),
-	                   ETimeOfDay TimeOfDayCondition = ETimeOfDay::None,
-	                   EStory ActiveStoryCondition = EStory::None);
-
-	void ChangeConditions(TMap<ETopic, bool> TopicBoolsToChange,
-	                      TMap<EEventType, bool> EventBoolsToChange,
-	                      TMap<EInventoryItem, bool> IventoryBoolsChange,
-	                      ETimeOfDay TimeOfDayChange = ETimeOfDay::None,
-	                      EStory ActiveStoryChange = EStory::None);
+	UFUNCTION()
+	void SetAllItemsInBoolArray(TArray<bool> ArrayToChange, bool ValueToSet);
 };
-
-inline void ALoopstone_IslandGameState::SetAllItemsInBoolArray(TArray<bool> ArrayToChange, bool ValueToSet)
-{
-	for (auto Bool : ArrayToChange)
-	{
-		Bool = ValueToSet;
-	}
-}

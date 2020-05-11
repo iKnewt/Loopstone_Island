@@ -16,7 +16,7 @@ AConditionalTriggerBox::AConditionalTriggerBox()
 	ALoopstone_IslandGameState* GameState = Cast<ALoopstone_IslandGameState>(GetWorld()->GetGameState());
 	if (IsValid(GameState))
 	{
-		return GameState->ConditionsMet(TopicBoolsConditions,
+		return GameState->AreConditionsMet(TopicBoolsConditions,
 		                                EventBoolsConditions,
 		                                InventoryBoolsConditions,
 		                                TimeOfDayCondition,
