@@ -3,6 +3,7 @@
 
 #include "Loopstone_IslandGameState.h"
 #include "GUI/DialogueWidget.h"
+#include "GUI/LogWidget.h"
 #include "Dialogue/Dialogue.h"
 #include "Dialogue/DialogueNode.h"
 #include "Objects/SunSky.h"
@@ -26,7 +27,7 @@ void ALoopstone_IslandGameState::BeginPlay()
 	// setting up conditions
 
 	TimeLastDialogueClosed = UGameplayStatics::GetTimeSeconds(GetWorld());
-	UE_LOG(LogTemp, Warning, TEXT("Besinning play"));
+	UE_LOG(LogTemp, Warning, TEXT("Beginning play"));
 	ChangeTimeOfDay(ETimeOfDay::Morning);
 	UE_LOG(LogTemp, Warning, TEXT("morning started"));
 
@@ -66,6 +67,16 @@ void ALoopstone_IslandGameState::BeginPlay()
 	if (!InventoryWidget)
 	{
 		UE_LOG(LogTemp, Error, TEXT("INVENTORY WIDGET NOT CREATED"));
+	}
+	if(BP_LogWidget)
+	{
+		LogWidget = CreateWidget<ULogWidget>(GetWorld()->GetFirstPlayerController(), BP_LogWidget);
+		LogWidget->AddToViewport();
+		LogWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+	if(!LogWidget)
+	{
+		UE_LOG(LogTemp, Error, TEXT("THAT SHIT AINT WORKING YO"));
 	}
 
 	//Spawning target point controllers
@@ -304,6 +315,18 @@ void ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 	}
 }
 
+void ALoopstone_IslandGameState::OpenLogWidget()
+{
+	if(LogWidget->IsVisible())
+	{
+		LogWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		LogWidget->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
 void ALoopstone_IslandGameState::EditInventoryItem(EInventoryItem Item, bool TrueToAddFalseToRemove)
 {
 	bInventoryItemsCollected[static_cast<int>(Item)] = TrueToAddFalseToRemove;
@@ -513,6 +536,10 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	}
 
 	DialogueWidget->SetDialogueWithOptions(0.03f, DialogueText, CurrentDialogue->GetCurrentOptions(this));
+	if(IsValid(LogWidget))
+	{
+		LogWidget->AddDialogue(CurrentIslander->IslanderType, DialogueText);
+	}
 
 	return true;
 }
