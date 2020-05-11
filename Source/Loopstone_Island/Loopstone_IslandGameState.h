@@ -118,6 +118,13 @@ public:
 
 	class UDialogueWidget* DialogueWidget = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
+		TSubclassOf<class ULogWidget> BP_LogWidget;
+	class ULogWidget* LogWidget = nullptr;
+
+	UFUNCTION(BlueprintCallable)
+		void OpenLogWidget();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	TSubclassOf<class UInventoryWidget> BP_InventoryWidget;
 
