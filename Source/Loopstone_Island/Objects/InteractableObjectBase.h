@@ -29,7 +29,6 @@ public:
 
 	bool bVisualizingInteraction = false;
 
-
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* Mesh = nullptr;
 
@@ -40,8 +39,6 @@ public:
 	void CreateDynamicMaterial();
 
 	UMaterialInstanceDynamic* Material = nullptr;
-
-	bool bGlowing = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UTexture2D* InventoryIcon = nullptr;
