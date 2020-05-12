@@ -34,6 +34,10 @@ void UDialogueWidget::SetDialogueWithOptions(float TextSpeed, FString InDialogue
 		// UE_LOG(LogTemp, Warning, TEXT("SETTING BUTTON VISIBILITY"))
 		Button->SetVisibility(ESlateVisibility::Hidden);
 	}
+	for(auto response : InResponses)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("RESPONSE %s"), *response);
+	}
 
 	Button_Option000->SetVisibility(ESlateVisibility::Visible);
 	NextOption->SetVisibility(ESlateVisibility::Hidden);
@@ -108,38 +112,59 @@ void UDialogueWidget::onOption000Pressed()
 	}
 	else
 	{
+		GameState->UpdateLogDialogue(Dialogue);
 		GameState->UpdateDialogueBasedOnResponse(0);
 	}
 }
 
 void UDialogueWidget::onOption0Pressed()
 {
+	GameState->UpdateLogDialogue(Dialogue);
+	FText Response = Option_0->GetText();
+	GameState->UpdateLogResponse(Response.ToString());
 	// Button_Option000->SetKeyboardFocus();
 	GameState->UpdateDialogueBasedOnResponse(1);
+
 }
 
 void UDialogueWidget::onOption1Pressed()
 {
+	GameState->UpdateLogDialogue(Dialogue);
+	FText Response = Option_1->GetText();
+	GameState->UpdateLogResponse(Response.ToString());
 	// Button_Option000->SetKeyboardFocus();
 	GameState->UpdateDialogueBasedOnResponse(2);
+
 }
 
 void UDialogueWidget::onOption2Pressed()
 {
+	GameState->UpdateLogDialogue(Dialogue);
+	FText Response = Option_2->GetText();
+	GameState->UpdateLogResponse(Response.ToString());
 	// Button_Option000->SetKeyboardFocus();
 	GameState->UpdateDialogueBasedOnResponse(3);
+
 }
 
 void UDialogueWidget::onOption3Pressed()
 {
+	GameState->UpdateLogDialogue(Dialogue);
+	FText Response = Option_3->GetText();
+	GameState->UpdateLogResponse(Response.ToString());
 	// Button_Option000->SetKeyboardFocus();
 	GameState->UpdateDialogueBasedOnResponse(4);
+
 }
 
 void UDialogueWidget::onOption4Pressed()
 {
+	GameState->UpdateLogDialogue(Dialogue);
+	FText Response = Option_4->GetText();
+	GameState->UpdateLogResponse(Response.ToString());
 	// Button_Option000->SetKeyboardFocus();
 	GameState->UpdateDialogueBasedOnResponse(5);
+
 }
 
 void UDialogueWidget::SetupForInput()
@@ -216,6 +241,7 @@ void UDialogueWidget::AppendDialogueString()
 		// UE_LOG(LogTemp, Warning, TEXT("DONE"))
 		RevealOptions();
 		bCurrentlyWriting = false;
+		
 	}
 	else
 	{

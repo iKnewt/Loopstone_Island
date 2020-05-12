@@ -120,10 +120,14 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
 	TSubclassOf<class ULogWidget> BP_LogWidget;
+	UPROPERTY(BlueprintReadWrite)
 	class ULogWidget* LogWidget = nullptr;
 
+	void UpdateLogDialogue(FString Dialogue);
+	void UpdateLogResponse(FString Response);
+
 	UFUNCTION(BlueprintCallable)
-	void OpenLogWidget();
+	void UpdateLogVisibility(bool Visibility);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	TSubclassOf<class UInventoryWidget> BP_InventoryWidget;
@@ -135,6 +139,7 @@ public:
 
 	UFUNCTION()
 	void EditInventoryItem(EInventoryItem Item, bool TrueToAddFalseToRemove);
+
 
 
 	//~=============================================================================

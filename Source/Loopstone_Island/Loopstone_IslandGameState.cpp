@@ -323,15 +323,31 @@ void ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 	}
 }
 
-void ALoopstone_IslandGameState::OpenLogWidget()
+void ALoopstone_IslandGameState::UpdateLogDialogue(FString Dialogue)
 {
-	if(LogWidget->IsVisible())
+	LogWidget->AddDialogue(CurrentIslander->IslanderType,Dialogue);
+}
+
+void ALoopstone_IslandGameState::UpdateLogResponse(FString Response)
+{
+	LogWidget->AddResponse(Response);
+}
+
+void ALoopstone_IslandGameState::UpdateLogVisibility(bool Visible)
+{
+	if (!Visible)
 	{
-		LogWidget->SetVisibility(ESlateVisibility::Hidden);
+		if(LogWidget->IsVisible())
+		{
+			LogWidget->SetVisibility(ESlateVisibility::Hidden);
+			LogWidget->SetPauseMenuVisible();
+		}
+		return;
 	}
 	else
 	{
 		LogWidget->SetVisibility(ESlateVisibility::Visible);
+		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), LogWidget);
 	}
 }
 
@@ -542,10 +558,7 @@ bool ALoopstone_IslandGameState::UpdateDialogueBasedOnResponse(int ResponseID)
 	}
 
 	DialogueWidget->SetDialogueWithOptions(0.03f, DialogueText, CurrentDialogue->GetCurrentOptions(this));
-	if(IsValid(LogWidget))
-	{
-		LogWidget->AddDialogue(CurrentIslander->IslanderType, DialogueText);
-	}
+
 
 	return true;
 }
