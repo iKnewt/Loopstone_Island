@@ -30,7 +30,7 @@ void AIslandSound::BeginPlay()
 	ALoopstone_IslandGameState* GameState = Cast<ALoopstone_IslandGameState>(GetWorld()->GetGameState());
 	if (IsValid(GameState))
 	{
-		GameState->MusicActors.Add(this);
+		GameState->SoundActors.Add(this);
 	}
 
 	FOnTimelineFloat TimelineProgress;

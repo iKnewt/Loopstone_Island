@@ -75,7 +75,7 @@ public:
 
 	class AIslanderTargetPointController* TargetPointController = nullptr;
 
-	TArray<class AIslandSound*> MusicActors;
+	TArray<class AIslandSound*> SoundActors;
 
 	TArray<class AStoryDecor*> StoryDecorActors;
 
@@ -119,11 +119,11 @@ public:
 	class UDialogueWidget* DialogueWidget = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
-		TSubclassOf<class ULogWidget> BP_LogWidget;
+	TSubclassOf<class ULogWidget> BP_LogWidget;
 	class ULogWidget* LogWidget = nullptr;
 
 	UFUNCTION(BlueprintCallable)
-		void OpenLogWidget();
+	void OpenLogWidget();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	TSubclassOf<class UInventoryWidget> BP_InventoryWidget;
@@ -153,7 +153,7 @@ public:
 	void LoadGame();
 
 	//~=============================================================================
-// Other
+	// Other
 
 	void InteractWithObject(class AInteractableObjectBase* InteractableObject);
 

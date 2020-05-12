@@ -173,7 +173,7 @@ void ALoopstone_IslandGameState::CollectLoopstone(EStory StoryOwningLoopstone)
 
 void ALoopstone_IslandGameState::StopAllMusic()
 {
-	for (auto Actors : MusicActors)
+	for (auto Actors : SoundActors)
 	{
 		if (IsValid(Actors))
 		{
@@ -565,14 +565,16 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 		TargetPointController->MoveIslandersToPosition(NewTimeOfDay, CurrentStory);
 	}
 
-	// Change music 
-	for (auto Actor : MusicActors)
+	// Change sound effects and music 
+	for (auto Actor : SoundActors)
 	{
 		if (IsValid(Actor))
 		{
 			Actor->ChangeCurrentTimeOfDay(NewTimeOfDay);
 		}
 	}
+
+	// Show certain Story-based items
 	for (auto Actor : StoryDecorActors)
 	{
 		if (Actor)
@@ -581,6 +583,7 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 		}
 	}
 
+	// 
 	if (CurrentStory == EStory::Psychologist && CurrentTimeOfDay == ETimeOfDay::Night)
 	{
 		auto child = TargetPointController->Islanders[uint8(EIslanderType::Child)];
