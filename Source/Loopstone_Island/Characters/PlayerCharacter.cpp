@@ -80,6 +80,12 @@ void APlayerCharacter::MoveForward(float Val)
 	}
 }
 
+void APlayerCharacter::ControllerMoveForward(float Val)
+{
+	//Implement UI controller input
+	MoveForward(Val);
+}
+
 void APlayerCharacter::MoveRight(float Val)
 {
 	if (Val != 0.0f)
@@ -87,6 +93,12 @@ void APlayerCharacter::MoveRight(float Val)
 		// add movement in that direction
 		AddMovementInput(GetActorRightVector(), Val);
 	}
+}
+
+void APlayerCharacter::ControllerMoveRight(float Val)
+{
+	///Implement UI controller input
+	MoveRight(Val);
 }
 
 void APlayerCharacter::TurnAtRate(float Rate)
@@ -222,6 +234,12 @@ void APlayerCharacter::Interact()
 	}
 }
 
+void APlayerCharacter::ControllerInteract()
+{
+	//Add functionality for controller
+	Interact();
+}
+
 FHitResult APlayerCharacter::RayTrace(float TraceLength, FVector Direction, bool bVisualized)
 {
 	FHitResult Hit(ForceInit);
@@ -291,6 +309,10 @@ void APlayerCharacter::PlayFootstepSoundEffect()
 // Called to bind functionality to input
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	/// As you may see, we have two different inputs for the same thing.
+	/// One is for controller, and one is for mouse+keyboard.
+	/// Unreal Engine's UI system is not well made for controller support,
+	/// so it's necessary to have individual inputs on these.
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	// set up gameplay key bindings
@@ -300,18 +322,27 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
+	// Bind controller jump events
+	PlayerInputComponent->BindAction("Controller_Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Controller_Jump", IE_Released, this, &ACharacter::StopJumping);
+
 	//Bind Interact event
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::Interact);
+
+	//Bind Interact event
+	PlayerInputComponent->BindAction("Controller_Interact", IE_Pressed, this, &APlayerCharacter::ControllerInteract);
 
 	// Bind Run events
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &APlayerCharacter::Run);
 	PlayerInputComponent->BindAction("Run", IE_Released, this, &APlayerCharacter::StopRunning);
 
-
 	// Bind movement events
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
 
+	// Bind movement events
+	PlayerInputComponent->BindAxis("Controller_MoveForward", this, &APlayerCharacter::ControllerMoveForward);
+	PlayerInputComponent->BindAxis("Controller_MoveRight", this, &APlayerCharacter::ControllerMoveRight);
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
