@@ -14,9 +14,9 @@
 #include "Loopstone_IslandGameState.h"
 #include "Objects/IslandBorder.h"
 #include "Components/AudioComponent.h"
-#include "Components/SplineComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
+#include "GUI/LogWidget.h"
 
 
 // Sets default values
@@ -82,8 +82,17 @@ void APlayerCharacter::MoveForward(float Val)
 
 void APlayerCharacter::ControllerMoveForward(float Val)
 {
-	//Implement UI controller input
-	MoveForward(Val);
+	if(GetWorld()->IsPaused())
+	{
+		if(GameState->LogWidget->IsVisible())
+		{
+			GameState->LogWidget->UpdateScrollLocation(Val);
+		}
+	}
+	else
+	{
+		MoveForward(Val);
+	}
 }
 
 void APlayerCharacter::MoveRight(float Val)
@@ -236,8 +245,18 @@ void APlayerCharacter::Interact()
 
 void APlayerCharacter::ControllerInteract()
 {
-	//Add functionality for controller
-	Interact();
+	if(GetWorld()->IsPaused())
+	{
+		if(GameState->LogWidget->IsVisible())
+		{
+			GameState->UpdateLogVisibility(false);
+		}
+	}
+	else
+	{
+		Interact();
+	}
+
 }
 
 FHitResult APlayerCharacter::RayTrace(float TraceLength, FVector Direction, bool bVisualized)
@@ -322,15 +341,12 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
-	// Bind controller jump events
-	PlayerInputComponent->BindAction("Controller_Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Controller_Jump", IE_Released, this, &ACharacter::StopJumping);
-
 	//Bind Interact event
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::Interact);
 
 	//Bind Interact event
-	PlayerInputComponent->BindAction("Controller_Interact", IE_Pressed, this, &APlayerCharacter::ControllerInteract);
+	// specific for controller as to work correctly with GUI
+	PlayerInputComponent->BindAction("Controller_Interact", IE_Pressed, this, &APlayerCharacter::ControllerInteract).bExecuteWhenPaused = true;
 
 	// Bind Run events
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &APlayerCharacter::Run);
@@ -341,8 +357,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
 
 	// Bind movement events
-	PlayerInputComponent->BindAxis("Controller_MoveForward", this, &APlayerCharacter::ControllerMoveForward);
-	PlayerInputComponent->BindAxis("Controller_MoveRight", this, &APlayerCharacter::ControllerMoveRight);
+	// specific for controller as to work correctly with GUI
+	PlayerInputComponent->BindAxis("Controller_MoveForward", this, &APlayerCharacter::ControllerMoveForward).bExecuteWhenPaused = true;
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.

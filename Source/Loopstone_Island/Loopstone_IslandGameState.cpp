@@ -347,7 +347,8 @@ void ALoopstone_IslandGameState::UpdateLogVisibility(bool Visible)
 	else
 	{
 		LogWidget->SetVisibility(ESlateVisibility::Visible);
-		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), LogWidget);
+		UWidgetBlueprintLibrary::SetInputMode_GameAndUI(GetWorld()->GetFirstPlayerController(), LogWidget);
+		LogWidget->ScrollToBottom();
 	}
 }
 

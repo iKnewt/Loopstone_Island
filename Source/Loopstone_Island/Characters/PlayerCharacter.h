@@ -15,6 +15,8 @@ class LOOPSTONE_ISLAND_API APlayerCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FirstPersonCameraComponent;
 
+
+
 	// UPROPERTY()
 	// class UHeadBobCameraShake* HeadBobCameraShake;
 	//
@@ -63,6 +65,8 @@ public:
 
 
 	AIslandBorder* Border = nullptr;
+
+
 
 protected:
 	// Called when the game starts or when spawned
