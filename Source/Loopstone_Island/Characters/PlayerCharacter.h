@@ -15,6 +15,8 @@ class LOOPSTONE_ISLAND_API APlayerCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FirstPersonCameraComponent;
 
+
+
 	// UPROPERTY()
 	// class UHeadBobCameraShake* HeadBobCameraShake;
 	//
@@ -64,6 +66,8 @@ public:
 
 	AIslandBorder* Border = nullptr;
 
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -71,8 +75,14 @@ protected:
 	/** Handles moving forward/backward */
 	void MoveForward(float Val);
 
+	/** Handles moving forward/backward with a controller */
+	void ControllerMoveForward(float Val);
+
 	/** Handles strafing movement, left and right */
 	void MoveRight(float Val);
+
+	/** Handles moving forward/backward with a controller */
+	void ControllerMoveRight(float Val);
 
 	/**
 	 * Called via input to turn at a given rate.
@@ -101,6 +111,10 @@ protected:
 	 * Called when the player presses the Interact button.
 	 */
 	void Interact();
+	/**
+	 * Called when the player presses the Interact button with a controller.
+	 */
+	void ControllerInteract();
 
 	bool InteractWithIslander(FHitResult Hit);
 
