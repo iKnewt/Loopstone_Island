@@ -22,16 +22,21 @@ protected:
 
 	FVector SelfLocation;
 	FVector LookLocation;
-
-	float ZRotation;
-public:
-	void LookAt(bool Activate);
+	//Used in animation blueprint to modify bone
 	UPROPERTY(BlueprintReadOnly)
-	FRotator Rotation;
+		FRotator Rotation;
 	UPROPERTY(EditAnywhere)
 		float LookAtSpeed = 3.f;
+
+	//How much the owning actor is allowed to turn their head.
 	UPROPERTY(EditAnywhere)
 		float TurnAmount = 70.f;
+	//How much the owning actor is rotated around the Z/Yaw axis.
+	float ZRotation;
+public:
+	//Activates look at player functionality.
+	void LookAt(bool Activate);
+
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 		EAnimations CurrentAnimation = EAnimations::Idle;
 	void ResetLocationVectors();

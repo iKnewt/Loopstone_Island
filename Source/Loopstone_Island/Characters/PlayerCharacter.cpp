@@ -11,7 +11,7 @@
 #include "Engine/Engine.h"
 #include "CookStats.h"
 #include "BaseIslanderCharacter.h"
-#include "Loopstone_IslandGameState.h"
+#include "Systems/Loopstone_IslandGameState.h"
 #include "Objects/IslandBorder.h"
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -52,11 +52,10 @@ void APlayerCharacter::BeginPlay()
 	if (IsValid(BorderRef))
 	{
 		AActor* Actor = GetWorld()->SpawnActor(BorderRef);
-		Border = dynamic_cast<AIslandBorder*>(Actor);
-		if (!IsValid(Border))
-		{
-			UE_LOG(LogTemp, Error, TEXT("BORDER NOT INITALIZED"));
-		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("BORDER NOT INITALIZED"));
 	}
 
 
@@ -139,7 +138,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 	//TODO This should be done better. bit too many checks rn
 
-	FHitResult Hit = RayTrace(400, GetFirstPersonCameraComponent()->GetForwardVector());
+	FHitResult Hit = LineTrace(400, GetFirstPersonCameraComponent()->GetForwardVector());
 	if (Hit.bBlockingHit)
 	{
 		if (Hit.Actor->ActorHasTag("Interact"))
@@ -222,7 +221,7 @@ bool APlayerCharacter::InteractWithObject(FHitResult Hit)
 
 void APlayerCharacter::Interact()
 {
-	FHitResult Hit = RayTrace(400, GetFirstPersonCameraComponent()->GetForwardVector());
+	FHitResult Hit = LineTrace(400, GetFirstPersonCameraComponent()->GetForwardVector());
 
 	if (Hit.bBlockingHit)
 	{
@@ -259,7 +258,7 @@ void APlayerCharacter::ControllerInteract()
 
 }
 
-FHitResult APlayerCharacter::RayTrace(float TraceLength, FVector Direction, bool bVisualized)
+FHitResult APlayerCharacter::LineTrace(float TraceLength, FVector Direction, bool bVisualized)
 {
 	FHitResult Hit(ForceInit);
 	FVector Start = FirstPersonCameraComponent->GetComponentLocation() +
@@ -280,7 +279,7 @@ FHitResult APlayerCharacter::RayTrace(float TraceLength, FVector Direction, bool
 void APlayerCharacter::PlayFootstepSoundEffect()
 {
 	// UE_LOG(LogTemp, Error, TEXT("play step begin"));
-	FHitResult Hit = RayTrace(200, GetActorUpVector() * -1);
+	FHitResult Hit = LineTrace(200, GetActorUpVector() * -1);
 	// UE_LOG(LogTemp, Warning, TEXT("Ground Hit: %s"), *GetDebugName(Hit.GetActor()));
 
 	if (!Hit.PhysMaterial.IsValid())

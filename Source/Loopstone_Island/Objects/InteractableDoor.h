@@ -19,36 +19,23 @@ class LOOPSTONE_ISLAND_API AInteractableDoor : public AInteractableObjectBase
 public:
 	// Sets default values for this actor's properties
 	AInteractableDoor();
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Timeline")
-	bool bOpenInwards = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock")
-	bool bDoorLockedNow = true;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock")
-	bool bDoorAlwaysLocked = true;
 	
 	UFUNCTION(BlueprintCallable)
 	void Interact() override;
 
 	void DoNotInteract() override;
 
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+
+	//~=============================================================================
+	// Timeline variables	
 	FTimeline CurveTimeline;
-
 	FTimerHandle DoorTimer;
-
-	bool bOpened = false;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timeline")
-	bool bAutoClose = true;
-
 	UPROPERTY(EditAnywhere, Category= "Timeline")
 	UCurveFloat* CurveFloat;
-	//door offset = 43
 
 	UFUNCTION()
 	void CloseDoorSound();
@@ -58,6 +45,9 @@ protected:
 	UFUNCTION()
 	void UpdateAnimation(float Value);
 
+
+	//~=============================================================================
+	// Sounds	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
 		USoundBase* DoorOpen;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
@@ -66,8 +56,20 @@ protected:
 		USoundBase* DoorLocked;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
 		USoundBase* DoorSlam;
-	
 
+	//~=============================================================================
+	// Door Variables	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timeline")
+		bool bOpenInwards = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock")
+		bool bDoorLockedOnBeginPlay = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock")
+		bool bDoorAlwaysLocked = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timeline")
+		bool bAutoClose = true;
+	// If the door is currently open = true
+	bool bOpen = false;
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

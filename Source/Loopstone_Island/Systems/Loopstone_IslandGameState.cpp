@@ -15,9 +15,8 @@
 #include "Objects/IslandSound.h"
 #include "Loopstone_Island_SaveGame.h"
 #include "Objects/LoopstoneMachine.h"
-#include "StoryDecor.h"
+#include "Objects/StoryDecor.h"
 #include "Button.h"
-#include "Characters/BaseIslanderCharacter.h"
 #include "Objects/InteractableBook.h"
 
 void ALoopstone_IslandGameState::BeginPlay()
@@ -603,7 +602,7 @@ void ALoopstone_IslandGameState::ChangeTimeOfDay(ETimeOfDay NewTimeOfDay)
 		auto child = TargetPointController->Islanders[uint8(EIslanderType::Child)];
 		child->ChangeAnimation(EAnimations::CustomAnimation1);
 		child->ChangeEyeExpression(EEyeExpression::Eye_Calm, EEyeExpression::Eye_Calm);
-		child->bLookAt = false;
+		child->bLookAtPlayer = false;
 	}
 }
 

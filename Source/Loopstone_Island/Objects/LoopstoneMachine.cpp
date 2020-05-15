@@ -2,7 +2,7 @@
 
 
 #include "LoopstoneMachine.h"
-#include "Loopstone_IslandGameState.h"
+#include "Systems/Loopstone_IslandGameState.h"
 #include "TimerManager.h"
 #include "Components/AudioComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
@@ -43,10 +43,6 @@ void ALoopstoneMachine::BeginPlay()
 		}
 		else
 		{
-			/*
- * (X=-11130.000000,Y=-2400.000000,Z=3260.000000)
-(Pitch=0.000000,Yaw=-170.000183,Roll=0.000000)
-	 */
 			// spawn in lighthouse
 			Rotator = FRotator(0, -160, 0);
 			Location = FVector(-11130.0, -2400.0, 3260.0);

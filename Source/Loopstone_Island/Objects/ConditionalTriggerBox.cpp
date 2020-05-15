@@ -2,13 +2,13 @@
 
 
 #include "ConditionalTriggerBox.h"
-#include "Loopstone_IslandGameState.h"
+#include "Systems/Loopstone_IslandGameState.h"
 
 // Sets default values
 AConditionalTriggerBox::AConditionalTriggerBox()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 }
 
  bool AConditionalTriggerBox::ConditionsMet()

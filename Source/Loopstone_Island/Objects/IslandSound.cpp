@@ -3,7 +3,7 @@
 
 #include "IslandSound.h"
 #include "Components/AudioComponent.h"
-#include "Loopstone_IslandGameState.h"
+#include "Systems/Loopstone_IslandGameState.h"
 
 // Sets default values
 AIslandSound::AIslandSound()

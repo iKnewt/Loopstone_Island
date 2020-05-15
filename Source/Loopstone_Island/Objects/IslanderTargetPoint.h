@@ -16,6 +16,10 @@ class LOOPSTONE_ISLAND_API AIslanderTargetPoint : public ATargetPoint
 {
 	GENERATED_BODY()
 public:
+
+	//~=============================================================================
+	// Conditions
+	// Used to check when the specific islander gets put on this specic
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		ETimeOfDay TimeOfDay;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

@@ -5,7 +5,7 @@
 #include "DialogueNode.h"
 #include "DialogueEdge.h"
 #include "UObject/Class.h"
-#include "Loopstone_IslandGameState.h"
+#include "Systems/Loopstone_IslandGameState.h"
 
 #define LOCTEXT_NAMESPACE "Dialogue"
 

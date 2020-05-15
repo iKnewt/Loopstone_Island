@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-
 #include "PlayerCharacter.generated.h"
+
+
+class UCameraShake;
 UCLASS(Blueprintable)
 class LOOPSTONE_ISLAND_API APlayerCharacter : public ACharacter
 {
@@ -13,18 +15,14 @@ class LOOPSTONE_ISLAND_API APlayerCharacter : public ACharacter
 
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* FirstPersonCameraComponent;
+		class UCameraComponent* FirstPersonCameraComponent;
 
-
-
-	// UPROPERTY()
-	// class UHeadBobCameraShake* HeadBobCameraShake;
-	//
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class UCameraShake> HeadBobWalk;
+		TSubclassOf<UCameraShake> HeadBobWalk;
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class UCameraShake> HeadBobRun;
+		TSubclassOf<UCameraShake> HeadBobRun;
 
+	//Reference to island border BP, used to spawn it into the game.
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class AIslandBorder> BorderRef;
 
@@ -40,35 +38,29 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseLookUpRate;
 
+	//Reference to Gamestate
 	UPROPERTY()
 	class ALoopstone_IslandGameState* GameState = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float WaveDistance = 200;
+protected:
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	//~=============================================================================
+	// Movement Sounds and Variables
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		USoundBase* WoodFootstep;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		USoundBase* GrassFootstep;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		USoundBase* DirtFootstep;
-
+	//The distance the player has traveled (used to calculate when next step sound is going to be added);
 	float SumOfDistance = 0;
-
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	float DistanceBetweenSteps = 1000000;
+		float DistanceBetweenSteps = 1000000;
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	float WalkSpeed = 200;
+		float WalkSpeed = 200;
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	float RunSpeed = 500;
-
-
-
-	AIslandBorder* Border = nullptr;
-
-
-
-protected:
+		float RunSpeed = 500;
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -125,7 +117,7 @@ protected:
 	/**
 	 * Does a lineTrace and returns the hit-result.
 	 */
-	FHitResult RayTrace(float TraceLength, FVector Direction, bool bVisualized = false);
+	FHitResult LineTrace(float TraceLength, FVector Direction, bool bVisualized = false);
 
 	/**
 	 * Plays the footstep sound based on physical material you're walking on
@@ -133,7 +125,7 @@ protected:
 	void PlayFootstepSoundEffect();
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 public:
 	// Called every frame

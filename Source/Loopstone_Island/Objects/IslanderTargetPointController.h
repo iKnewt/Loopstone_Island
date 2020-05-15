@@ -27,13 +27,7 @@ protected:
 	void SetupIslandersArray();
 
 	void SetupIslandPositions();
-
-
-
+	// Every IslanderTargetPoint on the map.
+	// Sorted so that we do not have to do a for loop each time
 	TArray<TArray<TArray<class AIslanderTargetPoint*>>> Points;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 };
