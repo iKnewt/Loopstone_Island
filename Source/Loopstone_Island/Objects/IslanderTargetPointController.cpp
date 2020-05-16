@@ -10,7 +10,7 @@
 AIslanderTargetPointController::AIslanderTargetPointController()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 void AIslanderTargetPointController::MoveIslandersToPosition(ETimeOfDay NewTimeOfDay, EStory CurrentStory)
@@ -87,10 +87,4 @@ void AIslanderTargetPointController::SetupIslandPositions()
 			Points[static_cast<int32>(Point->Story)][static_cast<int32>(Point->Islander)][static_cast<int32>(Point->TimeOfDay)] = Point;
 		}
 	}
-}
-
-// Called every frame
-void AIslanderTargetPointController::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }

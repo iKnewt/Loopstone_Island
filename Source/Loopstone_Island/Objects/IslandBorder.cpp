@@ -41,6 +41,5 @@ void AIslandBorder::UpdateAudioComponentLocation()
 void AIslandBorder::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 

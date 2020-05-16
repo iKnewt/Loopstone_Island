@@ -2,11 +2,9 @@
 
 
 #include "InteractableBed.h"
-#include "Loopstone_IslandGameState.h"
+#include "Systems/Loopstone_IslandGameState.h"
 
 void AInteractableBed::Interact()
 {
-	// todo call something within gamestate instead
 	dynamic_cast<ALoopstone_IslandGameState*>(GetWorld()->GetGameState())->GoToBed();
-	// UGameplayStatics::OpenLevel(this, "Fullday");
 }

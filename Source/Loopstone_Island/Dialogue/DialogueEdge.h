@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GenericGraphEdge.h"
-#include "Loopstone_IslandGameState.h"
+#include "Systems/Loopstone_IslandGameState.h"
 #include "DialogueEdge.generated.h"
 
 /**

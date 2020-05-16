@@ -12,13 +12,12 @@ void UIslanderAnimationInstance::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
 	ResetLocationVectors();
-
 }
 
 void UIslanderAnimationInstance::NativeUpdateAnimation(float DeltaTime)
 {
 	Super::NativeUpdateAnimation(DeltaTime);
-		UpdateLookAt(DeltaTime);
+	UpdateLookAt(DeltaTime);
 }
 
 void UIslanderAnimationInstance::UpdateLookAt(float DeltaTime)
@@ -28,13 +27,11 @@ void UIslanderAnimationInstance::UpdateLookAt(float DeltaTime)
 	if(bLookAt)
 	{
 		PlayerLocation = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
-		// UE_LOG(LogTemp, Warning, TEXT("CURRENTLY LOOKING AT"));
 	}
 	else
 	{
-
 		APawn* Owner = TryGetPawnOwner();
-		if(IsValid(Owner))
+		if(Owner)
 		{
 			PlayerLocation = SelfLocation + (Owner->GetActorForwardVector() * 200);
 		}
@@ -42,6 +39,8 @@ void UIslanderAnimationInstance::UpdateLookAt(float DeltaTime)
 
 	LookLocation = FMath::VInterpTo(LookLocation, PlayerLocation, DeltaTime, LookAtSpeed);
 	Rotation = UKismetMathLibrary::FindLookAtRotation(SelfLocation, LookLocation);
+
+	//Has to do some strange things as to make it work here
 	Rotation.Roll = (Rotation.Pitch * -1);
 	Rotation.Pitch = 0;
 	Rotation.Yaw = Rotation.Yaw - ZRotation;
@@ -59,10 +58,11 @@ void UIslanderAnimationInstance::UpdateLookAt(float DeltaTime)
 
 void UIslanderAnimationInstance::ResetLocationVectors()
 {
-	auto owner =Cast<ABaseIslanderCharacter>(TryGetPawnOwner());
-	if(IsValid(owner))
+	//Casting needed as to get skeletal mesh
+	auto Owner =Cast<ABaseIslanderCharacter>(TryGetPawnOwner());
+	if(IsValid(Owner))
 	{
-		SelfLocation = owner->GetMesh()->GetSocketLocation("Head");
+		SelfLocation = Owner->GetMesh()->GetSocketLocation("Head");
 	}
 	else
 	{

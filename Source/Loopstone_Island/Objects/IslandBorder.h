@@ -14,24 +14,23 @@ class LOOPSTONE_ISLAND_API AIslandBorder : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AIslandBorder();
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	class USplineComponent* Spline = nullptr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	class UAudioComponent* Waves = nullptr;
-
-	USceneComponent* Root;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float AudioTimer = 0.25f;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	//Moves the audio component based on players location to spline
 	void UpdateAudioComponentLocation();
 
+	//~=============================================================================
+	// Components
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class USplineComponent* Spline = nullptr;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class UAudioComponent* Waves = nullptr;
+	USceneComponent* Root;
 
+	//Timer to move the audio component
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float AudioTimer = 0.25f;
 
 public:	
 	// Called every frame

@@ -2,7 +2,7 @@
 
 #include "StoryDecor.h"
 
-#include "Loopstone_IslandGameState.h"
+#include "Systems/Loopstone_IslandGameState.h"
 
 // Sets default values
 AStoryDecor::AStoryDecor()

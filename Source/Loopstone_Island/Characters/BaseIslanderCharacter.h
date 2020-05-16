@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "PaperFlipBookComponent.h"
 #include "GameStateEnums.h"
 #include "BaseIslanderCharacter.generated.h"
 
@@ -32,7 +31,8 @@ enum class EEyeExpression : uint8
 	Eye_Shock,
 	None
 };
-
+class UPaperFlipbookComponent;
+class UPaperFlipbook;
 UCLASS(Blueprintable)
 class LOOPSTONE_ISLAND_API ABaseIslanderCharacter : public ACharacter
 {
@@ -47,32 +47,29 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-
+	//~=============================================================================
+	// Islander-Specific variables
+	// Used for Dialogue System
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	FString Name = "Islander";
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
-	UFont* Font;
+	class UFont* Font;
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	class UDataTable* RichTextStyles;
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	class UDialogue* Dialogue = nullptr;
 	UPROPERTY(BlueprintReadWrite)
-		bool bLookAt = true;
-	// Other things that are specific to an islander??
+	bool bLookAtPlayer = true;
 
-	/** First person camera */
+	//~=============================================================================
+	// Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FirstPersonCameraComponent;
-
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EIslanderType IslanderType;
 
+	//Expression Components
 	UPROPERTY(VisibleAnywhere)
 	UPaperFlipbookComponent* LeftEye = nullptr;
 	UPROPERTY(VisibleAnywhere)
@@ -82,22 +79,10 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class USphereComponent* LookAtCollision;
 
-
 	UPROPERTY(EditAnywhere)
 	TArray<UPaperFlipbook*> EyeExpressions;
 	UPROPERTY(EditAnywhere)
 	TArray<UPaperFlipbook*> MouthExpressions;
-
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UPaperFlipbook* Blinking = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UPaperFlipbook* OpenEye = nullptr;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UPaperFlipbook* Mouth_Talk = nullptr;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UPaperFlipbook* Mouth_Smile = nullptr;
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeMouthExpression(EMouthExpression MouthExpression);
@@ -107,8 +92,9 @@ public:
 
 	void ChangeAnimation(EAnimations Animation);
 
+	//Snaps the view of the character to front
 	void ResetView();
-
+	
 	UFUNCTION()
 	void OnLookAtBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	                          int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

@@ -4,7 +4,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Components/CapsuleComponent.h"
+#include "PaperFlipBookComponent.h"
+#include "Components/CapsuleComponent.h" //this is needed, dunno why it says it doesn't (line 30)
 #include "Components/SphereComponent.h"
 #include "IslanderAnimationInstance.h"
 #include "Dialogue/Dialogue.h"
@@ -12,9 +13,8 @@
 // Sets default values
 ABaseIslanderCharacter::ABaseIslanderCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-	// Set size for collision capsule
+	//No reason for it to tick
+	PrimaryActorTick.bCanEverTick = false;
 
 	RightEye = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("RightEye"));
 	LeftEye = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("LeftEye"));
@@ -55,17 +55,7 @@ void ABaseIslanderCharacter::BeginPlay()
 	}
 }
 
-// Called every frame
-void ABaseIslanderCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
 // Called to bind functionality to input
-void ABaseIslanderCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
 
 void ABaseIslanderCharacter::ChangeMouthExpression(const EMouthExpression MouthExpression)
 {
@@ -81,19 +71,6 @@ void ABaseIslanderCharacter::ChangeMouthExpression(const EMouthExpression MouthE
 		Mouth->SetFlipbook(NewMouth);
 		Mouth->PlayFromStart();
 	}
-	/*
-	 *switch (MouthExpression)
-	{
-	case EMouthExpression::Mouth_Talk:
-		Mouth->SetFlipbook(Mouth_Talk);
-		break;
-	case EMouthExpression::Mouth_Smile:
-		Mouth->SetFlipbook(Mouth_Smile);
-		break;
-	default: ;
-	}
-	Mouth->PlayFromStart();
-	*/
 }
 
 void ABaseIslanderCharacter::ChangeEyeExpression(EEyeExpression RightEyeExpression, EEyeExpression LeftEyeExpression)
@@ -114,33 +91,6 @@ void ABaseIslanderCharacter::ChangeEyeExpression(EEyeExpression RightEyeExpressi
 		LeftEye->PlayFromStart();
 	}
 
-	/*
-	UE_LOG(LogTemp, Warning, TEXT("CHANGING EYE"))
-	switch (RightEyeExpression)
-	{
-	case EEyeExpression::Eye_Open:
-		RightEye->SetFlipbook(OpenEye);
-		UE_LOG(LogTemp, Warning, TEXT("EYE OPEN"))
-		break;
-	case EEyeExpression::Eye_Blinking:
-		UE_LOG(LogTemp, Warning, TEXT("EYE BLINKING"))
-		RightEye->SetFlipbook(Blinking);
-		break;
-	default: ;
-	}
-	switch (LeftEyeExpression)
-	{
-	case EEyeExpression::Eye_Open:
-		LeftEye->SetFlipbook(OpenEye);
-		break;
-	case EEyeExpression::Eye_Blinking:
-		LeftEye->SetFlipbook(Blinking);
-		break;
-	default: ;
-	}
-	RightEye->PlayFromStart();
-	LeftEye->PlayFromStart();
-	*/
 }
 
 void ABaseIslanderCharacter::ChangeAnimation(EAnimations Animation)
@@ -174,7 +124,7 @@ void ABaseIslanderCharacter::OnLookAtBeginOverlap(UPrimitiveComponent* Overlappe
 				GetMesh()->GetAnimInstance());
 			if (IsValid(AnimationInstance))
 			{
-				if(bLookAt)
+				if(bLookAtPlayer)
 				{
 					AnimationInstance->LookAt(true);
 				}

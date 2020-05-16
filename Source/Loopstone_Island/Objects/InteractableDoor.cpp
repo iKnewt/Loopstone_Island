@@ -18,12 +18,11 @@ AInteractableDoor::AInteractableDoor()
 
 void AInteractableDoor::CloseDoorSound()
 {
-	if(!bOpened)
+	if(!bOpen)
 	{
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), DoorSlam, GetActorLocation(), GetActorRotation(), 1, 1, 0, Sound->AttenuationSettings);
 		Sound->Stop();
 	}
-
 }
 
 void AInteractableDoor::PlayAnimation()
@@ -38,7 +37,7 @@ void AInteractableDoor::PlayAnimation()
 		CurveTimeline.AddInterpFloat(CurveFloat, TimelineProgress);
 		CurveTimeline.SetTimelineFinishedFunc(TimelineEnd);
 		
-		if (!bOpened)
+		if (!bOpen)
 		{
 			CurveTimeline.Play();
 			if(IsValid(DoorOpen))
@@ -56,14 +55,13 @@ void AInteractableDoor::PlayAnimation()
 			if (IsValid(DoorClose))
 			{
 				Sound->SetSound(DoorClose);
-
 			}
 			if (GetWorldTimerManager().IsTimerActive(DoorTimer))
 			{
 				GetWorldTimerManager().ClearTimer(DoorTimer);
 			}
 		}
-		bOpened = !bOpened;
+		bOpen = !bOpen;
 		Sound->Play();
 	}
 	else
@@ -90,7 +88,7 @@ void AInteractableDoor::Interact()
 	}
 	else
  {
-		bDoorLockedNow = false;
+		bDoorLockedOnBeginPlay = false;
 		
 		auto Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 		if (IsValid(Player))
@@ -118,7 +116,7 @@ void AInteractableDoor::Interact()
 
 void AInteractableDoor::DoNotInteract()
 {
-	if (bDoorAlwaysLocked || bDoorLockedNow)
+	if (bDoorAlwaysLocked || bDoorLockedOnBeginPlay)
 	{
 		if (IsValid(DoorLocked))
 		{

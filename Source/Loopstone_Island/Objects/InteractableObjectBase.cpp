@@ -4,13 +4,13 @@
 #include "Components/StaticMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Components/AudioComponent.h"
-#include "Loopstone_IslandGameState.h"
+#include "Systems/Loopstone_IslandGameState.h"
 
 //Sets default values
 AInteractableObjectBase::AInteractableObjectBase()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("ObjectMesh"));
 	RootComponent = CreateDefaultSubobject<USceneComponent>(FName("SceneRoot"));
 	Mesh->AttachTo(RootComponent);
@@ -49,10 +49,4 @@ void AInteractableObjectBase::BeginPlay()
 {
 	Super::BeginPlay();
 	Sound->SetWorldLocation(GetActorLocation());
-}
-
-// Called every frame
-void AInteractableObjectBase::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }

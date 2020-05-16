@@ -15,7 +15,8 @@ class LOOPSTONE_ISLAND_API AConditionalTriggerBox : public AActor
 public:
 	// Sets default values for this actor's properties
 	AConditionalTriggerBox();
-
+	//~=============================================================================
+	// Conditions
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
 	TMap<ETopic, bool> TopicBoolsConditions;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
