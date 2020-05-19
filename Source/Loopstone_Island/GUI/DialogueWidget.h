@@ -27,7 +27,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsUsingController = false;
-	
+
 	// Test invisible button
 	UPROPERTY(meta = (BindWidget))
 	UButton* Button_Option000;
@@ -97,10 +97,10 @@ public:
 	void StartDialogueAnimation(bool Forwards);
 
 	UFUNCTION()
-		void SetupForInput();
+	void SetupForInput();
 	UFUNCTION(BlueprintImplementableEvent)
-		void UpdateIsUsingControllerFromGameInstance();
-	
+	void UpdateIsUsingControllerFromGameInstance();
+
 
 protected:
 

@@ -11,16 +11,16 @@ AConditionalTriggerBox::AConditionalTriggerBox()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
- bool AConditionalTriggerBox::ConditionsMet()
+bool AConditionalTriggerBox::ConditionsMet()
 {
 	ALoopstone_IslandGameState* GameState = Cast<ALoopstone_IslandGameState>(GetWorld()->GetGameState());
 	if (IsValid(GameState))
 	{
 		return GameState->AreConditionsMet(TopicBoolsConditions,
-		                                EventBoolsConditions,
-		                                InventoryBoolsConditions,
-		                                TimeOfDayCondition,
-		                                ActiveStoryCondition);
+		                                   EventBoolsConditions,
+		                                   InventoryBoolsConditions,
+		                                   TimeOfDayCondition,
+		                                   ActiveStoryCondition);
 	}
 	return false;
 }

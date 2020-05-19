@@ -15,16 +15,16 @@ class LOOPSTONE_ISLAND_API APlayerCharacter : public ACharacter
 
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UCameraComponent* FirstPersonCameraComponent;
+	class UCameraComponent* FirstPersonCameraComponent;
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<UCameraShake> HeadBobWalk;
+	TSubclassOf<UCameraShake> HeadBobWalk;
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<UCameraShake> HeadBobRun;
+	TSubclassOf<UCameraShake> HeadBobRun;
 
 	//Reference to island border BP, used to spawn it into the game.
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class AIslandBorder> BorderRef;
+	TSubclassOf<class AIslandBorder> BorderRef;
 
 public:
 	// Sets default values for this character's properties
@@ -47,20 +47,20 @@ protected:
 	//~=============================================================================
 	// Movement Sounds and Variables
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		USoundBase* WoodFootstep;
+	USoundBase* WoodFootstep;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		USoundBase* GrassFootstep;
+	USoundBase* GrassFootstep;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		USoundBase* DirtFootstep;
+	USoundBase* DirtFootstep;
 	//The distance the player has traveled (used to calculate when next step sound is going to be added);
 	float SumOfDistance = 0;
 	UPROPERTY(EditAnywhere, Category = "Movement")
-		float DistanceBetweenSteps = 1000000;
+	float DistanceBetweenSteps = 1000000;
 	UPROPERTY(EditAnywhere, Category = "Movement")
-		float WalkSpeed = 200;
+	float WalkSpeed = 200;
 	UPROPERTY(EditAnywhere, Category = "Movement")
-		float RunSpeed = 500;
-	
+	float RunSpeed = 500;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

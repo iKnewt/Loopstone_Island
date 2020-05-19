@@ -31,6 +31,9 @@ class LOOPSTONE_ISLAND_API UDialogueNode : public UGenericGraphNode
 public:
 	UDialogueNode();
 
+	//~=============================================================================
+	// Dialogue
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
 	FText DialogueText;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
@@ -38,6 +41,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Dialogue")
 	FText DialogueTextOnRevisit;
 
+	//~=============================================================================
+	// Conditions
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
 	TMap<ETopic, bool> TopicBoolsConditions;
@@ -50,6 +55,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
 	EStory ActiveStoryCondition = EStory::None;
 
+	//~=============================================================================
+	// Events
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
 	TMap<ETopic, bool> TopicBoolsToChange;
@@ -61,6 +68,9 @@ public:
 	ETimeOfDay TimeOfDayChange = ETimeOfDay::None;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
 	EStory ActiveStoryChange = EStory::None;
+
+	//~=============================================================================
+	// Islander Expression
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Expression")
 	EAnimations Animation = EAnimations::Idle;

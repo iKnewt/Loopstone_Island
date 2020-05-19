@@ -12,7 +12,8 @@ class UDialogueFactory : public UFactory
 public:
 	UDialogueFactory();
 
-	virtual UObject* FactoryCreateNew(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags, UObject* Context, FFeedbackContext* Warn) override;
+	virtual UObject* FactoryCreateNew(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags,
+	                                  UObject* Context, FFeedbackContext* Warn) override;
 	virtual FText GetDisplayName() const override;
 	virtual FString GetDefaultNewAssetName() const override;
 };

@@ -17,7 +17,7 @@ class LOOPSTONE_ISLAND_API AIslandSound : public AActor
 public:
 	// Sets default values for this actor's properties
 	AIslandSound();
-	
+
 	void StopAudio();
 
 	void StartAudio();
@@ -27,34 +27,34 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(Category = "Sound Selection", EditAnywhere)
-		uint32 bDynamicAudioBasedOnTimeOfDay : 1;
+	uint32 bDynamicAudioBasedOnTimeOfDay : 1;
 
 	//~=============================================================================
 	//	Audio sounds
 	//	Changes based on time of day (if bDynamicAudioBasedOnTimeOfDay = true)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Selection", meta = (EditCondition =
 		"bDynamicAudioBasedOnTimeOfDay"))
-		USoundBase* MorningSound;
+	USoundBase* MorningSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Selection", meta = (EditCondition =
 		"bDynamicAudioBasedOnTimeOfDay"))
-		USoundBase* AfternoonSound;
+	USoundBase* AfternoonSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Selection", meta = (EditCondition =
 		"bDynamicAudioBasedOnTimeOfDay"))
-		USoundBase* EveningSound;
+	USoundBase* EveningSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound Selection", meta = (EditCondition =
 		"bDynamicAudioBasedOnTimeOfDay"))
-		USoundBase* NightSound;
+	USoundBase* NightSound;
 
 	//~=============================================================================
 	// Timeline Settings
 	UPROPERTY(Category = "Timeline", EditAnywhere)
-		uint32 bTransition : 1;
+	uint32 bTransition : 1;
 	UPROPERTY(EditAnywhere, Category = "Timeline", meta = (EditCondition = "bTransition"))
-		UCurveFloat* CurveFloat;
+	UCurveFloat* CurveFloat;
 	FTimeline GainTimeline;
 	FTimeline DownTimeline;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Audio Component")
-		class UAudioComponent* AudioComponent;
+	class UAudioComponent* AudioComponent;
 
 
 	ETimeOfDay CurrentTimeOfDay;
@@ -69,8 +69,7 @@ public:
 
 	void ChangeCurrentTimeOfDay(ETimeOfDay TimeOfDay);
 	UFUNCTION()
-		void UpdateSoundVolume(float Value);
+	void UpdateSoundVolume(float Value);
 	UFUNCTION()
-		void SetNewSound();
-
+	void SetNewSound();
 };

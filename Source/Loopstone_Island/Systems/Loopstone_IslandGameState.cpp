@@ -67,13 +67,13 @@ void ALoopstone_IslandGameState::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("INVENTORY WIDGET NOT CREATED"));
 	}
-	if(BP_LogWidget)
+	if (BP_LogWidget)
 	{
 		LogWidget = CreateWidget<ULogWidget>(GetWorld()->GetFirstPlayerController(), BP_LogWidget);
 		LogWidget->AddToViewport();
 		LogWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
-	if(!LogWidget)
+	if (!LogWidget)
 	{
 		UE_LOG(LogTemp, Error, TEXT("THAT SHIT AINT WORKING YO"));
 	}
@@ -108,28 +108,25 @@ void ALoopstone_IslandGameState::SaveGame()
 		// Set data on the savegame object.
 		SaveGameInstance->PlayerName = TEXT("PlayerOne");
 		SaveGameInstance->bCollectedLoopstones = bCollectedLoopstones;
-		// SaveGameInstance->bIsUsingController = bUsingController;
 		SaveGameInstance->PlayTimeSeconds = GetSecondsPlayed();
 
 		// Save the data immediately.
-		if (UGameplayStatics::SaveGameToSlot(SaveGameInstance, "TestSave", 0))
+		if (UGameplayStatics::SaveGameToSlot(SaveGameInstance, "Loopstone_Island_Savefile", 0))
 		{
-			// Save succeeded.
+			UE_LOG(LogTemp, Warning, TEXT("SAVED: %s"), *SaveGameInstance->PlayerName);
 		}
 	}
 }
 
 void ALoopstone_IslandGameState::LoadGame()
 {
-	// GetWorld()->GetAuthGameMode()->ResetLevel();
 	// Retrieve and cast the USaveGame object to UMySaveGame.
 	if (ULoopstone_Island_SaveGame* LoadedGame = Cast<ULoopstone_Island_SaveGame>(
-		UGameplayStatics::LoadGameFromSlot("TestSave", 0)))
+		UGameplayStatics::LoadGameFromSlot("Loopstone_Island_Savefile", 0)))
 	{
 		// The operation was successful, so LoadedGame now contains the data we saved earlier.
 		UE_LOG(LogTemp, Warning, TEXT("LOADED: %s"), *LoadedGame->PlayerName);
 		bCollectedLoopstones = LoadedGame->bCollectedLoopstones;
-		// bUsingController = LoadedGame->bIsUsingController;
 		PlayTimeSeconds = LoadedGame->PlayTimeSeconds;
 		bEventHasBeenTriggered[static_cast<int>(EEventType::TutorialCompleted)] = bCollectedLoopstones[static_cast<int>(
 			EStory::Detective)];
@@ -210,9 +207,9 @@ void ALoopstone_IslandGameState::SetAllItemsInBoolArray(TArray<bool> ArrayToChan
 }
 
 bool ALoopstone_IslandGameState::AreConditionsMet(TMap<ETopic, bool> TopicBoolsConditions,
-                                               TMap<EEventType, bool> EventBoolsConditions,
-                                               TMap<EInventoryItem, bool> IventoryBoolsConditions,
-                                               ETimeOfDay TimeOfDayCondition, EStory ActiveStoryCondition)
+                                                  TMap<EEventType, bool> EventBoolsConditions,
+                                                  TMap<EInventoryItem, bool> IventoryBoolsConditions,
+                                                  ETimeOfDay TimeOfDayCondition, EStory ActiveStoryCondition)
 {
 	for (auto Element : TopicBoolsConditions)
 	{
@@ -324,19 +321,25 @@ void ALoopstone_IslandGameState::TriggerEvent(EEventType EventType, bool NewBool
 
 void ALoopstone_IslandGameState::UpdateLogDialogue(FString Dialogue)
 {
-	LogWidget->AddDialogue(CurrentIslander->IslanderType,Dialogue);
+	if (CurrentIslander)
+	{
+		LogWidget->AddDialogue(CurrentIslander->IslanderType, Dialogue);
+	}
 }
 
 void ALoopstone_IslandGameState::UpdateLogResponse(FString Response)
 {
-	LogWidget->AddResponse(Response);
+	if (CurrentIslander)
+	{
+		LogWidget->AddResponse(Response);
+	}
 }
 
 void ALoopstone_IslandGameState::UpdateLogVisibility(bool Visible)
 {
 	if (!Visible)
 	{
-		if(LogWidget->IsVisible())
+		if (LogWidget->IsVisible())
 		{
 			LogWidget->SetVisibility(ESlateVisibility::Hidden);
 			LogWidget->SetPauseMenuVisible();
@@ -389,10 +392,10 @@ void ALoopstone_IslandGameState::EditInventoryItem(EInventoryItem Item, bool Tru
 void ALoopstone_IslandGameState::InteractWithObject(AInteractableObjectBase* InteractableObject)
 {
 	if (AreConditionsMet(InteractableObject->TopicBoolsConditions,
-	                  InteractableObject->EventBoolsConditions,
-	                  InteractableObject->InventoryBoolsConditions,
-	                  InteractableObject->TimeOfDayCondition,
-	                  InteractableObject->ActiveStoryCondition))
+	                     InteractableObject->EventBoolsConditions,
+	                     InteractableObject->InventoryBoolsConditions,
+	                     InteractableObject->TimeOfDayCondition,
+	                     InteractableObject->ActiveStoryCondition))
 	{
 		InteractableObject->Interact();
 		ChangeConditions(InteractableObject->TopicBoolsToChange,

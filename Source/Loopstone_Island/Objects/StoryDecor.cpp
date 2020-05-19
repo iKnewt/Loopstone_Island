@@ -7,14 +7,12 @@
 // Sets default values
 AStoryDecor::AStoryDecor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 void AStoryDecor::UnhideIfConditionsMet(ETimeOfDay TimeOfDay, EStory Story)
 {
-
 	if (TimeOfDay == TimeOfDayCondition && Story == ActiveStoryCondition)
 	{
 		this->SetActorHiddenInGame(false);
@@ -27,12 +25,12 @@ void AStoryDecor::BeginPlay()
 	Super::BeginPlay();
 
 	this->SetActorHiddenInGame(true);
-	
+
 	ALoopstone_IslandGameState* GameState = Cast<ALoopstone_IslandGameState>(GetWorld()->GetGameState());
-	if(GameState)
+	if (GameState)
 	{
 		GameState->StoryDecorActors.Add(this);
-	}	
+	}
 }
 
 // Called every frame
@@ -40,4 +38,3 @@ void AStoryDecor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-

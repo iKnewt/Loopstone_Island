@@ -19,15 +19,10 @@ public:
 
 	//~=============================================================================
 	// Conditions
-	// Used to check when the specific islander gets put on this specic
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		ETimeOfDay TimeOfDay;
+	ETimeOfDay TimeOfDay;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		EIslanderType Islander;
+	EIslanderType Islander;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		EStory Story;
-	
-	
-	
-	
+	EStory Story;
 };

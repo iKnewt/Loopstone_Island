@@ -25,22 +25,17 @@ public:
 	//~=============================================================================
 	// Conditions
 
-	// Current place in day and story
 	UPROPERTY(EditDefaultsOnly, Category = "Current Conditions")
 	ETimeOfDay CurrentTimeOfDay = ETimeOfDay::Morning;
-
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Current Conditions")
 	EStory CurrentStory = EStory::None;
 
 	TArray<bool> bEventHasBeenTriggered;
-
 	TArray<bool> bTopicHasBeenRevealed;
-
 	TArray<bool> bInventoryItemsCollected;
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeTimeOfDay(ETimeOfDay NewTimeOfDay);
-
 	void ChangeStory(EStory NewStory);
 
 	bool AreConditionsMet(TMap<ETopic, bool> TopicBoolsConditions,
@@ -57,7 +52,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool HasCollectedAllLoopstones();
-
 	UFUNCTION(BlueprintCallable)
 	void CollectLoopstone(EStory StoryOwningLoopstone);
 
@@ -68,21 +62,14 @@ public:
 	TSubclassOf<class ALoopstoneMachine> LoopstoneMachineBP;
 
 	class ALoopstoneMachine* Machine;
-
 	class ASunSky* SunSky = nullptr;
-
 	class APlayerCharacter* Player = nullptr;
-
 	class AIslanderTargetPointController* TargetPointController = nullptr;
-
 	TArray<class AIslandSound*> SoundActors;
-
 	TArray<class AStoryDecor*> StoryDecorActors;
 
 	float PlayTimeSeconds = 0;
-
 	float TimeLastDialogueClosed = 0;
-
 	float SecondsBeforeYouCanTalkToIslanderAgain = 1;
 
 	//~=============================================================================
@@ -90,24 +77,18 @@ public:
 
 	UPROPERTY()
 	ABaseIslanderCharacter* CurrentIslander = nullptr;
-
 	UPROPERTY()
 	class UDialogue* CurrentDialogue = nullptr;
 
 	bool bTeleportAtTheEndOfConvo = false;
 	UFUNCTION(BlueprintImplementableEvent)
-
 	void TeleportDoctor(ABaseIslanderCharacter* Doc);
 	UFUNCTION()
-
 	void TriggerEvent(EEventType EventType, bool NewBoolValue, bool RunFunction = true);
 
 	bool StartDialogue(ABaseIslanderCharacter* Islander);
-
 	bool StartDialogue(AInteractableBook* Book);
-
 	void CloseDialogue();
-
 	bool UpdateDialogueBasedOnResponse(int ResponseID);
 
 	//~=============================================================================
@@ -141,7 +122,6 @@ public:
 	void EditInventoryItem(EInventoryItem Item, bool TrueToAddFalseToRemove);
 
 
-
 	//~=============================================================================
 	// Saving
 
@@ -153,7 +133,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SaveGame();
-
 	UFUNCTION(BlueprintCallable)
 	void LoadGame();
 

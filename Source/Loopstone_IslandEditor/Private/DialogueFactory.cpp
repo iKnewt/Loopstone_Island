@@ -11,10 +11,10 @@ UDialogueFactory::UDialogueFactory()
 }
 
 UObject* UDialogueFactory::FactoryCreateNew(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags,
-	UObject* Context, FFeedbackContext* Warn)
+                                            UObject* Context, FFeedbackContext* Warn)
 {
 	return NewObject<UObject>(InParent, InClass, InName, Flags | RF_Transactional);
-}	
+}
 
 FText UDialogueFactory::GetDisplayName() const
 {

@@ -19,7 +19,7 @@ class LOOPSTONE_ISLAND_API AInteractableDoor : public AInteractableObjectBase
 public:
 	// Sets default values for this actor's properties
 	AInteractableDoor();
-	
+
 	UFUNCTION(BlueprintCallable)
 	void Interact() override;
 
@@ -49,27 +49,27 @@ protected:
 	//~=============================================================================
 	// Sounds	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
-		USoundBase* DoorOpen;
+	USoundBase* DoorOpen;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
-		USoundBase* DoorClose;
+	USoundBase* DoorClose;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
-		USoundBase* DoorLocked;
+	USoundBase* DoorLocked;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
-		USoundBase* DoorSlam;
+	USoundBase* DoorSlam;
 
 	//~=============================================================================
 	// Door Variables	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timeline")
-		bool bOpenInwards = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock")
-		bool bDoorLockedOnBeginPlay = true;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock")
-		bool bDoorAlwaysLocked = true;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Timeline")
-		bool bAutoClose = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Door")
+	bool bDoorLockedOnBeginPlay = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Door")
+	bool bDoorAlwaysLocked = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Door")
+	bool bAutoClose = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Door")
+	bool bOpenInwards = false;
 	// If the door is currently open = true
 	bool bOpen = false;
-	
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

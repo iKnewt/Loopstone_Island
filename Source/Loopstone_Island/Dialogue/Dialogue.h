@@ -16,6 +16,8 @@ class LOOPSTONE_ISLAND_API UDialogue : public UGenericGraph
 public:
 	UDialogue();
 
+	//~=============================================================================
+	// Current Conditions
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class UDialogueNode* CurrentDialogueNode = nullptr;
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
@@ -27,6 +29,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Current Conditions")
 	class UDialogueNode* LastConditionNode = nullptr;
 
+	//~=============================================================================
+	// Dialogue
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	TArray<bool> Conditions;
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")

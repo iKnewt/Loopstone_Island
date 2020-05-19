@@ -81,9 +81,9 @@ void APlayerCharacter::MoveForward(float Val)
 
 void APlayerCharacter::ControllerMoveForward(float Val)
 {
-	if(GetWorld()->IsPaused())
+	if (GetWorld()->IsPaused())
 	{
-		if(GameState->LogWidget->IsVisible())
+		if (GameState->LogWidget->IsVisible())
 		{
 			GameState->LogWidget->UpdateScrollLocation(Val);
 		}
@@ -244,9 +244,9 @@ void APlayerCharacter::Interact()
 
 void APlayerCharacter::ControllerInteract()
 {
-	if(GetWorld()->IsPaused())
+	if (GetWorld()->IsPaused())
 	{
-		if(GameState->LogWidget->IsVisible())
+		if (GameState->LogWidget->IsVisible())
 		{
 			GameState->UpdateLogVisibility(false);
 		}
@@ -255,7 +255,6 @@ void APlayerCharacter::ControllerInteract()
 	{
 		Interact();
 	}
-
 }
 
 FHitResult APlayerCharacter::LineTrace(float TraceLength, FVector Direction, bool bVisualized)
@@ -345,7 +344,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	//Bind Interact event
 	// specific for controller as to work correctly with GUI
-	PlayerInputComponent->BindAction("Controller_Interact", IE_Pressed, this, &APlayerCharacter::ControllerInteract).bExecuteWhenPaused = true;
+	PlayerInputComponent->BindAction("Controller_Interact", IE_Pressed, this, &APlayerCharacter::ControllerInteract).
+	                      bExecuteWhenPaused = true;
 
 	// Bind Run events
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &APlayerCharacter::Run);
@@ -357,7 +357,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	// Bind movement events
 	// specific for controller as to work correctly with GUI
-	PlayerInputComponent->BindAxis("Controller_MoveForward", this, &APlayerCharacter::ControllerMoveForward).bExecuteWhenPaused = true;
+	PlayerInputComponent->BindAxis("Controller_MoveForward", this, &APlayerCharacter::ControllerMoveForward).
+	                      bExecuteWhenPaused = true;
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.

@@ -36,10 +36,10 @@ void UDialogue::UpdateCurrentOptions(ALoopstone_IslandGameState* GameState)
 	{
 		UDialogueEdge* DialogueEdge = UE4Casts_Private::DynamicCast<UDialogueEdge*>(EdgeToCheck.Value);
 		if (GameState->AreConditionsMet(DialogueEdge->TopicBoolsConditions,
-		                             DialogueEdge->EventBoolsConditions,
-		                             DialogueEdge->InventoryBoolsConditions,
-		                             DialogueEdge->TimeOfDayCondition,
-		                             DialogueEdge->ActiveStoryCondition))
+		                                DialogueEdge->EventBoolsConditions,
+		                                DialogueEdge->InventoryBoolsConditions,
+		                                DialogueEdge->TimeOfDayCondition,
+		                                DialogueEdge->ActiveStoryCondition))
 		{
 			CurrentAvailableEdges.Add(DialogueEdge);
 		}
@@ -220,10 +220,10 @@ bool UDialogue::UpdateCurrentNode(int ResponseID, ALoopstone_IslandGameState* Ga
 bool UDialogue::CurrentDialogueNodeConditionsMet(ALoopstone_IslandGameState* GameState)
 {
 	return GameState->AreConditionsMet(CurrentDialogueNode->TopicBoolsConditions,
-	                                CurrentDialogueNode->EventBoolsConditions,
-	                                CurrentDialogueNode->InventoryBoolsConditions,
-	                                CurrentDialogueNode->TimeOfDayCondition,
-	                                CurrentDialogueNode->ActiveStoryCondition);
+	                                   CurrentDialogueNode->EventBoolsConditions,
+	                                   CurrentDialogueNode->InventoryBoolsConditions,
+	                                   CurrentDialogueNode->TimeOfDayCondition,
+	                                   CurrentDialogueNode->ActiveStoryCondition);
 }
 
 #undef LOCTEXT_NAMESPACE

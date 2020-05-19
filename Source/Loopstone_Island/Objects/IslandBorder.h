@@ -10,8 +10,8 @@ UCLASS()
 class LOOPSTONE_ISLAND_API AIslandBorder : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AIslandBorder();
 protected:
@@ -23,17 +23,16 @@ protected:
 	//~=============================================================================
 	// Components
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		class USplineComponent* Spline = nullptr;
+	class USplineComponent* Spline = nullptr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		class UAudioComponent* Waves = nullptr;
+	class UAudioComponent* Waves = nullptr;
 	USceneComponent* Root;
 
 	//Timer to move the audio component
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float AudioTimer = 0.25f;
+	float AudioTimer = 0.25f;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 };

@@ -31,6 +31,7 @@ enum class EEyeExpression : uint8
 	Eye_Shock,
 	None
 };
+
 class UPaperFlipbookComponent;
 class UPaperFlipbook;
 UCLASS(Blueprintable)
@@ -94,7 +95,7 @@ public:
 
 	//Snaps the view of the character to front
 	void ResetView();
-	
+
 	UFUNCTION()
 	void OnLookAtBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	                          int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

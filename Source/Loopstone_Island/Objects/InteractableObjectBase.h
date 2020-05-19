@@ -30,28 +30,28 @@ public:
 	//~=============================================================================
 	// Conditions	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
-		TMap<ETopic, bool> TopicBoolsConditions;
+	TMap<ETopic, bool> TopicBoolsConditions;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
-		TMap<EEventType, bool> EventBoolsConditions;
+	TMap<EEventType, bool> EventBoolsConditions;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
-		TMap<EInventoryItem, bool> InventoryBoolsConditions;
+	TMap<EInventoryItem, bool> InventoryBoolsConditions;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
-		ETimeOfDay TimeOfDayCondition = ETimeOfDay::None;
+	ETimeOfDay TimeOfDayCondition = ETimeOfDay::None;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Condition")
-		EStory ActiveStoryCondition = EStory::None;
+	EStory ActiveStoryCondition = EStory::None;
 
 	//~=============================================================================
 	// Conditions to Change if Conditions are met	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
-		TMap<ETopic, bool> TopicBoolsToChange;
+	TMap<ETopic, bool> TopicBoolsToChange;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
-		TMap<EEventType, bool> EventBoolsToChange;
+	TMap<EEventType, bool> EventBoolsToChange;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
-		TMap<EInventoryItem, bool> InventoryBoolsChange;
+	TMap<EInventoryItem, bool> InventoryBoolsChange;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
-		ETimeOfDay TimeOfDayChange = ETimeOfDay::None;
+	ETimeOfDay TimeOfDayChange = ETimeOfDay::None;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Event")
-		EStory ActiveStoryChange = EStory::None;
+	EStory ActiveStoryChange = EStory::None;
 
 	//If currently visualizing its interactivity
 	bool bVisualizingInteraction = false;

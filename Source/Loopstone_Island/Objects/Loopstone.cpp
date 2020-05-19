@@ -5,8 +5,6 @@
 ALoopstone::ALoopstone()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	
 }
 
 void ALoopstone::BeginPlay()

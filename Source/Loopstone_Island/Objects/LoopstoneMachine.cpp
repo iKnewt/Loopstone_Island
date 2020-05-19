@@ -26,7 +26,6 @@ void ALoopstoneMachine::BeginPlay()
 		//todo make all of this more dynamic
 		if (GameState->bCollectedLoopstones[static_cast<int>(EStory::Detective)])
 		{
-
 			// spawn in room
 			Rotator = FRotator(0, 50, 0);
 			Location = FVector(-3975, 480, 392);

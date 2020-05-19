@@ -16,5 +16,4 @@ class LOOPSTONE_ISLAND_API ALoopstone : public AInteractableObjectBase
 public:
 	ALoopstone();
 	void BeginPlay() override;
-
 };

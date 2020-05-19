@@ -12,13 +12,13 @@ UCLASS()
 class LOOPSTONE_ISLAND_API AIslanderTargetPointController : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AIslanderTargetPointController();
 
 	UFUNCTION(BlueprintCallable)
-		void MoveIslandersToPosition(ETimeOfDay NewTimeOfDay, EStory CurrentStory);
+	void MoveIslandersToPosition(ETimeOfDay NewTimeOfDay, EStory CurrentStory);
 	TArray<class ABaseIslanderCharacter*> Islanders;
 
 protected:

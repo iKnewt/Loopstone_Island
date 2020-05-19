@@ -90,7 +90,6 @@ void ABaseIslanderCharacter::ChangeEyeExpression(EEyeExpression RightEyeExpressi
 		LeftEye->SetFlipbook(NewLeftEye);
 		LeftEye->PlayFromStart();
 	}
-
 }
 
 void ABaseIslanderCharacter::ChangeAnimation(EAnimations Animation)
@@ -124,7 +123,7 @@ void ABaseIslanderCharacter::OnLookAtBeginOverlap(UPrimitiveComponent* Overlappe
 				GetMesh()->GetAnimInstance());
 			if (IsValid(AnimationInstance))
 			{
-				if(bLookAtPlayer)
+				if (bLookAtPlayer)
 				{
 					AnimationInstance->LookAt(true);
 				}

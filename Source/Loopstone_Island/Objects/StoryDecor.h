@@ -22,7 +22,7 @@ public:
 	EStory ActiveStoryCondition = EStory::None;
 
 	void UnhideIfConditionsMet(ETimeOfDay TimeOfDay, EStory Story);
-	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

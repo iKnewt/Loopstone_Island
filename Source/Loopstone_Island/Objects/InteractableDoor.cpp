@@ -18,16 +18,16 @@ AInteractableDoor::AInteractableDoor()
 
 void AInteractableDoor::CloseDoorSound()
 {
-	if(!bOpen)
+	if (!bOpen)
 	{
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), DoorSlam, GetActorLocation(), GetActorRotation(), 1, 1, 0, Sound->AttenuationSettings);
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), DoorSlam, GetActorLocation(), GetActorRotation(), 1, 1, 0,
+		                                      Sound->AttenuationSettings);
 		Sound->Stop();
 	}
 }
 
 void AInteractableDoor::PlayAnimation()
 {
-	
 	if (CurveFloat)
 	{
 		FOnTimelineFloat TimelineProgress;
@@ -36,15 +36,15 @@ void AInteractableDoor::PlayAnimation()
 		TimelineProgress.BindUFunction(this, FName("UpdateAnimation"));
 		CurveTimeline.AddInterpFloat(CurveFloat, TimelineProgress);
 		CurveTimeline.SetTimelineFinishedFunc(TimelineEnd);
-		
+
 		if (!bOpen)
 		{
 			CurveTimeline.Play();
-			if(IsValid(DoorOpen))
+			if (IsValid(DoorOpen))
 			{
 				Sound->SetSound(DoorOpen);
 			}
-			if(bAutoClose)
+			if (bAutoClose)
 			{
 				GetWorldTimerManager().SetTimer(DoorTimer, this, &AInteractableDoor::PlayAnimation, 7, false);
 			}
@@ -73,11 +73,11 @@ void AInteractableDoor::PlayAnimation()
 void AInteractableDoor::UpdateAnimation(float Value)
 {
 	float Modifier = 1.f;
-	if(bOpenInwards)
+	if (bOpenInwards)
 	{
 		Modifier = -1.f;
 	}
-		RootComponent->SetRelativeRotation(FRotator(0, Value * Modifier, 0));
+	RootComponent->SetRelativeRotation(FRotator(0, Value * Modifier, 0));
 }
 
 void AInteractableDoor::Interact()
@@ -87,9 +87,9 @@ void AInteractableDoor::Interact()
 		DoNotInteract();
 	}
 	else
- {
+	{
 		bDoorLockedOnBeginPlay = false;
-		
+
 		auto Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 		if (IsValid(Player))
 		{
@@ -128,7 +128,6 @@ void AInteractableDoor::DoNotInteract()
 	{
 		Interact();
 	}
-
 }
 
 // Called when the game starts or when spawned

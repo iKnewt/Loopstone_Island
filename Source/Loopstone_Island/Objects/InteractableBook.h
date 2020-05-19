@@ -17,17 +17,17 @@ class LOOPSTONE_ISLAND_API AInteractableBook : public AInteractableObjectBase
 public:
 	AInteractableBook();
 
-		/** First person camera */
+	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UCameraComponent* FirstPersonCameraComponent;
-	
+	class UCameraComponent* FirstPersonCameraComponent;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
-		FString Name = "Book";
+	FString Name = "Book";
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
-		class UDataTable* RichTextStyles;
+	class UDataTable* RichTextStyles;
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
-		class UDialogue* Dialogue = nullptr;
+	class UDialogue* Dialogue = nullptr;
 
 	UFUNCTION(BlueprintCallable)
-		void Interact() override;
+	void Interact() override;
 };
