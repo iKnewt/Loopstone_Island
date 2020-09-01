@@ -1,7 +1,7 @@
 # Loopstone Island
 Unreal Engine (4.24) Project for a game called Loopstone Island.
 <br>[You can play the game here if you like](https://iknewt.itch.io/loopstone-island) 
-<br>This repository will focus on the technial aspects of the project
+<br>This repository will focus on the technical aspects of the project
 <br>[You find the project's source code in the Source folder](/Source/Loopstone_Island/).
 
 ## Creators and credits
