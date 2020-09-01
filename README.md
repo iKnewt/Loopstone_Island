@@ -172,7 +172,7 @@ even if the player closed the game and resumed at a later point, we simply store
 save game every time the player collects a loopstone (or the machine in the tutorial), and load the
 data to the `Loopstone_IslandGameState` when it is created.
 
-IMAGE
+![IMAGE](/gitImages/1.png) 
 
 #### Changing data
 In addition to this, the `Loopstone_IslandGameState` also holds a lot of pointers to different
@@ -231,7 +231,7 @@ their new positions instead of simply teleporting as they do now. This could hav
 either using AI or predetermined paths, and would also require some time to set up, which is why
 we ended up abandoning the idea as it would not change the game much.
 
-IMAGE
+![IMAGE](/gitImages/2.png) 
 
 ### Interactable Objects
 Even though the major changes happen when the day of time changes, there are also other
@@ -260,8 +260,9 @@ void ChangeConditions (TMap<ETopic, bool > TopicBoolsToChange,
                       EStory ActiveStoryChange = EStory::None) ;
 ```
 
-IMAGE
-IMAGE
+![IMAGE](/gitImages/3.png) 
+<br>
+![IMAGE](/gitImages/4.png) 
 
 The `Loopstone_IslandGameState` then handles the event. For the foxglove we send a signal
 to the inventory widget to update and make the corresponding item's icon visible. The
@@ -276,7 +277,7 @@ are met or not. In future development we would look into a way to control this, 
 example doors could glow regardless, since they can indicate that they are locked, while other
 objects could glow only when the player can actually interact with them.
 
-IMAGE
+![IMAGE](/gitImages/5.png) 
 
 ### Dialogue System
 Our game's core game mechanic is talking to characters, and so its biggest system is the dialogue
@@ -297,7 +298,7 @@ communication, meaning we still got to develop our own system from scratch, whic
 as graph structures were part of our education, but now we had a way to view and edit its data
 visually. We made sure to study the plugin so we knew how all its parts worked.
 
-IMAGE
+![IMAGE](/gitImages/6.png) 
 
 The image shows how nodes and edges are displayed in the editor, also making it clear that this
 is a directional graph. In our system nodes represent dialogue from a character, and the edges are
@@ -321,14 +322,14 @@ communication between the various dialogue graphs and dialogue widget. The nodes
 change conditions and trigger events, which can be seen in the game when Jude removed the
 foxglove from the inventory during conversation.
 
-IMAGE
+![IMAGE](/gitImages/7.png) 
 
 In addition, the nodes allow for easy highlighting of key information in dialogue text as seen in
 the picture above. Based on feedback from playtesters we also added functionality to Display
 different text if the node had already been visited before, making the dialogue more natural and
 by extension the characters more realistic.
 
-IMAGE
+![IMAGE](/gitImages/8.png) 
 
 Finally, each node lets us set the Expression and Animation of the character speaking. With this
 system it became easier to create full dialogues as you could visualize the dialogue text,
